@@ -1,147 +1,157 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin
-export PATH=/Users/arnevm/google-cloud-sdk/bin:/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/bin:$HOME/go/bin:$HOME/.moaprcli/bin:/nix/var/nix/profiles/default/bin
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-export MOAPR_ROOT=/Users/arnevm/Documents/moaprplatform/
-export NEXUZ_ROOT=/Users/arnevm/Documents/nexuz
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-18.jdk/Contents/Home
+# set -g default-terminal "screen-256color"
+# Add truecolor support for the terminals you use
+set-option -ga terminal-overrides ",xterm-256color:Tc,screen-256color:Tc,tmux-256color:Tc"
+# Default terminal is 256 colors
+set -g default-terminal "tmux-256color"
 
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# set -g default-terminal "tmux-256color".
+set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+bind r source-file ~/.tmux.conf
+set -g base-index 1
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+set-window-option -g mode-keys vi
+set-option -sg escape-time 10
+set-option -g focus-events off
+set -g mouse on
+set -ag terminal-overrides ",xterm-256color:RGB"
+bind -T copy-mode-vi v send-keys -X begin-selection
+bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
- HYPHEN_INSENSITIVE="true"
+# vim-like pane switching
+bind -r ^ last-window
+bind -r k select-pane -U
+bind -r j select-pane -D
+bind -r h select-pane -L
+bind -r l select-pane -R
 
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+# Stay in copy mode on drag end.
+# (Would use `bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X
+# stop-selection` but it is a bit glitchy.)
+unbind-key -T copy-mode-vi MouseDragEnd1Pane
 
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
+bind-key i run-shell "tmux neww ~/bin/tmux-cht.sh"
+bind-key a run-shell "tmux neww ~/FOSS/andcli/bin/andcli"
+bind-key W run-shell "tmux neww nvim ~/WerkNotes/"
 
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
+bind-key C-e setw synchronize-panes on \; send-keys  C-c !! Enter Enter \; setw synchronize-panes off
+bind-key C-c setw synchronize-panes on \; send-keys  C-c \; setw synchronize-panes off
+bind-key -n C-e send-keys C-c !! Enter Enter
+bind-key R command-prompt "send-keys -t '%%' C-c !! Enter Enter"
 
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
+bind '"' split-window -c "#{pane_current_path}"
+bind '%' split-window -h -c "#{pane_current_path}"
 
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+bind -r n next-window
+bind -r p previous-window
+bind -r o select-pane -t :.+
+bind-key S choose-session
+bind-key X kill-pane
 
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
 
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+bind -r C-h resize-pane -L 5
+bind -r C-j resize-pane -D 5
+bind -r C-k resize-pane -U 5
+bind -r C-l resize-pane -R 5
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'tmux-plugins/tmux-open'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'xamut/tmux-spotify'
+set -g @plugin 'laktak/extrakto'
+set -g @plugin 'tmux-plugins/tmux-fpp'
+set -g @extrakto_popup_size "50%, 30%"
+set -g @extrakto_copy_key "tab"      # use tab to copy to clipboard
+set -g @extrakto_insert_key "enter"  # use enter to insert selection
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+# Disable default binding
+set -g @fpp-bind off
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git fzf)
+# Bind 'o' to run FPP launching an editor
+bind-key o run-shell '~/.tmux/plugins/tmux-fpp start edit'
 
-eval "$(zoxide init zsh)"
+# Bind 'O' to run FPP and paste the list of files in the initial pane
+bind-key O run-shell '~/.tmux/plugins/tmux-fpp start paste'
 
-source $ZSH/oh-my-zsh.sh
+set -g @open-S 'https://www.google.com/search?q='
+set -g @open 'gx'
 
-source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+bind-key f run-shell "tmux neww ~/bin/tmux-sessionizer"
+bind-key F command-prompt "find-window -Z -- '%%'"
+bind w display-popup -E "tmux list-windows | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | cut -d \":\" -f 1 | xargs tmux select-window -t"
 
-# User configuration
+bind-key Space next-layout
 
-# export MANPATH="/usr/local/man:$MANPATH"
+set -g mode-style "fg=#c9d1d9,bg=#1f2428"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+set -g pane-border-format '#(sleep 0.5; ps -t #{pane_tty} -o args= | head -n 2)'
 
-# Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='nvim'
- fi
-# set editors
-export GIT_EDITOR='nvim'
-export VISUAL='nvim'
-export EDITOR='nvim'
+# set -g pane-border-format "[#[fg=white]#{?pane_active,#[bold],} :#P: #T #[fg=default,nobold]]"
+# set -g pane-border-format " #P: #(cat -A /proc/#{pane_pid}/cmdline) "
+# set -g pane-border-format '#(ps -f --pid #{pane_ppid} -o args)'
+# set -g pane-border-format '#(ps -t #{pane_tty} -o args -c)'
+# set -g pane-border-format '#(ps -t #{pane_tty} -o args= | head -n 1)'
+# set -g pane-border-format '#P: #{pane_pid}'
+# set -g pane-border-format " #P: #{pane_current_command} "
+# set -g pane-border-format "#{pane_current_path} #{pane_current_command}"
 
-#thefuck remapped to redo
-eval $(thefuck --alias redo)
+# Auto hide pane-border-status line when only one pane is displayed (see tmux/tmux#566)
+set-hook -g 'after-new-session'  'run-shell -b "if [ \#{window_panes} -eq 1 ]; then tmux set pane-border-status off; fi"'
+set-hook -g 'after-new-window'   'run-shell -b "if [ \#{window_panes} -eq 1 ]; then tmux set pane-border-status off; fi"'
+set-hook -g 'after-kill-pane'    'run-shell -b "if [ \#{window_panes} -eq 1 ]; then tmux set pane-border-status off; fi"'
+set-hook -g 'pane-exited'        'run-shell -b "if [ \#{window_panes} -eq 1 ]; then tmux set pane-border-status off; fi"'
+set-hook -g 'after-split-window' 'run-shell -b "if [ \#{window_panes} -gt 1 ]; then tmux set pane-border-status top; fi"'
 
-# Enable vi mode
-bindkey -v
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+set -g status "on"
+set -g status-justify "left"
+set-option -g focus-events on
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/arnevm/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/arnevm/google-cloud-sdk/path.zsh.inc'; fi
+# set -g status-style "fg=#2188ff,bg=#1f2428"
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/arnevm/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/arnevm/google-cloud-sdk/completion.zsh.inc'; fi
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
+# # Github colors for Tmux
+# set -g message-style "fg=#c9d1d9,bg=#1f2428"
+# set -g message-command-style "fg=#c9d1d9,bg=#1f2428"
 #
-# Example aliases
-alias zshconfig="vim ~/.zshrc"
-alias ohmyzsh="vim $ZSH/.oh-my-zsh"
-alias srczsh="source ~/.zshrc"
-alias cdfe="cd ~/Documents/moaprfrontend/moapr"
-alias runfe="cdfe && npm run"
-alias cdbe="cd ~/Documents/moaprplatform"
-alias cdlf="cd ~/Documents/moaprplatform/platform/scripts/local-full"
-# alias buildbe="cdlocalfull && go build -gcflags='all=-N -l'"
-# alias r="cdbe && rm .pid || true && ./localfull -enable-java -dump-pid"
-alias vim="nvim"
-alias vimconf="pushd ~/.config/nvim && vim . && popd"
-alias tmuxconf="pushd ~ && vim .tmux.conf && popd"
-alias zshconf="pushd ~ && vim .zshrc && popd"
-alias mpg="cdbe && moapr proto go"
-alias cdlocalfull="cd ~/Documents/moaprplatform/platform/scripts/local-full"
-alias pubsub="gcloud beta emulators pubsub start --project=prj-nxh-moaprplatform-dev-7e0ck --host-port=localhost:8085 --verbosity=debug"
-alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-window=right,70% | xargs tldr'
-alias insz='~/tools/insz/main'
-alias gcfzf='git checkout `git branch | fzf`'
-alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
+# set -g pane-border-style "fg=#444c56"
+# set -g pane-active-border-style "fg=#2188ff"
+#
 
-kport () {
-    kill -9 `lsof -ti :${1}`
-}
+# panes
+set -g pane-border-style 'fg=colour244'
+set -g pane-active-border-style 'fg=colour255'
+
+# window style
+
+set -g status-style 'bg=#303030 fg=#97bdde'
+# set -g status-style 'bg=#303030'
+setw -g window-status-current-style 'fg=colour255'
+setw -g window-status-current-format ' #I#[fg=colour255]:#[fg=colour255]#W#[fg=#97bdde]#F '
+setw -g window-status-style 'fg=colour250'
+setw -g window-status-format ' #I#[fg=colour250]:#[fg=colour250]#W#[fg=colour244]#F '
+
+set -g status-left-length "100"
+set -g status-right "%a %d/%m/%Y %H:%M"
+# set -g status-right-length "100"
+#
+# set -g status-left-style NONE
+# set -g status-right-style NONE
+#
+# set -g status-left "#[fg=#1f2428,bg=#2188ff,bold] #S #[fg=#2188ff,bg=#1f2428,nobold,nounderscore,noitalics]"
+# set -g status-right "#[fg=#e1e4e8,bg=#1f2428,nobold,nounderscore,noitalics]#[fg=#586069,bg=#e1e4e8] %d/%m/%Y %I:%M #[fg=#1f2428,bg=#1f2428,nobold,nounderscore,noitalics]#[fg=#666666,bg=#1f2428,nobold,nounderscore,noitalics]"
+# set -g mode-style "fg=default,bg=default,reverse"
+#
+# setw -g window-status-activity-style "underscore,fg=#d1d5da,bg=#1f2428"
+# setw -g window-status-separator ""
+# setw -g window-status-style "NONE,fg=#24292e,bg=#1f2428"
+# setw -g window-status-format "#[fg=#1f2428,bg=#1f2428,nobold,nounderscore,noitalics]#[fg=#666666,bg=#1f2428,nobold,nounderscore,noitalics] #I  #W #F"
+# setw -g window-status-current-format "#[fg=#1f2428,bg=#e1e4e8,nobold,nounderscore,noitalics]#[fg=#586069,bg=#e1e4e8,bold] #I  #W #F"
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
 
