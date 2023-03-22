@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin
-export PATH=/Users/arnevm/google-cloud-sdk/bin:/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/bin:$HOME/go/bin:$HOME/.moaprcli/bin:/nix/var/nix/profiles/default/bin:$HOME/nvim-macos/bin
+export PATH=/Users/arnevm/google-cloud-sdk/bin:::/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:::$HOME/bin:$HOME/go/bin:
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export MOAPR_ROOT=/Users/arnevm/Documents/moaprplatform/
@@ -27,8 +27,6 @@ plugins=(git fzf)
 # eval "$(zoxide init zsh)"
 
 source $ZSH/oh-my-zsh.sh
-
-source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 
 # User configuration
 
