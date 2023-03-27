@@ -15,17 +15,16 @@ while (( $# )); do
 done
 
 STOW_FOLDERS="tmux,zsh,wezterm,karabiner,alacritty"
+DOTFILES=$HOME/dotfiles
 
-if [[ -z $DOTFILES ]]; then
-	DOTFILES=$HOME/dotfiles
+if $flag_clean
+then
+	STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES $DOTFILES/cleanenv
+else
+	$flag_install=true
 fi
 
-STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES
-
-if $flag_clean; then
-	$DOTFILES/cleanenv
-fi
-
-if $flag_install; then
-	$DOTFILES/install
+if $flag_install
+then
+	STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES $DOTFILES/install
 fi
