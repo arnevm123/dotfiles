@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+
+local flag_clean=false
+opterr() { echo >&2 "install dotfiles: Unknown option '$1'" }
+echo "test"
+while (( $# )); do
+	case $1 in
+		--)                 shift; positional+=("${@[@]}"); break  ;;
+		-c|--clean)         flag_clean=true                      ;;
+		-*)                 opterr $1 && return 2                  ;;
+		*)                  positional+=("${@[@]}"); break         ;;
+	esac
+	shift
+done
+
+if [[ -z $STOW_FOLDERS ]]; then
+	STOW_FOLDERS="tmux,zsh,bin,sway,i3,waybar,wezterm,alacritty"
+fi
+
+if [[ -z $DOTFILES ]]; then
+	DOTFILES=$HOME/.dotfiles
+fi
+
+STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES
+
+if $flag_clean then
+	$DOTFILES/clean
+else
+	$DOTFILES/install
+fi

@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+
+local flag_clean=false
+local flag_install=false
+opterr() { echo >&2 "install dotfiles: Unknown option '$1'" }
+while (( $# )); do
+	case $1 in
+		--)                 shift; positional+=("${@[@]}"); break  ;;
+		-c|--clean)         flag_clean=true                      ;;
+		-i|--install)         flag_clean=true                      ;;
+		-*)                 opterr $1 && return 2                  ;;
+		*)                  positional+=("${@[@]}"); break         ;;
+	esac
+	shift
+done
+
+STOW_FOLDERS="tmux,zsh,wezterm,karabiner,alacritty"
+
+if [[ -z $DOTFILES ]]; then
+	DOTFILES=$HOME/dotfiles
+fi
+
+STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES
+
+if $flag_clean; then
+	$DOTFILES/cleanenv
+fi
+
+if $flag_install; then
+	$DOTFILES/install
+fi
