@@ -1,12 +1,12 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin
-export PATH=/Users/arnevm/google-cloud-sdk/bin:::/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:::$HOME/bin:$HOME/go/bin:
+export PATH=/Users/arnevm/google-cloud-sdk/bin:/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/bin:$HOME/go/bin:$HOME/.moaprcli/bin:/nix/var/nix/profiles/default/bin:$HOME/nvim-macos/bin:$HOME/.cargo/bin
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export MOAPR_ROOT=/Users/arnevm/Documents/moaprplatform/
 export NEXUZ_ROOT=/Users/arnevm/Documents/nexuz
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-18.jdk/Contents/Home
-export OPENAI_API_KEY="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"
+export OPENAI_API_KEY="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"
 export NVIM_APPNAME="nvim"
 setopt PUSHDSILENT
 
@@ -22,11 +22,13 @@ HYPHEN_INSENSITIVE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load?
-plugins=(git fzf)
+plugins=(git fzf zsh-z)
 
 # eval "$(zoxide init zsh)"
 
 source $ZSH/oh-my-zsh.sh
+
+source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 
 # User configuration
 
@@ -102,6 +104,10 @@ fzf-git-checkout() {
         git checkout $branch;
     fi
 }
+fzf-conf() {
+    selected=$(find ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
+	pushd $selected && nvim . && popd || popd
+}
 
 
 alias ohmyzsh="vim $ZSH/.oh-my-zsh"
@@ -113,15 +119,17 @@ alias cdnv="cd ~/.config/nvim"
 # alias buildbe="cdlocalfull && go build -gcflags='all=-N -l'"
 # alias r="cdbe && rm .pid || true && ./localfull -enable-java -dump-pid"
 alias vim="nvim"
+alias vi="nvim"
 alias v="nvim ."
+alias conf=fzf-conf
 alias vimconf="pushd ~/.config/nvim && vim . && popd || popd"
 alias tmuxconf="pushd ~ && vim .tmux.conf && popd || popd"
 alias zshconf="pushd ~ && vim .zshrc && popd && source ~/.zshrc"
 alias zshsrc="source ~/.zshrc"
-alias cdlocalfull="cd ~/Documents/moaprplatform/platform/scripts/local-full"
+alias cdlf="cd ~/Documents/moaprplatform/platform/scripts/local-full"
 alias pubsub="gcloud beta emulators pubsub start --project=prj-nxh-moaprplatform-dev-7e0ck --host-port=localhost:8085 --verbosity=debug"
 alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-window=right,70% | xargs tldr'
-alias insz='~/tools/insz/main'
+# alias insz='~/tools/insz/main'
 alias gcml='gcm && ggl && git fetch'
 alias gco=fzf-git-checkout
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
@@ -129,4 +137,6 @@ alias -g P='| pe | fzf | read filename; [ ! -z $filename ] && vim $filename'
 alias weer='curl https://wttr.in/zedelgem'
 alias tks='tmux kill-server'
 alias ts='tmux-sessionizer'
+alias tw='tmux-switch'
 alias ta='tmux attach'
+alias lnt="golangci-lint run --config=~/.golangci.yaml ./..."

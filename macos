@@ -14,14 +14,14 @@ while (( $# )); do
 	shift
 done
 
-STOW_FOLDERS="tmux,zsh,wezterm,karabiner,alacritty"
+STOW_FOLDERS="tmux,zsh,wezterm,karabiner,alacritty,golangciSettings"
 DOTFILES=$HOME/dotfiles
 
 if $flag_clean
 then
 	STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES $DOTFILES/cleanenv
 else
-	$flag_install=true
+	flag_install=true
 fi
 
 if $flag_install
