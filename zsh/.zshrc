@@ -22,7 +22,7 @@ HYPHEN_INSENSITIVE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load?
-plugins=(git fzf zsh-z)
+plugins=(git fzf zsh-z zsh-autosuggestions)
 
 # eval "$(zoxide init zsh)"
 
@@ -59,6 +59,7 @@ if [ -f '/Users/arnevm/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/arnevm/g
 if [ -f '/Users/arnevm/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/arnevm/google-cloud-sdk/completion.zsh.inc'; fi
 
 bindkey "^X^X" edit-command-line
+bindkey '^ ' autosuggest-accept
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
