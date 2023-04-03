@@ -2,7 +2,12 @@
 pushd $DOTFILES
 for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
 do
-	echo "stow $folder"
-	stow --restow $folder
+	if [[ "$filename" = _* ]]; then
+		echo "stow --adopt $folder"
+		stow --adopt $folder
+	else
+		echo "stow $folder"
+		stow --restow $folder
+	fi
 done
 popd

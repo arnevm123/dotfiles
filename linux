@@ -14,7 +14,7 @@ while (( $# )); do
 	shift
 done
 
-STOW_FOLDERS="tmux,nvim,zsh,bin,sway,i3,waybar,fuzzel,wlogout,wezterm,alacritty,golangciSettings"
+STOW_FOLDERS="tmux,nvim,_zsh,bin,sway,i3,waybar,fuzzel,wlogout,wezterm,alacritty,golangciSettings"
 
 DOTFILES=$HOME/dotfiles
 
