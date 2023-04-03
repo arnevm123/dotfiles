@@ -1,1 +1,0 @@
-bin/bin/open_chrome.sh
