@@ -29,7 +29,9 @@ if [ -f '/Users/arnevm/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/arnevm/g
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/arnevm/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/arnevm/google-cloud-sdk/completion.zsh.inc'; fi
 
-source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+if [ -f /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
+    source /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+fi
 
 # Set name of the theme to load --- if set to "random", it will
 ZSH_THEME="robbyrussell"
@@ -49,9 +51,6 @@ plugins=(git fzf zsh-z zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zshexports
 
-if [ -f /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
-    source /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
-fi
 # User configuration
 
 
