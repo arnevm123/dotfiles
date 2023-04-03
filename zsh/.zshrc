@@ -12,6 +12,7 @@ path+=$HOME/bin
 path+=$HOME/nvim-macos/bin
 path+=$HOME/go/bin
 path+=$HOME/.cargo/bin
+path+=$HOME/.deno/bin
 path+=$HOME/.moaprcli/bin
 path+=$HOME/google-cloud-sdk/bin
 export PATH
