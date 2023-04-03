@@ -49,12 +49,9 @@ plugins=(git fzf zsh-z zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zshexports
 
-<<<<<<< Updated upstream
 if [ -f /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
     source /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
 fi
-=======
->>>>>>> Stashed changes
 # User configuration
 
 
