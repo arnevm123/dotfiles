@@ -26,7 +26,7 @@
 		"pulseaudio": {
 			"format": "{volume} {icon}",
 			"format-alt": "{volume} {icon}",
-			"format-muted": "{volume} ",
+			"format-muted": "{volume} X{icon}",
 			"format-alt-click": "click-right",
 			"format-icons": {
 				"headphones": "",
@@ -43,6 +43,8 @@
 		},
 		"battery": {
 			"format": "{capacity}% {icon}",
+			"format-charging": "{capacity}% ",
+        		"format-plugged": "{capacity}% ",
 			"format-icons": ["", "", "", "", ""]
 		},
 		"clock": {
