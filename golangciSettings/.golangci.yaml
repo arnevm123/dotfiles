@@ -58,7 +58,7 @@ output:
   print-linter-name: true
 
   # No, no skips, everything should be reported.
-  uniq-by-line: false
+  uniq-by-line: true
 
   # To be honest no idea when this can be needed, maybe a multi-module setup?
   path-prefix: ""
@@ -160,7 +160,7 @@ linters:
     # Even with deprecation notice I find it useful.
     # There are situations when instead of io.ReaderCloser
     # I can use io.Reader. A small but good improvement.
-    - interfacer
+    # - interfacer
 
     # Fix all the misspells, amazing thing.
     - misspell
@@ -404,7 +404,7 @@ linters-settings:
       - opinionated
       - performance
     disabled-checks:
-      - style
+      # - style
       # These 3 will detect many cases, but they do sense
       # if it's performance oriented code
       - hugeParam

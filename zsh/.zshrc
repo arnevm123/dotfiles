@@ -15,6 +15,7 @@ path+=$HOME/.cargo/bin
 path+=$HOME/.deno/bin
 path+=$HOME/.moaprcli/bin
 path+=$HOME/google-cloud-sdk/bin
+path+=$HOME/.tmuxifier/bin
 export PATH
 # Path to your oh-my-zsh installation.
 setopt PUSHDSILENT
@@ -23,6 +24,7 @@ export MOAPR_ROOT=/Users/arnevm/Documents/moaprplatform/
 export NEXUZ_ROOT=/Users/arnevm/Documents/nexuz
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-18.jdk/Contents/Home
 export NVIM_APPNAME="nvim"
+export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/arnevm/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/arnevm/google-cloud-sdk/path.zsh.inc'; fi
@@ -46,6 +48,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load?
 plugins=(git fzf zsh-z zsh-autosuggestions)
+
+eval "$(tmuxifier init -)"
 
 # eval "$(zoxide init zsh)"
 
@@ -139,6 +143,7 @@ alias tks='tmux kill-server'
 alias ts='tmux-sessionizer'
 alias tw='tmux-switch'
 alias ta='tmux attach'
+alias tl='tmuxifier load-window'
 alias lnt="golangci-lint run --config=~/.golangci.yaml ./..."
 
 ### moapr specific
