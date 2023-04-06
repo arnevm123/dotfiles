@@ -19,13 +19,14 @@
 			"format-alt-click": "click-right",
 			//"format-icons": ["", ""],
 			//"format-icons": ["", ""],
-			"format-icons": ["", ""],
+			"format-icons": [""],
 			"on-scroll-down": "light -A 1",
 			"on-scroll-up": "light -U 1"
 		},
 		"pulseaudio": {
 			"format": "{volume} {icon}",
 			"format-alt": "{volume} {icon}",
+			"format-muted": "{volume} 󰝟",
 			"format-alt-click": "click-right",
 			"format-icons": {
 				"headphones": "",
