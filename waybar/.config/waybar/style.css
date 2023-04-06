@@ -1,0 +1,8 @@
+#pulseaudio,
+#backlight,
+#network,
+battery,
+#clock {
+  color: #ffffff;
+  background-color: transparent;
+}
