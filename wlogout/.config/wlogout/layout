@@ -12,7 +12,7 @@
 }
 {
     "label" : "logout",
-    "action" : "i3-msg exit",
+    "action" : "loginctl terminate-user $USER",
     "text" : "L",
     "keybind" : "l"
 }
