@@ -218,7 +218,7 @@ bar {
 # Startup programs
 exec --no-startup-id mpd
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
-exec_always swaybg -i ~/.config/icons/default.png -m fill
+exec_always swaybg -i /usr/share/backgrounds/default.png -m fill
 exec --no-startup-id /usr/lib/gsd-xsettings
 exec --no-startup-id mako
 

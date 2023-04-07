@@ -1,19 +1,19 @@
 * {
     /* `otf-font-awesome` is required to be installed for icons */
     font-family: Fira code, FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 window#waybar {
-    background-color: rgba(43, 48, 59, 0.5);
-    border-bottom: 3px solid rgba(100, 114, 125, 0.5);
+    background-color: rgba(43, 48, 59, 1);
+    border-bottom: 2px solid rgba(100, 114, 125, 1);
     color: #ffffff;
     transition-property: background-color;
     transition-duration: .5s;
 }
 
 window#waybar.hidden {
-    opacity: 0.2;
+    opacity: 1;
 }
 
 /*
