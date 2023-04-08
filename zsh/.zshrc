@@ -119,7 +119,7 @@ fzf-git-checkout() {
     fi
 }
 fzf-conf() {
-    selected=$(find ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(find -L ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
 	pushd $selected && nvim . && popd || popd
 }
 
@@ -137,7 +137,7 @@ alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-win
 alias gcml='gcm && ggl && git fetch'
 alias gco=fzf-git-checkout
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
-alias -g P='| pe | fzf | read filename; [ ! -z $filename ] && vim $filename'
+# alias -g P='| pe | fzf | read filename; [ ! -z $filename ] && vim $filename'
 alias weer='curl https://wttr.in/zedelgem'
 alias tks='tmux kill-server'
 alias ts='tmux-sessionizer'

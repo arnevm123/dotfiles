@@ -240,8 +240,8 @@ exec --no-startup-id mako
 input * accel_profile flat
 
 input "type:keyboard" {
-	# xcape -e 'Caps_Lock=Escape'
-	xkb_options caps:swapescape
+	 # xcape -e 'Caps_Lock=Escape'
+	xkb_options caps:escape
 }
 
 input type:touchpad {
