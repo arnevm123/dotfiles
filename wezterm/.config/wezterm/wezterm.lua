@@ -9,7 +9,7 @@ return {
 		cursor_bg = "#cccccc",
 	},
 
-	font_size = 10.0,
+	font_size = 16.0,
 	window_close_confirmation = "NeverPrompt",
 	adjust_window_size_when_changing_font_size = false,
 	font = wezterm.font("Fira Code"),
