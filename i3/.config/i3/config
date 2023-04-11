@@ -13,11 +13,7 @@ set $mod Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-default_border pixel
-default_floating_border pixel
-font pango:monospace 0
-titlebar_padding 1
-titlebar_border_thickness 1
+font pango:monospace 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -40,14 +36,10 @@ exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym --locked {
-    XF86AudioRaiseVolume exec \
-        'pactl set-sink-volume @DEFAULT_SINK@ +${STEP:-5}% && ~/.config/sway/scripts/audio-notifications.sh'
-    XF86AudioLowerVolume exec \
-        'pactl set-sink-volume @DEFAULT_SINK@ -${STEP:-5}% && ~/.config/sway/scripts/audio-notifications.sh'
-    XF86AudioMute    exec pactl set-sink-mute @DEFAULT_SINK@ toggle && ~/.config/sway/scripts/audio-notifications.sh\
-    XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-}
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status && ~/.config/sway/scripts/audio-notifications.sh
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status && ~/.config/sway/scripts/audio-notifications.sh
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status && ~/.config/sway/scripts/audio-notifications.sh
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -59,7 +51,6 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec flatpak run org.wezfurlong.wezterm
 bindsym $mod+b exec firefox
-bindsym $mod+Shift+p exec wlogout
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -175,10 +166,10 @@ mode "resize" {
 # Pressing right will grow the window’s width.
 # Pressing up will shrink the window’s height.
 # Pressing down will grow the window’s height.
-	bindsym h resize shrink width 10 px or 10 ppt
-	bindsym j resize grow height 10 px or 10 ppt
-	bindsym k resize shrink height 10 px or 10 ppt
-	bindsym l resize grow width 10 px or 10 ppt
+		bindsym h resize shrink width 10 px or 10 ppt
+		bindsym j resize grow height 10 px or 10 ppt
+		bindsym k resize shrink height 10 px or 10 ppt
+		bindsym l resize grow width 10 px or 10 ppt
 
 # same bindings, but for the arrow keys
 		bindsym Left resize shrink width 10 px or 10 ppt
@@ -205,33 +196,4 @@ bar {
 bindsym XF86MonBrightnessUp exec light -A 5 && ~/.config/sway/scripts/brightness-notifications.sh
 # decrease screen brightness
 bindsym XF86MonBrightnessDown exec light -U 5 && ~/.config/sway/scripts/brightness-notifications.sh
-
-
-# Startup programs
-exec --no-startup-id mpd
-# multimedia keys
-bindsym XF86AudioPlay  exec "mpc toggle"
-bindsym XF86AudioStop  exec "mpc stop"
-bindsym XF86AudioNext  exec "mpc next"
-bindsym XF86AudioPrev  exec "mpc prev"
-bindsym XF86AudioPause exec "mpc pause"
-# exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
-exec_always swaybg -i /usr/share/backgrounds/default.png -m fill
-exec --no-startup-id /usr/lib/gsd-xsettings
-exec --no-startup-id mako
-exec --no-startup-id xfce4-panel --disable-wm-check
-
-input * accel_profile flat
-
-input "type:keyboard" {
-	 # xcape -e 'Caps_Lock=Escape'
-	xkb_options caps:escape
-}
-output eDP-1 scale 0.8
-
-input type:touchpad {
-       dwt enabled
-       tap enabled
-       natural_scroll enabled
-       middle_emulation enabled
-   }
+exec --no-startup-id dunst
