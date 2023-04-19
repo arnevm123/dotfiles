@@ -34,9 +34,6 @@ exec --no-startup-id dex-autostart --autostart --environment i3
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
 
 # Use pactl to adust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -62,7 +59,7 @@ bindsym $mod+Shift+q kill
 # A more modern dmenu replacement is rofi:
 # bindsym $mod+d exec --no-startup-id rofi -show run  -m -1
 # A more modern dmenu replacement is fuzzel:
-bindsym $mod+d exec --no-startup-id fuzzel
+bindsym $mod+d exec fuzzel
 
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -251,4 +248,4 @@ input type:touchpad {
        tap enabled
        natural_scroll enabled
        middle_emulation enabled
-   }
+}

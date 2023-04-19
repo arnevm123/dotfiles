@@ -197,3 +197,4 @@ bindsym XF86MonBrightnessUp exec light -A 5 && ~/.config/sway/scripts/brightness
 # decrease screen brightness
 bindsym XF86MonBrightnessDown exec light -U 5 && ~/.config/sway/scripts/brightness-notifications.sh
 exec --no-startup-id dunst
+exec_always setxkbmap -option caps:escape

@@ -3,7 +3,7 @@
 		"position": "bottom",
 		"modules-left": ["sway/workspaces", "sway/mode"],
 		"modules-center": ["sway/window"],
-		"modules-right": ["pulseaudio", "backlight", "network" ,"battery", "clock"],
+		"modules-right": ["pulseaudio", "backlight", "network" ,"battery", "clock", "tray"],
 		"sway/window": {
 			"max-length": 50
 		},
