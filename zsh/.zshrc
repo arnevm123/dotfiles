@@ -157,4 +157,9 @@ alias pubsub="gcloud beta emulators pubsub start --project=prj-nxh-moaprplatform
 _mpg () {
     pushd ~/Documents/moaprplatform && moapr proto go ${1} && popd || popd
 }
+_setbg () {
+	kill -9 $(ps -aux  | grep swaybg -i | awk '{ print $2}')
+    swaybg -i ${1} -m fill &!
+}
 alias mpg=_mpg
+alias setbg=_setbg
