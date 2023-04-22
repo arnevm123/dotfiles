@@ -221,6 +221,7 @@ exec --no-startup-id mpd
 exec_always swaybg -i /usr/share/backgrounds/default.png -m fill
 exec --no-startup-id /usr/lib/gsd-xsettings
 exec --no-startup-id mako
+exec --no-startup-id nm-applet --indicator
 
 # bindsym $mod+Shift+p      mode $power_mode
 # mode $power_mode {
@@ -239,10 +240,10 @@ exec --no-startup-id mako
 
 input * accel_profile flat
 
-input "type:keyboard" {
-	 # xcape -e 'Caps_Lock=Escape'
-	xkb_options caps:escape
-}
+# input "type:keyboard" {
+# 	 # xcape -e 'Caps_Lock=Escape'
+# 	xkb_options caps:escape
+# }
 output eDP-1 scale 0.8
 
 input type:touchpad {
