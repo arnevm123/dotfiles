@@ -24,9 +24,9 @@
 			"on-scroll-up": "light -U 1"
 		},
 		"pulseaudio": {
-			"format": "{volume} {icon}",
-			"format-alt": "{volume} {icon}",
-			"format-muted": "{volume} X{icon}",
+			"format": "{icon} {volume}",
+			"format-alt": "{icon} {volume}",
+			"format-muted": "{icon} X{volume}",
 			"format-alt-click": "click-right",
 			"format-icons": {
 				"headphones": "",
