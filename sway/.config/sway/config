@@ -193,7 +193,8 @@ bindsym --locked {
         'pactl set-sink-volume @DEFAULT_SINK@ +${STEP:-5}% && ~/.config/sway/scripts/audio-notifications.sh'
     XF86AudioLowerVolume exec \
         'pactl set-sink-volume @DEFAULT_SINK@ -${STEP:-5}% && ~/.config/sway/scripts/audio-notifications.sh'
-    XF86AudioMute    exec pactl set-sink-mute @DEFAULT_SINK@ toggle && ~/.config/sway/scripts/audio-notifications.sh\
+    XF86AudioMute exec \
+		'pactl set-sink-mute @DEFAULT_SINK@ toggle && ~/.config/sway/scripts/audio-notifications.sh'
     XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 }
 
