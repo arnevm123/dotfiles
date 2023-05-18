@@ -20,11 +20,12 @@ export PATH
 # Path to your oh-my-zsh installation.
 setopt PUSHDSILENT
 export ZSH="$HOME/.oh-my-zsh"
-export MOAPR_ROOT=/Users/arnevm/Documents/moaprplatform/
+export MOAPR_ROOT=/Users/arnevm/Documents/moaprplatform
 export NEXUZ_ROOT=/Users/arnevm/Documents/nexuz
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-18.jdk/Contents/Home
 export NVIM_APPNAME="nvim"
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
+export TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/arnevm/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/arnevm/google-cloud-sdk/path.zsh.inc'; fi
@@ -130,13 +131,15 @@ alias vi="nvim"
 alias v="nvim ."
 alias conf=fzf-conf
 alias vimconf="pushd ~/.config/nvim && vim . && popd || popd"
-alias tmuxconf="pushd ~ && vim .tmux.conf && popd || popd"
+alias tmuxconf="vim ~/.tmux.conf"
 alias zshconf="pushd ~ && vim .zshrc && popd && source ~/.zshrc"
 alias zshsrc="source ~/.zshrc"
 alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-window=right,70% | xargs tldr'
 alias gcml='gcm && ggl && git fetch'
+alias gfco='git fetch && gco'
 alias gco=fzf-git-checkout
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
+alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} git branch -D '{}'"
 # alias -g P='| pe | fzf | read filename; [ ! -z $filename ] && vim $filename'
 alias weer='curl https://wttr.in/zedelgem'
 alias tks='tmux kill-server'
@@ -149,13 +152,38 @@ alias lnt="golangci-lint run --config=~/.golangci.yaml ./..."
 ### moapr specific
 alias cdfe="cd ~/Documents/moaprfrontend/moapr"
 alias runfe="cdfe && npm run"
-alias cdbe="cd ~/Documents/moaprplatform"
 alias cdlf="cd ~/Documents/moaprplatform/platform/scripts/local-full"
 alias cdnv="cd ~/.config/nvim"
 alias cdlf="cd ~/Documents/moaprplatform/platform/scripts/local-full"
 alias pubsub="gcloud beta emulators pubsub start --project=prj-nxh-moaprplatform-dev-7e0ck --host-port=localhost:8085 --verbosity=debug"
+_cdbe () {
+  if [[ $# -gt 0 ]]; then
+	  cd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang
+  else
+	  cd $MOAPR_ROOT
+  fi
+}
+_goki () {
+  if [[ $# -gt 0 ]]; then
+	  cd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang
+  else
+	  cd $MOAPR_ROOT
+  fi
+  if [[ $# -gt 1 ]]; then
+	  gokiburi --listen-port ${2}
+  else
+	  gokiburi
+  fi
+}
+
+_gtest () {
+	cd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang && richgo test ./... && popd
+}
+alias gtest=_gtest
+alias cdbe=_cdbe
+alias goki=_goki
 _mpg () {
-    pushd ~/Documents/moaprplatform && moapr proto go ${1} && popd || popd
+    pushd $MOAPR_ROOT && moapr proto go ${1} && popd || popd
 }
 _setbg () {
 	kill -9 $(ps -aux  | grep swaybg -i | awk '{ print $2}')

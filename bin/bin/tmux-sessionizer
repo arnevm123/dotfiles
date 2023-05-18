@@ -22,12 +22,12 @@ case $selected_name in
     ;;
 esac
 
-if [[ "$selected_name" == "moaprReview" ]]; then
-	selected_name="REVIEW_"
-    selected=$(find ~/Documents/moaprReview -mindepth 1 -maxdepth 1 -type d | fzf)
-	sn=$(basename "$selected" | tr . _)
-	selected_name+=$sn
-fi
+# if [[ "$selected_name" == "moaprReview" ]]; then
+# 	selected_name="REVIEW_"
+#     selected=$(find ~/Documents/moaprReview -mindepth 1 -maxdepth 1 -type d | fzf)
+# 	sn=$(basename "$selected" | tr . _)
+# 	selected_name+=$sn
+# fi
 
 echo "$selected"
 
