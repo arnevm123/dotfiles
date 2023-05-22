@@ -206,7 +206,8 @@ linters:
     - staticcheck
 
     # Is a replacement for `golint`, similar to `revive`.
-    - stylecheck
+    # Need to check how to disable the ID warning
+    # - stylecheck
 
     # Check struct tags.
     - tagliatelle
@@ -317,7 +318,6 @@ linters:
     # 1st Go linter, deprecated :( use `revive`.
     - golint
 
-
     # Allowed/blocked packages to import. I prefer to do it manually.
     - gomodguard
 
@@ -395,6 +395,11 @@ linters:
     - wsl
 
 linters-settings:
+  revive:
+    rules:
+      - name: var-naming
+        arguments: [["ID"], []]
+
   # I'm biased and I'm enabling more than 100 checks
   # Might be too much for you. See https://go-critic.com/overview.html
   gocritic:

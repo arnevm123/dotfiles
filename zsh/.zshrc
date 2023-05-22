@@ -138,10 +138,19 @@ alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} g
 # alias -g P='| pe | fzf | read filename; [ ! -z $filename ] && vim $filename'
 alias weer='curl https://wttr.in/zedelgem'
 alias tks='tmux kill-server'
+_tkfzf() {
+	session=tmux ls | fzf | awk '{print $1;}'| sed 's/://'
+	if [ !-z "$session" ]; then
+		tmux kill-session -t $session
+	fi
+}
+alias tkfzf=_tkfzf
+
 alias ts='tmux-sessionizer'
 alias tw='tmux-switch'
 alias ta='tmux attach'
 alias tl='tmuxifier load-window'
+alias tls='tmuxifier load-session'
 alias lnt="golangci-lint run --config=~/.golangci.yaml ./..."
 
 ### moapr specific
@@ -178,7 +187,7 @@ alias gtest=_gtest
 alias cdbe=_cdbe
 alias goki=_goki
 _mpg () {
-    pushd $MOAPR_ROOT && moapr proto go ${1} && popd || popd
+    moapr proto go ${1}
 }
 _setbg () {
 	kill -9 $(ps -aux  | grep swaybg -i | awk '{ print $2}')
