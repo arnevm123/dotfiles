@@ -5,6 +5,7 @@ path+=/sbin
 path+=/usr/local/bin
 path+=/usr/bin
 path+=/usr/sbin
+PATH+=/usr/local/go/bin
 path+=/opt/homebrew/bin
 path+=/opt/homebrew/sbin
 path+=/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin
@@ -26,12 +27,6 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-18.jdk/Contents/Home
 export NVIM_APPNAME="nvim"
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
 export TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/arnevm/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/arnevm/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/arnevm/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/arnevm/google-cloud-sdk/completion.zsh.inc'; fi
 
 if [ -f /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
     source /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
@@ -191,3 +186,9 @@ _setbg () {
 }
 alias mpg=_mpg
 alias setbg=_setbg
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/arne/google-cloud-sdk/path.zsh.inc' ]; then . '/home/arne/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/arne/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/arne/google-cloud-sdk/completion.zsh.inc'; fi
