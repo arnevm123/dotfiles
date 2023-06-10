@@ -25,6 +25,7 @@ export MOAPR_ROOT=/Users/arnevm/Documents/moaprplatform
 export NEXUZ_ROOT=/Users/arnevm/Documents/nexuz
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-18.jdk/Contents/Home
 export NVIM_APPNAME="nvim"
+export NVIM_CONF="$HOME/.config/nvim"
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
 export TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
 
@@ -115,8 +116,13 @@ fzf-git-checkout() {
     fi
 }
 fzf-conf() {
-    selected=$(find -L ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
-	pushd $selected && nvim . && popd || popd
+	selected=$(find -L ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
+
+	if [[ "$PWD" != "$selected" ]]; then
+		pushd $selected && nvim . && popd || popd;
+	else
+		nvim .
+	fi
 }
 
 # alias buildbe="cdlocalfull && go build -gcflags='all=-N -l'"
@@ -125,9 +131,9 @@ alias vim="nvim"
 alias vi="nvim"
 alias v="nvim ."
 alias conf=fzf-conf
-alias vimconf="pushd ~/.config/nvim && vim . && popd || popd"
-alias tmuxconf="vim ~/.tmux.conf"
-alias zshconf="pushd ~ && vim .zshrc && popd && source ~/.zshrc"
+alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd; else vim .; fi'
+alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf && popd ; else vim .tmux.conf; fi'
+alias zshconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .zshrc && popd && source ~/.zshrc; else vim .zshrc && source ~/.zshrc; fi'
 alias zshsrc="source ~/.zshrc"
 alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-window=right,70% | xargs tldr'
 alias gcml='gcm && ggl && git fetch'
