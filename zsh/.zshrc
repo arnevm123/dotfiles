@@ -32,6 +32,7 @@ export TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E
 if [ -f /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
     source /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
 fi
+source <(lab completion zsh)
 
 # Set name of the theme to load --- if set to "random", it will
 ZSH_THEME="robbyrussell"
@@ -119,16 +120,17 @@ fzf-conf() {
 	selected=$(find -L ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
 
 	if [[ "$PWD" != "$selected" ]]; then
-		pushd $selected && nvim . && popd || popd;
+		pushd $selected && nvim . && popd;
 	else
 		nvim .
 	fi
 }
 
-# alias buildbe="cdlocalfull && go build -gcflags='all=-N -l'"
-# alias r="cdbe && rm .pid || true && ./localfull -enable-java -dump-pid"
 alias vim="nvim"
-alias vi="nvim"
+alias vi="nvim --clean"
+alias tvim="NVIM_APPNAME=tj nvim"
+alias nnvim="NVIM_APPNAME=nnvim nvim"
+alias pvim="NVIM_APPNAME=prime nvim"
 alias v="nvim ."
 alias conf=fzf-conf
 alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd; else vim .; fi'
