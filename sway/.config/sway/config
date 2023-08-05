@@ -51,6 +51,8 @@ bindsym $mod+Return exec foot
 bindsym $mod+b exec firefox
 bindsym $mod+Shift+p exec wlogout
 
+bindsym $mod+z exec makoctl dismiss -a
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -113,6 +115,23 @@ bindsym $mod+space focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 bindsym $mod+Shift+a focus child
+
+set $screenshot 1 sel, 2 whole, 3 sel clip, 4 whole clip, 5 swappy
+mode "$screenshot" {
+    bindsym 1 exec 'grim -g "$(slurp)" ~/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
+    bindsym 2 exec 'grim ~/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
+    bindsym 3 exec 'grim -g "$(slurp)" - | wl-copy', mode "default"
+    bindsym 4 exec 'grim - | wl-copy', mode "default"
+    bindsym 5 exec 'grim -g "$(slurp)" - | swappy -f -', mode "default"
+
+# back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+s mode "default"
+}
+
+bindsym $mod+s mode "$screenshot"
+bindsym $mod+Shift+s exec 'grim -g "$(slurp)" - | wl-copy', mode "default"
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -245,8 +264,9 @@ input * accel_profile flat
 # 	 # xcape -e 'Caps_Lock=Escape'
 # 	xkb_options caps:escape
 # }
-output eDP-1 scale 0.8
+
 output HDMI-A-2 resolution 2560x1440@59.951hz
+output eDP-1 scale 0.8
 
 input type:touchpad {
        dwt enabled
