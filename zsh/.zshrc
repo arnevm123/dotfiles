@@ -198,7 +198,7 @@ _goki () {
 }
 
 _gtest () {
-	cd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang && richgo test ./... && popd
+	pushd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang && richgo test ./... && popd
 }
 alias gtest=_gtest
 alias cdbe=_cdbe
