@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-	selected=$( (find ~/Documents ~/Tools -mindepth 1 -maxdepth 1 -type d && echo "create") | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
+	selected=$( (echo "home" && find ~/Documents ~/Tools -mindepth 1 -maxdepth 1 -type d && echo "create") | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
 fi
 
 if [[ -z $selected ]]; then
@@ -34,6 +34,10 @@ if [[ "$selected_name" == "create" ]]; then
 	read -r selected_name
 	selected="$HOME/Documents/$selected_name"
 	mkdir "$selected"
+fi
+
+if [[ "$selected_name" == "home" ]]; then
+	selected="$HOME"
 fi
 
 # if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then

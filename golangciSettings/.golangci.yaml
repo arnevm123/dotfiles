@@ -1,6 +1,6 @@
 run:
   # Depends on your hardware, my laptop can survive 8 threads.
-  concurrency: 8
+  concurrency: 16
 
   # I really care about the result, so I'm fine to wait for it.
   timeout: 30m
@@ -89,7 +89,7 @@ issues:
 linters:
   # Set to true runs only fast linters.
   # Good option for 'lint on save', pre-commit hook or CI.
-  fast: false
+  fast: true
 
   enable:
     # Check for pass []any as any in variadic func(...any).

@@ -32,7 +32,6 @@ export TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E
 if [ -f /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
     source /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
 fi
-source <(lab completion zsh)
 
 # Set name of the theme to load --- if set to "random", it will
 ZSH_THEME="robbyrussell"
@@ -111,7 +110,16 @@ fzf-git-checkout() {
     # using --track and a remote branch name, it is the same as:
     # git checkout -b branchName --track origin/branchName
     if [[ "$branch" = 'remotes/'* ]]; then
-        git checkout --track $branch
+        output=$(git checkout --track "$branch")
+        exit_status=$?
+        if [[ "$exit_status" == "128" ]]; then
+            local=$(basename "$branch")
+            echo "$local"
+            git checkout $local;
+        else
+            echo $resp
+            echo "does not already exists"
+        fi
     else
         git checkout $branch;
     fi
@@ -156,6 +164,7 @@ alias tkfzf=_tkfzf
 
 alias ts='tmux-sessionizer'
 alias tw='tmux-switch'
+alias open='xdg-open'
 alias ta='tmux attach'
 alias tl='tmuxifier load-window'
 alias tls='tmuxifier load-session'
@@ -189,7 +198,7 @@ _goki () {
 }
 
 _gtest () {
-	cd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang && richgo test ./... && popd
+	pushd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang && richgo test ./... && popd
 }
 alias gtest=_gtest
 alias cdbe=_cdbe
