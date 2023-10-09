@@ -17,6 +17,7 @@ path+=$HOME/.deno/bin
 path+=$HOME/.moaprcli/bin
 path+=$HOME/google-cloud-sdk/bin
 path+=$HOME/.tmuxifier/bin
+path+=$HOME/.local/share/bob/nvim-bin
 export PATH
 # Path to your oh-my-zsh installation.
 setopt PUSHDSILENT
