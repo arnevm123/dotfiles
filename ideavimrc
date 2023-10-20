@@ -1,0 +1,113 @@
+nnoremap <SPACE> <Nop>
+let mapleader =" "
+set surround
+set NERDTree
+set ideajoin
+let g:NERDTreeMapActivateNode='l'
+let g:NERDTreeMapJumpParent='h'
+map <leader>et :NERDTree<CR>
+" gcc and gc-motion to comment
+set commentary
+set highlightedyank
+let g:highlightedyank_highlight_duration = "50"
+let g:highlightedyank_highlight_color = "rgba(160, 160, 160, 155)"
+set exchange
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=5
+" Search settings
+set incsearch
+set number relativenumber
+set matchpairs+=<:>
+set ignorecase smartcase
+" doesn’t overwrite yank
+vmap C "_c
+vmap P "_p
+" actions
+
+-- move to windows with arrow keys
+nnoremap <left> <C-w>h
+nnoremap <down> <C-w>j
+nnoremap <up> <C-w>k
+nnoremap <right> <C-w>l
+
+
+vnoremap < <gv
+vnoremap > >gv
+
+nnormap <Leader>xn :call setreg('+', expand('%:.'))<CR>
+
+nmap <leader>g <action>(Git.Menu)
+nmap yoz <action>(ToggleDistractionFreeMode)
+nmap <leader>g <action>(Git.Menu)
+nmap <leader>ff <action>(FindInPath)
+nmap <leader>b <action>(ToggleLineBreakpoint)
+nmap <leader>fp <action>(GotoFile)
+nmap <leader>fo <action>(RecentFiles)
+nmap <leader>fb <action>(RecentLocations)
+nmap <leader>lf <action>(GoFmtFileAction)
+nmap <C-p> <action>(GotoFile)
+nmap gd <action>(GotoDeclaration)
+nmap gr <action>(ShowUsages)
+nmap gD <action>(GotoTypeDeclaration)
+nmap gI <action>(GotoImplementation)
+nmap ]d <action>(GotoNextError)
+nmap [d <action>(GotoPreviousError)
+nmap ]b <action>(NextTab)
+nmap [b <action>(PreviousTab)
+nmap ]g <action>(VcsShowNextChangeMarker)
+nmap [g <action>(VcsShowPrevChangeMarker)
+nmap <C-i> <action>(Forward)
+nmap <C-o> <action>(Back)
+" nmap <C-y> <action>(EditorChooseLookupItem)
+nmap <C-y> <action>(EditorChooseLookupItemReplace)
+" Don’t use Ex mode, use Q for formatting.
+map Q gq
+nmap <leader><leader> <C-Tab>
+nmap g. `.
+vnoremap <leader>r "hy:%s/<C-r>h//gc<left><left><left>
+nnoremap <Leader>re oif err != nil {<CR>return nil, err<CR>}<CR><esc>kk^2w<esc>
+nnoremap <leader>rn <F2>
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap <leader>qq :q<CR>
+nnoremap <leader>w :w<CR>
+nmap <C-d> <C-d>zz
+nmap <C-u> <C-u>zz
+
+
+nmap gqq <action>(com.andrewbrookins.idea.wrap.WrapAction)
+vmap gq <action>(com.andrewbrookins.idea.wrap.WrapAction)
+
+nmap <C-h> :action GotoHarpoon1<cr>
+nmap <C-j> :action GotoHarpoon2<cr>
+nmap <C-k> :action GotoHarpoon3<cr>
+nmap <C-;> :action GotoHarpoon4<cr>
+nmap <leader>- :action ShowHarpoon<cr>
+nmap <leader>a :action AddToHarpoon<cr>
+
+
+vmap <Leader>y \"+y
+nmap <Leader>yy \"+yy
+nmap <Leader>p \"+p
+nmap <Leader>P \"+P
+vmap <Leader>p \"+p
+vmap <Leader>P \"+P
+
+nmap <leader>ou <action>(live.angular.actions.SwitchToComponent)
+nmap <leader>oi <action>(live.angular.actions.SwitchToStyle)
+nmap <leader>oo <action>(live.angular.actions.SwitchToTemplate)
+nmap <leader>ot <action>(live.angular.actions.SwitchToTest)
+nmap <leader>eb <action>(XDebugger.AttachToProcess)
+nmap <leader>la <action>(ShowIntentionActions)
+nmap <leader>xn <action>(CopyReference)
+nmap <leader>sc <action>(Resume)
+nmap <leader>sl <action>(RunToCursor)
+nmap <leader>so <action>(StepOver)
+nmap <leader>si <action>(StepInto)
+nmap <leader>sO <action>(StepOut)
+nmap <leader>su <action>(StepOut)
+nmap <leader>sd <action>(StepOut)
+nmap <leader>lr <action>(RenameElement)>
+
