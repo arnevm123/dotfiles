@@ -49,6 +49,7 @@ floating_modifier $mod
 bindsym $mod+Return exec foot
 
 bindsym $mod+b exec firefox
+bindsym $mod+n exec slack
 bindsym $mod+Shift+p exec wlogout
 
 bindsym $mod+z exec makoctl dismiss -a
@@ -265,8 +266,8 @@ input * accel_profile flat
 # 	xkb_options caps:escape
 # }
 
-output HDMI-A-2 resolution 2560x1440@59.951hz
-output eDP-1 scale 0.8
+# output HDMI-A-2 resolution 2560x1440@59.951hz
+# output eDP-1 scale 0.8
 
 input type:touchpad {
        dwt enabled
