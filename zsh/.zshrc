@@ -6,15 +6,11 @@ path+=/usr/local/bin
 path+=/usr/bin
 path+=/usr/sbin
 PATH+=/usr/local/go/bin
-path+=/opt/homebrew/bin
-path+=/opt/homebrew/sbin
-path+=/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin
 path+=$HOME/bin
 path+=$HOME/neovim/bin
 path+=$HOME/go/bin
 path+=$HOME/.cargo/bin
 path+=$HOME/.deno/bin
-path+=$HOME/.moaprcli/bin
 path+=$HOME/google-cloud-sdk/bin
 path+=$HOME/.tmuxifier/bin
 path+=$HOME/.local/share/bob/nvim-bin
@@ -22,17 +18,10 @@ export PATH
 # Path to your oh-my-zsh installation.
 setopt PUSHDSILENT
 export ZSH="$HOME/.oh-my-zsh"
-export MOAPR_ROOT=/Users/arnevm/Documents/moaprplatform
-export NEXUZ_ROOT=/Users/arnevm/Documents/nexuz
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-18.jdk/Contents/Home
 export NVIM_APPNAME="nvim"
 export NVIM_CONF="$HOME/.config/nvim"
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
 export TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
-
-if [ -f /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
-    source /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
-fi
 
 # Set name of the theme to load --- if set to "random", it will
 ZSH_THEME="robbyrussell"
@@ -55,7 +44,6 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.zshexports
 
 # User configuration
-
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
@@ -137,10 +125,6 @@ fzf-conf() {
 
 alias vim="nvim"
 alias vi="nvim --clean"
-alias tvim="NVIM_APPNAME=tj nvim"
-alias nnvim="NVIM_APPNAME=nnvim nvim"
-alias pvim="NVIM_APPNAME=prime nvim"
-alias v="nvim ."
 alias conf=fzf-conf
 alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd; else vim .; fi'
 alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf && popd ; else vim .tmux.conf; fi'
@@ -152,9 +136,8 @@ alias gfco='git fetch && gco'
 alias gco=fzf-git-checkout
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
 alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} git branch -D '{}'"
+alias vpn_tcit='sudo openfortivpn -c /etc/openfortivpn/tcit_vpn.conf --trusted-cert 15ef9850eb4025223a6d60a05c4a0378f6a7e34f0e50c69ec3e5f31d4a4c1ae1'
 # alias -g P='| pe | fzf | read filename; [ ! -z $filename ] && vim $filename'
-alias weer='curl https://wttr.in/zedelgem'
-alias tks='tmux kill-server'
 _tkfzf() {
 	session=tmux ls | fzf | awk '{print $1;}'| sed 's/://'
 	if [ !-z "$session" ]; then
@@ -165,57 +148,26 @@ alias tkfzf=_tkfzf
 
 alias ts='tmux-sessionizer'
 alias tw='tmux-switch'
+alias tks='tmux kill-server'
 alias open='xdg-open'
 alias ta='tmux attach'
 alias tl='tmuxifier load-window'
 alias tls='tmuxifier load-session'
 alias lnt="golangci-lint run --config=~/.golangci.yaml ./..."
 
-### moapr specific
-alias cdfe="cd ~/Documents/moaprfrontend/moapr"
-alias runfe="cdfe && npm run"
-alias cdlf="cd ~/Documents/moaprplatform/platform/scripts/local-full"
 alias cdnv="cd ~/.config/nvim"
-alias cdlf="cd ~/Documents/moaprplatform/platform/scripts/local-full"
-alias pubsub="gcloud beta emulators pubsub start --project=prj-nxh-moaprplatform-dev-7e0ck --host-port=localhost:8085 --verbosity=debug"
-_cdbe () {
-  if [[ $# -gt 0 ]]; then
-	  cd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang
-  else
-	  cd $MOAPR_ROOT
-  fi
-}
-_goki () {
-  if [[ $# -gt 0 ]]; then
-	  cd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang
-  else
-	  cd $MOAPR_ROOT
-  fi
-  if [[ $# -gt 1 ]]; then
-	  gokiburi --listen-port ${2}
-  else
-	  gokiburi
-  fi
+alias cdr='cd $(git rev-parse --show-toplevel)'
+alias cdt=_cdt
+_cdt () {
+if tmux info &> /dev/null; then 
+	alias cdt="cd `tmux display-message -p '#{session_path}'`"
+else
+  echo no tmux session running
+fi
 }
 
-_gtest () {
-	pushd $MOAPR_ROOT/platform/golang/nexuz/${1}/src/golang && richgo test ./... && popd
-}
-alias gtest=_gtest
-alias cdbe=_cdbe
-alias goki=_goki
-_mpg () {
-    moapr proto go ${1}
-}
 _setbg () {
 	kill -9 $(ps -aux  | grep swaybg -i | awk '{ print $2}')
     swaybg -i ${1} -m fill &!
 }
-alias mpg=_mpg
 alias setbg=_setbg
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/arne/google-cloud-sdk/path.zsh.inc' ]; then . '/home/arne/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/arne/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/arne/google-cloud-sdk/completion.zsh.inc'; fi

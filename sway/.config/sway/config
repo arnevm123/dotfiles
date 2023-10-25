@@ -150,6 +150,11 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
+# default desktops
+assign [app_id="slack"] workspace number $ws5
+assign [app_id="Spotify"] workspace number $ws7
+assign [app_id="Floorp"] workspace number $ws8
+
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
@@ -175,13 +180,12 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r reload
 bindsym $mod+semicolon exec copyq toggle
 for_window [app_id="copyq"] floating enable
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'swaymsg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -249,7 +253,7 @@ exec --no-startup-id nm-applet --indicator
 #     bindsym p         exec systemctl poweroff
 #     bindsym r         exec systemctl reboot
 #     bindsym l         exec systemctl logout
-#     bindsym q         exec --no-startup-id i3-msg exit, mode "default"
+#     bindsym q         exec --no-startup-id swaymsg exit, mode "default"
 #     bindsym h         exec systemctl hibernate
 #     # bindsym l         exec swaylock, mode "default"
 #     # bindsym s        exec sudo  /lib/systemd/systemd-sleep hybrid-sleep
