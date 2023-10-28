@@ -248,6 +248,8 @@ bar {
         swaybar_command waybar
         # tray_output primary
 }
+
+exec "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
 # Startup programs
 exec --no-startup-id mpd
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
