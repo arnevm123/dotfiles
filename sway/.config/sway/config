@@ -52,6 +52,9 @@ bindsym $mod+b exec firefox
 bindsym $mod+n exec slack
 bindsym $mod+Shift+p exec wlogout
 
+# workspace number $ws5 \
+# exec slack \
+
 bindsym $mod+z exec makoctl dismiss -a
 
 # kill focused window
@@ -149,6 +152,11 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
+bindsym $mod+Shift+Return \
+workspace $ws1; exec firefox; \
+workspace $ws5; exec slack; \
+workspace $ws3; exec foot
 
 # default desktops
 assign [app_id="slack"] workspace number $ws5
