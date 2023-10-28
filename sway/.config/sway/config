@@ -9,6 +9,7 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+exec "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
 set $mod Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -249,7 +250,6 @@ bar {
         # tray_output primary
 }
 
-exec "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
 # Startup programs
 exec --no-startup-id mpd
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
