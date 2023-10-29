@@ -26,7 +26,7 @@ esac
 if [[ "$selected_name" == "create" ]]; then
 	echo "Please enter the new folder name:"
 	read -r selected_name
-	selected="$HOME/Documents/$selected_name"
+	selected="$HOME/Projects/$selected_name"
 	mkdir "$selected"
 fi
 

@@ -34,7 +34,7 @@ HYPHEN_INSENSITIVE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load?
-plugins=(git fzf zsh-z zsh-autosuggestions)
+plugins=(git asdf fzf zsh-z zsh-autosuggestions)
 
 eval "$(tmuxifier init -)"
 
@@ -154,15 +154,16 @@ alias ta='tmux attach'
 alias tl='tmuxifier load-window'
 alias tls='tmuxifier load-session'
 alias lnt="golangci-lint run --config=~/.golangci.yaml ./..."
+alias dbg="go build -gcflags='all=-N -l' -o debug && ./debug && rm debug"
 
 alias cdnv="cd ~/.config/nvim"
 alias cdr='cd $(git rev-parse --show-toplevel)'
 alias cdt=_cdt
 _cdt () {
-if tmux info &> /dev/null; then 
-	alias cdt="cd `tmux display-message -p '#{session_path}'`"
+if tmux info &> /dev/null; then
+	cd $(tmux display-message -p '#{session_path}')
 else
-  echo no tmux session running
+	echo no tmux session running
 fi
 }
 
