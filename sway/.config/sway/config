@@ -17,7 +17,8 @@ set $mod Mod1
 # default_border pixel
 # default_floating_border pixel
 font pango:monospace 0
-titlebar_padding 3
+titlebar_border_thickness 3
+smart_borders on
 # titlebar_border_thickness 1
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
@@ -257,6 +258,7 @@ bar {
 
 # Startup programs
 exec --no-startup-id mpd
+exec --no-startup-id copyq
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
 exec_always swaybg -i /usr/share/backgrounds/default.png -m fill
 exec --no-startup-id mako
