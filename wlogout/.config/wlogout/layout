@@ -24,7 +24,7 @@
 }
 {
     "label" : "suspend",
-    "action" : "systemctl suspend",
+    "action" : "swaylock --daemonize && systemctl suspend -i",
     "text" : "S",
     "keybind" : "s"
 }

@@ -8,6 +8,7 @@ path+=/usr/sbin
 PATH+=/usr/local/go/bin
 path+=$HOME/bin
 path+=$HOME/neovim/bin
+path+=$HOME/.local/bin
 path+=$HOME/go/bin
 path+=$HOME/.cargo/bin
 path+=$HOME/.deno/bin
@@ -61,6 +62,9 @@ bindkey -v
 
 bindkey "^X^X" edit-command-line
 bindkey "^y" autosuggest-accept
+
+bindkey -M vicmd 'Y' vi-yank-whole-line
+bindkey -M vicmd '^r' redo
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -123,6 +127,8 @@ fzf-conf() {
 	fi
 }
 
+alias ls="ls --color=tty -F"
+
 alias vim="nvim"
 alias vi="nvim --clean"
 alias conf=fzf-conf
@@ -155,6 +161,13 @@ alias tl='tmuxifier load-window'
 alias tls='tmuxifier load-session'
 alias lnt="golangci-lint run --config=~/.golangci.yaml ./..."
 alias dbg="go build -gcflags='all=-N -l' -o debug && ./debug && rm debug"
+
+_qfl () {
+  echo -n "lint.txt:1:: Start\n" > lint.txt
+  golangci-lint run >> lint.txt
+  nvim -q lint.txt
+}
+alias qfl=_qfl
 
 alias cdnv="cd ~/.config/nvim"
 alias cdr='cd $(git rev-parse --show-toplevel)'
