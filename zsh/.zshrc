@@ -18,6 +18,7 @@ path+=$HOME/.local/share/bob/nvim-bin
 export PATH
 # Path to your oh-my-zsh installation.
 setopt PUSHDSILENT
+set -o ignoreeof
 export ZSH="$HOME/.oh-my-zsh"
 export NVIM_APPNAME="nvim"
 export NVIM_CONF="$HOME/.config/nvim"
