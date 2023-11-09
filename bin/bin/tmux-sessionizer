@@ -13,16 +13,6 @@ fi
 selected="$HOME/$selected"
 selected_name=$(basename "$selected" | tr . _)
 
-case $selected_name in
-  moaprfrontend)
-    selected+="/moapr"
-    ;;
-
-  moaprWorktree)
-    selected+="/master"
-    ;;
-esac
-
 if [[ "$selected_name" == "create" ]]; then
 	echo "Please enter the new folder name:"
 	read -r selected_name
@@ -35,22 +25,31 @@ if [[ "$selected_name" == "home" ]]; then
 fi
 
 existingSession=$(tmux list-sessions -F '#S' | grep "^$selected_name$")
+wiki_path="$HOME/Wiki/wiki-$selected_name"
 
 if [[ -z $TMUX ]]; then
-    # not in tmux session
     if [[ -z $existingSession ]]; then
-        # session does not exist
-        tmux new-session -s "$selected_name" -c "$selected"
+        tmux new-session -d -s "$selected_name" -c "$selected"
+        if [[ -d "$wiki_path" ]]; then
+            tmux new-window -t "$selected_name:8" -c "$wiki_path" -n "Wiki"
+        fi
+
+        tmux new-window -t "$selected_name:2" -c "$selected"
+        tmux kill-window -t "$selected_name:1"
+        tmux new-window -t "$selected_name:1" -c "$selected"
+        tmux attach -t "$selected_name"
     else
-        # session exists... attach to it
         tmux attach -t "$selected_name"
     fi
 else
-    # inside tmux session
     if [[ -z $existingSession ]]; then
-        # session does not exist... create it
         tmux new-session -d -s "$selected_name" -c "$selected"
+        if [[ -d "$wiki_path" ]]; then
+            tmux new-window -t "$selected_name:8" -c "$wiki_path" -n "Wiki"
+        fi
+
+        tmux new-window -t "$selected_name:2" -c "$selected"
+        tmux switch-client -t "$selected_name:1"
     fi
-        # switch to the session
         tmux switch-client -t "$selected_name"
 fi

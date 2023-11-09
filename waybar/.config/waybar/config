@@ -3,12 +3,12 @@
 		"position": "bottom",
 		"modules-left": ["sway/workspaces", "sway/mode"],
 		"modules-center": ["sway/window"],
-		"modules-right": ["pulseaudio", "backlight", "network" ,"battery", "clock", "tray"],
+		"modules-right": ["pulseaudio", "backlight", "battery", "network" , "clock", "tray"],
 		"sway/window": {
 			"max-length": 50
 		},
 		"network": {
-			"format-wifi": "  {signalStrength}%",
+			"format-wifi": " {signalStrength}%   {essid}",
 			"format-ethernet": " : {ipaddr}/{cidr}",
 			"format-linked": "  (No IP)",
 			"format-disconnected": " ⚠",
@@ -48,7 +48,7 @@
 			"format-icons": ["", "", "", "", ""]
 		},
 		"clock": {
-			"format": "{:%a %d %b  %H:%M}",
+			"format": " {:%a %d %b   %H:%M}",
 			"tooltip": false
 		}
 }

@@ -1,11 +1,13 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 path+=/bin
 path+=/sbin
 path+=/usr/local/bin
 path+=/usr/bin
 path+=/usr/sbin
-PATH+=/usr/local/go/bin
 path+=$HOME/bin
 path+=$HOME/neovim/bin
 path+=$HOME/.local/bin
@@ -36,7 +38,7 @@ HYPHEN_INSENSITIVE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load?
-plugins=(git asdf fzf zsh-z zsh-autosuggestions)
+plugins=(git fzf zsh-z zsh-autosuggestions omz-git)
 
 eval "$(tmuxifier init -)"
 
@@ -174,11 +176,11 @@ alias cdnv="cd ~/.config/nvim"
 alias cdr='cd $(git rev-parse --show-toplevel)'
 alias cdt=_cdt
 _cdt () {
-if tmux info &> /dev/null; then
-	cd $(tmux display-message -p '#{session_path}')
-else
-	echo no tmux session running
-fi
+	if tmux info &> /dev/null; then
+		cd $(tmux display-message -p '#{session_path}')
+	else
+		echo no tmux session running
+	fi
 }
 
 _setbg () {

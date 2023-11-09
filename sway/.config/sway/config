@@ -155,7 +155,7 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
-bindsym $mod+Shift+Return \
+bindsym $mod+Shift+o \
 workspace $ws1; \
 exec firefox; \
 exec flatpak run com.slack.Slack; \
@@ -260,9 +260,10 @@ bar {
 exec --no-startup-id mpd
 exec --no-startup-id copyq
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
-exec_always swaybg -i /usr/share/backgrounds/default.png -m fill
+exec_always swaybg -i /dotfiles/background/default.png -m fill
 exec --no-startup-id mako layer=overlay
 exec --no-startup-id nm-applet --indicator
+exec --no-startup-id blueman-applet
 exec --no-startup-id "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
 
 # bindsym $mod+Shift+p      mode $power_mode
@@ -289,6 +290,22 @@ input * accel_profile flat
 
 # output HDMI-A-2 resolution 2560x1440@59.951hz
 # output eDP-1 scale 0.8
+
+# define display output names
+set $disp1 "eDP-1"
+set $disp2 "DP-2"
+
+# default display outputs for workspaces with fallback to disp1
+workspace 1 output $disp2
+workspace 2 output $disp2
+workspace 3 output $disp2
+workspace 4 output $disp2
+workspace 5 output $disp2
+workspace 6 output $disp2
+workspace 7 output $disp2
+workspace 8 output $disp2
+workspace 9 output $disp2
+workspace 10 output $disp1
 
 input type:touchpad {
        dwt enabled
