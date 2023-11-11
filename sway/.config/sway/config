@@ -50,7 +50,7 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec foot
 
-bindsym $mod+b exec firefox
+bindsym $mod+b exec flatpak run one.ablaze.floorp
 bindsym $mod+n exec slack
 bindsym $mod+Shift+p exec wlogout
 
@@ -137,7 +137,7 @@ mode "$screenshot" {
 }
 
 bindsym $mod+s mode "$screenshot"
-bindsym $mod+Shift+s exec 'grim -g "$(slurp)" - | wl-copy', mode "default"
+bindsym $mod+Shift+s exec 'grim -g "$(slurp)" - | swappy -f - -o - | wl-copy ', mode "default"
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -168,7 +168,7 @@ exec foot
 assign [class="Slack"] workspace number $ws5
 assign [class="outlook-for-linux"] workspace number $ws5
 assign [class="Spotify"] workspace number $ws7
-assign [class="floorp"] workspace number $ws8
+# assign [class="floorp"] workspace number $ws8
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -263,7 +263,7 @@ exec --no-startup-id mpd
 exec --no-startup-id copyq
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
 exec_always swaybg -i ~/dotfiles/background/default.png -m fill
-exec --no-startup-id mako layer=overlay
+exec --no-startup-id mako --layer overlay --icons 0
 exec --no-startup-id nm-applet --indicator
 exec --no-startup-id blueman-applet
 exec --no-startup-id "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
