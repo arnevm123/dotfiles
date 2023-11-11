@@ -1,2 +1,0 @@
-session=$(tmux list-session | fzf | sed 's/: .*//g')
-tmux switch-client -t "$session"

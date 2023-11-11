@@ -1,22 +1,20 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+export GOROOT=$HOME/go
+export GOPATH=$HOME/.gopath
 path+=/bin
 path+=/sbin
 path+=/usr/local/bin
 path+=/usr/bin
 path+=/usr/sbin
 path+=$HOME/bin
-path+=$HOME/neovim/bin
 path+=$HOME/.local/bin
-path+=$HOME/go/bin
-path+=$HOME/.cargo/bin
-path+=$HOME/.deno/bin
-path+=$HOME/google-cloud-sdk/bin
 path+=$HOME/.tmuxifier/bin
 path+=$HOME/.local/share/bob/nvim-bin
+path+="$HOME/.deno/bin"
+path+="$GOROOT/bin"
+path+="$GOPATH/bin"
+
 export PATH
 # Path to your oh-my-zsh installation.
 setopt PUSHDSILENT

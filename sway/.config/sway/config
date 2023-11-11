@@ -198,6 +198,8 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+Shift+r reload
 bindsym $mod+semicolon exec copyq toggle
 for_window [app_id="copyq"] floating enable
+# do not focus preview window on open
+no_focus [title="^Peek preview$"]
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'swaymsg exit'"
@@ -260,7 +262,7 @@ bar {
 exec --no-startup-id mpd
 exec --no-startup-id copyq
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
-exec_always swaybg -i /dotfiles/background/default.png -m fill
+exec_always swaybg -i ~/dotfiles/background/default.png -m fill
 exec --no-startup-id mako layer=overlay
 exec --no-startup-id nm-applet --indicator
 exec --no-startup-id blueman-applet

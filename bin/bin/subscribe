@@ -1,3 +1,0 @@
-pushd $NEXUZ_ROOT
-sh run-subscribe.sh
-popd
