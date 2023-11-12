@@ -1,14 +1,14 @@
 {
 	"layer": "top",
 		"position": "bottom",
-		"modules-left": ["sway/workspaces", "sway/mode"],
-		"modules-center": ["sway/window"],
-		"modules-right": ["pulseaudio", "backlight", "battery", "network" , "clock", "tray"],
+		"modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
+		"modules-center": [""],
+		"modules-right": ["network", "pulseaudio", "backlight", "battery", "clock", "tray"],
 		"sway/window": {
 			"max-length": 50
 		},
 		"network": {
-			"format-wifi": " {signalStrength}%   {essid}",
+			"format-wifi": " {essid}  {signalStrength}%",
 			"format-ethernet": " : {ipaddr}/{cidr}",
 			"format-linked": "  (No IP)",
 			"format-disconnected": " ⚠",

@@ -261,6 +261,7 @@ bar {
 # Startup programs
 exec --no-startup-id mpd
 exec --no-startup-id copyq
+exec --no-startup-id kanshi
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
 exec_always swaybg -i ~/dotfiles/background/default.png -m fill
 exec --no-startup-id mako --layer overlay --icons 0
@@ -296,17 +297,18 @@ input * accel_profile flat
 # define display output names
 set $disp1 "eDP-1"
 set $disp2 "DP-2"
+set $disp3 "HDMI-A-2"
 
 # default display outputs for workspaces with fallback to disp1
-workspace 1 output $disp2
-workspace 2 output $disp2
-workspace 3 output $disp2
-workspace 4 output $disp2
-workspace 5 output $disp2
-workspace 6 output $disp2
-workspace 7 output $disp2
-workspace 8 output $disp2
-workspace 9 output $disp2
+workspace 1 output $disp2 $disp3
+workspace 2 output $disp2 $disp3
+workspace 3 output $disp2 $disp3
+workspace 4 output $disp2 $disp3
+workspace 5 output $disp2 $disp3
+workspace 6 output $disp2 $disp3
+workspace 7 output $disp2 $disp3
+workspace 8 output $disp2 $disp3
+workspace 9 output $disp2 $disp3
 workspace 10 output $disp1
 
 input type:touchpad {
