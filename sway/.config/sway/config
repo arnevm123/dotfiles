@@ -318,3 +318,5 @@ input type:touchpad {
        middle_emulation enabled
 }
 
+bindswitch --reload --locked lid:on exec ~/bin/lidclose.sh
+bindswitch --reload --locked lid:off output eDP-1 enable

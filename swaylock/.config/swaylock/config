@@ -1,9 +1,9 @@
-color=2B2B2B
+color=8B8B8B
+font-size=42
 ignore-empty-password
 show-failed-attempts
-bs-hl-color=b48eadff
 line-uses-ring
-font-size=42
+bs-hl-color=b48eadff
 indicator-radius=100
 caps-lock-bs-hl-color=d08770ff
 caps-lock-key-hl-color=ebcb8bff
