@@ -239,11 +239,29 @@ bindsym --locked {
     XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 }
 
-# Sreen brightness controls -- # https://github.com/haikarainen/light
-# increase screen brightness
-bindsym XF86MonBrightnessUp exec light -A 5 && ~/.config/sway/scripts/brightness-notifications.sh
-# decrease screen brightness
-bindsym XF86MonBrightnessDown exec light -U 5 && ~/.config/sway/scripts/brightness-notifications.sh
+bindsym --locked {
+	XF86MonBrightnessUp exec \
+		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02 && ~/.config/sway/scripts/wl-brightness.sh'
+	XF86MonBrightnessDown exec \
+		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02 &&  ~/.config/sway/scripts/wl-notifications.sh'
+	$mod+Control+Minus exec \
+		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100 && ~/.config/sway/scripts/wl-temp.sh'
+	$mod+Control+Equal exec \
+		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +100 && ~/.config/sway/scripts/wl-temp.sh'
+	$mod+Control+0 exec \
+		'busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Brightness d 1.0 && busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 6500 && ~/.config/sway/scripts/wl-temp.sh'
+
+	$mod+Control+Underscore exec \
+		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d -0.02 && ~/.config/sway/scripts/wl-gamma.sh'
+	$mod+Control+Plus exec \
+		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d +0.02 && ~/.config/sway/scripts/wl-gamma.sh'
+}
+
+# # Sreen brightness controls -- # https://github.com/haikarainen/light
+# # increase screen brightness
+# bindsym XF86MonBrightnessUp exec light -A 5 && ~/.config/sway/scripts/brightness-notifications.sh
+# # decrease screen brightness
+# bindsym XF86MonBrightnessDown exec light -U 5 && ~/.config/sway/scripts/brightness-notifications.sh
 
 # multimedia keys
 bindsym XF86AudioPlay  exec "mpc toggle"
@@ -253,10 +271,6 @@ bindsym XF86AudioPrev  exec "mpc prev"
 bindsym XF86AudioPause exec "mpc pause"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        swaybar_command waybar
-        # tray_output primary
-}
 
 # Startup programs
 exec --no-startup-id mpd
@@ -316,6 +330,14 @@ input type:touchpad {
        tap enabled
        natural_scroll enabled
        middle_emulation enabled
+}
+
+exec swaymsg workspace '1'
+
+exec ~/.cargo/bin/wl-gammarelay-rs
+
+bar {
+        swaybar_command waybar
 }
 
 bindswitch --reload --locked lid:on exec ~/bin/lidclose.sh

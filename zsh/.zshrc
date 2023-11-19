@@ -119,7 +119,11 @@ fzf-git-checkout() {
     fi
 }
 fzf-conf() {
-	selected=$(find -L ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
+	if [ "$#" -eq 0 ]; then
+		selected=$(find -L ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
+	else
+		selected="$HOME/.config/$1"
+	fi
 
 	if [[ "$PWD" != "$selected" ]]; then
 		pushd $selected && nvim . && popd;
