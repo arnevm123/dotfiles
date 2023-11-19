@@ -242,21 +242,27 @@ bindsym --locked {
 }
 
 bindsym --locked {
-	XF86MonBrightnessUp exec \
+	$mod+Minus exec \
+		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02 && ~/.config/sway/scripts/wl-brightness.sh'
+	$mod+Equal exec \
 		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02 && ~/.config/sway/scripts/wl-brightness.sh'
-	XF86MonBrightnessDown exec \
-		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02 &&  ~/.config/sway/scripts/wl-notifications.sh'
+	$mod+Backslash exec \
+		'busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Brightness d 1.0 && ~/.config/sway/scripts/wl-brightness.sh'
+
 	$mod+Control+Minus exec \
 		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100 && ~/.config/sway/scripts/wl-temp.sh'
 	$mod+Control+Equal exec \
 		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +100 && ~/.config/sway/scripts/wl-temp.sh'
+
 	$mod+Control+0 exec \
-		'busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Brightness d 1.0 && busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 6500 && ~/.config/sway/scripts/wl-temp.sh'
+		'busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 6500 && ~/.config/sway/scripts/wl-temp.sh'
 
 	$mod+Control+Underscore exec \
 		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d -0.02 && ~/.config/sway/scripts/wl-gamma.sh'
 	$mod+Control+Plus exec \
 		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d +0.02 && ~/.config/sway/scripts/wl-gamma.sh'
+	$mod+Control+ParenRight exec \
+		'busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Gamma d 1.0 && ~/.config/sway/scripts/wl-gamma.sh'
 }
 
 # # Sreen brightness controls -- # https://github.com/haikarainen/light
