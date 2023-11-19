@@ -1,0 +1,7 @@
+#!/bin/bash
+second=$(echo "" | dmenu -p "Switch to workspace:")
+
+first=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused == true).name')
+swaymsg "rename workspace $first to temporary"
+swaymsg "rename workspace $second to $first"
+swaymsg "rename workspace temporary to $second"

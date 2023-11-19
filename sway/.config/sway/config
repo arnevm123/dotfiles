@@ -54,6 +54,8 @@ bindsym $mod+b exec flatpak run one.ablaze.floorp
 bindsym $mod+n exec slack
 bindsym $mod+Shift+p exec wlogout
 
+bindsym $mod+Shift+t exec ~/bin/swap
+
 # workspace number $ws5 \
 # exec slack \
 
