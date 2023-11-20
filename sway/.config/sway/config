@@ -161,8 +161,9 @@ bindsym $mod+Shift+o \
 workspace $ws1; \
 exec firefox; \
 exec flatpak run com.slack.Slack; \
-exec flatpak run io.github.mahmoudbahaa.outlook_for_linux ;\
-exec flatpak run com.spotify.Client; \
+exec flatpak run io.github.mahmoudbahaa.outlook_for_linux; \
+workspace $ws4; \
+exec thorium-browser; \
 workspace $ws3; \
 exec foot
 
@@ -204,7 +205,7 @@ for_window [app_id="copyq"] floating enable
 no_focus [title="^Peek preview$"]
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'swaymsg exit'"
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'swaymsg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -272,11 +273,13 @@ bindsym --locked {
 # bindsym XF86MonBrightnessDown exec light -U 5 && ~/.config/sway/scripts/brightness-notifications.sh
 
 # multimedia keys
-bindsym XF86AudioPlay  exec "mpc toggle"
-bindsym XF86AudioStop  exec "mpc stop"
-bindsym XF86AudioNext  exec "mpc next"
-bindsym XF86AudioPrev  exec "mpc prev"
-bindsym XF86AudioPause exec "mpc pause"
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+bindswitch --reload --locked lid:on exec ~/bin/lidclose.sh
+bindswitch --reload --locked lid:off output eDP-1 enable
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 
@@ -347,6 +350,3 @@ exec ~/.cargo/bin/wl-gammarelay-rs
 bar {
         swaybar_command waybar
 }
-
-bindswitch --reload --locked lid:on exec ~/bin/lidclose.sh
-bindswitch --reload --locked lid:off output eDP-1 enable

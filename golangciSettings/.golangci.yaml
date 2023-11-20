@@ -369,6 +369,8 @@ linters-settings:
         disabled: true
       - name: function-length
         disabled: true
+      - name: cyclomatic
+        disabled: true
 
   gomnd:
     ignored-numbers: 24,60,100,1000

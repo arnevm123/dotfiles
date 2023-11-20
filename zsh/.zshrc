@@ -145,6 +145,7 @@ alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-win
 alias gcml='gcm && ggl && git fetch'
 alias gfco='git fetch && gco'
 alias gco=fzf-git-checkout
+alias gco-='git checkout -'
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
 alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} git branch -D '{}'"
 alias vpn_tcit='sudo openfortivpn -c /etc/openfortivpn/tcit_vpn.conf --trusted-cert 15ef9850eb4025223a6d60a05c4a0378f6a7e34f0e50c69ec3e5f31d4a4c1ae1'
