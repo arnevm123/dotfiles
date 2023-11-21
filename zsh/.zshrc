@@ -168,13 +168,6 @@ alias tls='tmuxifier load-session'
 alias lnt="golangci-lint run --config=~/.golangci.yaml ./..."
 alias dbg="go build -gcflags='all=-N -l' -o debug && ./debug && rm debug"
 
-_qfl () {
-  echo -n "lint.txt:1:: Start\n" > lint.txt
-  golangci-lint run >> lint.txt
-  nvim -q lint.txt
-}
-alias qfl=_qfl
-
 alias cdnv="cd ~/.config/nvim"
 alias cdr='cd $(git rev-parse --show-toplevel)'
 alias cdt=_cdt
@@ -191,3 +184,11 @@ _setbg () {
     swaybg -i ${1} -m fill &!
 }
 alias setbg=_setbg
+_gmove() {
+  git stash -- $(git diff --staged --name-only) &&
+  gwip ;
+  git branch $1 $2 &&
+  git checkout $1 &&
+  git stash pop
+}
+alias gmove=_gmove

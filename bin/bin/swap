@@ -1,5 +1,7 @@
 #!/bin/bash
-second=$(echo "" | dmenu -p "Switch to workspace:")
+
+monitor=$(swaymsg -t get_outputs | jq 'map(.focused) | index(true)')
+second=$(echo "" | dmenu -m "$monitor" -p "Switch to workspace:")
 
 first=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused == true).name')
 swaymsg "rename workspace $first to temporary"
