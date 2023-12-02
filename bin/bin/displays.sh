@@ -2,7 +2,7 @@
 
 # Fetch display output information and format it
 get_display_info() {
-    swaymsg -t get_outputs | jq -r '
+	swaymsg -t get_outputs | jq -r '
         .[] | {
             # active,
             # make,

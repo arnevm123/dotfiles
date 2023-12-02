@@ -3,11 +3,11 @@
 # default to sigterm -15
 SIGCODE=-${1:-15}
 
-pid=$(ps -ef \
-	| sed 1d \
-	| eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process:$SIGCODE]'" \
-	| awk '{print $2}')
+pid=$(ps -ef |
+	sed 1d |
+	eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process:$SIGCODE]'" |
+	awk '{print $2}')
 
 if [[ -n $pid ]]; then
-  echo "$pid" | xargs kill "$SIGCODE"
+	echo "$pid" | xargs kill "$SIGCODE"
 fi

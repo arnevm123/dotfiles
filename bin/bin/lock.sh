@@ -1,14 +1,13 @@
 #!/bin/bash
 
-MUTE=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{ print $2 }')
-if [[ $MUTE == 'no' ]]; then
-    pactl set-sink-mute @DEFAULT_SINK@ 0
-fi
-swayidle \
-    timeout 1 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' &
-swaylock
+pactl set-sink-mute @DEFAULT_SINK@ 0
+
+swayidle -w \
+	timeout 800 'swaylock -f' \
+	timeout 810 'swaymsg "output * power off"' \
+	resume 'swaymsg "output * power on"' \
+	timeout 5 'if pgrep -x swaylock; then swaymsg "output * power off"; fi' \
+	resume 'swaymsg "output * power on"' \
+	before-sleep 'swaylock -f'
+
 kill %%
-if [[ $MUTE == 'no' ]]; then
-    pactl set-sink-mute @DEFAULT_SINK@ 1
-fi

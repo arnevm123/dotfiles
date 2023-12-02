@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 if [[ $# -eq 1 ]]; then
-    selected=$1
+	selected=$1
 else
 	selected=$( (echo "home" && find ~/Projects ~/Documents ~/Tools -mindepth 1 -maxdepth 1 -type d && echo "create") | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
 fi
 
 if [[ -z $selected ]]; then
-    exit 0
+	exit 0
 fi
 
 selected="$HOME/$selected"
@@ -28,28 +28,28 @@ existingSession=$(tmux list-sessions -F '#S' | grep "^$selected_name$")
 wiki_path="$HOME/Wiki/wiki-$selected_name"
 
 if [[ -z $TMUX ]]; then
-    if [[ -z $existingSession ]]; then
-        tmux new-session -d -s "$selected_name" -c "$selected"
-        if [[ -d "$wiki_path" ]]; then
-            tmux new-window -t "$selected_name:8" -c "$wiki_path" -n "Wiki"
-        fi
+	if [[ -z $existingSession ]]; then
+		tmux new-session -d -s "$selected_name" -c "$selected"
+		if [[ -d "$wiki_path" ]]; then
+			tmux new-window -t "$selected_name:8" -c "$wiki_path" -n "Wiki"
+		fi
 
-        tmux new-window -t "$selected_name:2" -c "$selected"
-        tmux kill-window -t "$selected_name:1"
-        tmux new-window -t "$selected_name:1" -c "$selected"
-        tmux attach -t "$selected_name"
-    else
-        tmux attach -t "$selected_name"
-    fi
+		tmux new-window -t "$selected_name:2" -c "$selected"
+		tmux kill-window -t "$selected_name:1"
+		tmux new-window -t "$selected_name:1" -c "$selected"
+		tmux attach -t "$selected_name"
+	else
+		tmux attach -t "$selected_name"
+	fi
 else
-    if [[ -z $existingSession ]]; then
-        tmux new-session -d -s "$selected_name" -c "$selected"
-        if [[ -d "$wiki_path" ]]; then
-            tmux new-window -t "$selected_name:8" -c "$wiki_path" -n "Wiki"
-        fi
+	if [[ -z $existingSession ]]; then
+		tmux new-session -d -s "$selected_name" -c "$selected"
+		if [[ -d "$wiki_path" ]]; then
+			tmux new-window -t "$selected_name:8" -c "$wiki_path" -n "Wiki"
+		fi
 
-        tmux new-window -t "$selected_name:2" -c "$selected"
-        tmux switch-client -t "$selected_name:1"
-    fi
-        tmux switch-client -t "$selected_name"
+		tmux new-window -t "$selected_name:2" -c "$selected"
+		tmux switch-client -t "$selected_name:1"
+	fi
+	tmux switch-client -t "$selected_name"
 fi

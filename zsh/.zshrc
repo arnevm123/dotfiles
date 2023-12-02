@@ -9,7 +9,6 @@ path+=/usr/bin
 path+=/usr/sbin
 path+=$HOME/bin
 path+=$HOME/.local/bin
-path+=$HOME/.tmuxifier/bin
 path+=$HOME/.local/share/bob/nvim-bin
 path+="$HOME/.deno/bin"
 path+="$GOROOT/bin"
@@ -37,8 +36,6 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load?
 plugins=(git fzf zsh-z zsh-autosuggestions omz-git)
-
-eval "$(tmuxifier init -)"
 
 # eval "$(zoxide init zsh)"
 
@@ -192,3 +189,5 @@ _gmove() {
   git stash pop
 }
 alias gmove=_gmove
+
+alias mqttstart="mosquitto -p 7070 > /dev/null 2>&1 & mosquitto -p 1883 > /dev/null 2>&1 & "

@@ -53,7 +53,7 @@ bindsym $mod+Return exec foot
 bindsym $mod+b exec firefox
 bindsym $mod+Shift+p exec wlogout
 
-bindsym $mod+Shift+t exec ~/bin/swap
+bindsym $mod+Shift+m exec ~/bin/swap
 
 bindsym $mod+z exec makoctl dismiss -a
 
@@ -120,22 +120,8 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 bindsym $mod+Shift+a focus child
 
-set $screenshot 1 sel, 2 whole, 3 sel clip, 4 whole clip, 5 swappy
-mode "$screenshot" {
-    bindsym 1 exec 'grim -g "$(slurp)" ~/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
-    bindsym 2 exec 'grim ~/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
-    bindsym 3 exec 'grim -g "$(slurp)" - | wl-copy', mode "default"
-    bindsym 4 exec 'grim - | wl-copy', mode "default"
-    bindsym 5 exec 'grim -g "$(slurp)" - | swappy -f -', mode "default"
-
-# back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-    bindsym $mod+s mode "default"
-}
-
-bindsym $mod+s mode "$screenshot"
-bindsym $mod+Shift+s exec 'grim -g "$(slurp)" - | swappy -f - -o - | wl-copy ', mode "default"
+bindsym $mod+Shift+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") && grim - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
+bindsym $mod+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") && grim -g "$(slurp)" - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -159,7 +145,6 @@ exec firefox; \
 exec thunderbird; \
 exec flatpak run com.spotify.Client --disable-gpu; \
 exec flatpak run com.slack.Slack; \
-workspace $ws4; \
 exec thorium-browser; \
 workspace $ws3; \
 exec foot
@@ -168,6 +153,7 @@ exec foot
 assign [class="thunderbird"] workspace number $ws5
 assign [class="Slack"] workspace number $ws5
 assign [class="Spotify"] workspace number $ws7
+assign [class="Thorium-browser"] workspace number $ws4
 # assign [class="floorp"] workspace number $ws8
 
 # switch to workspace
@@ -198,6 +184,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+Shift+r reload
 bindsym $mod+semicolon exec copyq toggle
 for_window [app_id="copyq"] floating enable
+for_window [app_id="Bitwarden"] floating enable
 # do not focus preview window on open
 no_focus [title="^Peek preview$"]
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -282,7 +269,7 @@ bindswitch --reload --locked lid:off output eDP-1 enable
 
 # Startup programs
 exec --no-startup-id mpd
-exec --no-startup-id copyq
+exec --no-startup-id copyq --start-server
 exec --no-startup-id kanshi
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
 exec_always swaybg -i ~/dotfiles/background/default.png -m fill
@@ -339,6 +326,16 @@ input type:touchpad {
        natural_scroll enabled
        middle_emulation enabled
 }
+
+bindsym $mod+shift+ctrl+m [workspace=".*"] move to workspace 10; workspace number 10, mode "default"
+
+exec swayidle -w \
+    timeout 800 'swaylock -f' \
+    timeout 810 'swaymsg "output * dpms off"' \
+		resume 'swaymsg "output * dpms on"' \
+    timeout 5 'if pgrep -x swaylock; then pactl set-sink-mute @DEFAULT_SINK@ 1 &&  playerctl pause && swaymsg "output * dpms off"; fi' \
+		resume 'swaymsg "output * dpms on"' \
+before-sleep 'swaylock -f'
 
 exec swaymsg workspace '1'
 

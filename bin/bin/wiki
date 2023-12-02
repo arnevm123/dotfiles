@@ -1,29 +1,29 @@
 #!/usr/bin/env bash
 
-if ! tmux info &> /dev/null; then
-  echo -e "no tmux session running"
-  exit
+if ! tmux info &>/dev/null; then
+	echo -e "no tmux session running"
+	exit
 fi
 
 session_name=$(tmux display-message -p '#{session_name}')
 wiki_path="$HOME/Wiki/wiki-$session_name"
 if [[ -d "$wiki_path" ]]; then
-  if tmux has-session -t "$session_name:8" ; then
-    tmux select-window -t 8
-  else
-    tmux new-window -t "$session_name:8" -c "$wiki_path" -n "Wiki"
-  fi
+	if tmux has-session -t "$session_name:8"; then
+		tmux select-window -t 8
+	else
+		tmux new-window -t "$session_name:8" -c "$wiki_path" -n "Wiki"
+	fi
 else
-  echo "no wiki yet do you want to create one?"
-  read -r answer
-  if [[ $answer == "y" ]]; then
-    mkdir "$wiki_path"
-    touch "$wiki_path/.marskman.toml"
-    touch "$wiki_path/$session_name.md"
-    if tmux has-session -t "$session_name:8" ; then
-      tmux select-window -t 8
-    else
-      tmux new-window -t "$session_name:8" -c "$wiki_path" -n "Wiki"
-    fi
-  fi
+	echo "no wiki yet do you want to create one?"
+	read -r answer
+	if [[ $answer == "y" ]]; then
+		mkdir "$wiki_path"
+		touch "$wiki_path/.marskman.toml"
+		touch "$wiki_path/$session_name.md"
+		if tmux has-session -t "$session_name:8"; then
+			tmux select-window -t 8
+		else
+			tmux new-window -t "$session_name:8" -c "$wiki_path" -n "Wiki"
+		fi
+	fi
 fi

@@ -84,6 +84,11 @@ linters:
     # Checks for pointers to enclosing loop variables.
     - exportloopref
 
+    # Checks for `exhaustive` switch statements.
+    # We might want to switch to explicit mode in the future
+    # https://pkg.go.dev/github.com/nishanths/exhaustive#section-documentation
+    - exhaustive
+
     # Finds forced type assertions, very good for juniors.
     - forcetypeassert
 
@@ -221,7 +226,6 @@ linters:
     - execinquery
 
     # Forces to handle more cases. Cool but noisy.
-    - exhaustive
     - exhaustivestruct # Deprecated, replaced by check below.
     - exhaustruct
 
