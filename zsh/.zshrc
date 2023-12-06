@@ -189,5 +189,9 @@ _gmove() {
   git stash pop
 }
 alias gmove=_gmove
+_fzfhash() {
+	git log --oneline --no-decorate --format='%h %<(40,trunc)%s %D' | fzf --preview 'GIT_EXTERNAL_DIFF="difft --width=$FZF_PREVIEW_COLUMNS --color=always" git show --ext-diff {1}' | awk '{ print $1 }'
+}
+alias fzfhash=_fzfhash
 
 alias mqttstart="mosquitto -p 7070 > /dev/null 2>&1 & mosquitto -p 1883 > /dev/null 2>&1 & "
