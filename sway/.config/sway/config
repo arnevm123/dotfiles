@@ -120,6 +120,9 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 bindsym $mod+Shift+a focus child
 
+bindsym $mod+Shift+u move scratchpad
+bindsym $mod+u scratchpad show
+
 bindsym $mod+Shift+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") && grim - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
 bindsym $mod+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") && grim -g "$(slurp)" - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
 
@@ -145,7 +148,7 @@ exec firefox; \
 exec thunderbird; \
 exec flatpak run com.spotify.Client --disable-gpu; \
 exec flatpak run com.slack.Slack; \
-exec thorium-browser; \
+exec chromium-browser; \
 workspace $ws3; \
 exec foot
 
@@ -153,7 +156,7 @@ exec foot
 assign [class="thunderbird"] workspace number $ws5
 assign [class="Slack"] workspace number $ws5
 assign [class="Spotify"] workspace number $ws7
-assign [class="Thorium-browser"] workspace number $ws4
+assign [class="Chromium-browser"] workspace number $ws4
 # assign [class="floorp"] workspace number $ws8
 
 # switch to workspace
@@ -306,7 +309,7 @@ input * accel_profile flat
 # define display output names
 set $disp1 "eDP-1"
 set $disp2 "DP-2"
-set $disp3 "HDMI-A-2"
+set $disp3 "DP-3"
 
 # default display outputs for workspaces with fallback to disp1
 workspace 1 output $disp2 $disp3
@@ -329,13 +332,17 @@ input type:touchpad {
 
 bindsym $mod+shift+ctrl+m [workspace=".*"] move to workspace 10; workspace number 10, mode "default"
 
+for_window [class="^.*"] inhibit_idle fullscreen
+for_window [app_id="^.*"] inhibit_idle fullscreen
+
 exec swayidle -w \
     timeout 800 'swaylock -f' \
     timeout 810 'swaymsg "output * dpms off"' \
 		resume 'swaymsg "output * dpms on"' \
     timeout 5 'if pgrep -x swaylock; then pactl set-sink-mute @DEFAULT_SINK@ 1 &&  playerctl pause && swaymsg "output * dpms off"; fi' \
 		resume 'swaymsg "output * dpms on"' \
-before-sleep 'swaylock -f'
+	before-sleep 'swaylock -f'\
+
 
 exec swaymsg workspace '1'
 

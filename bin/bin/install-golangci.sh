@@ -8,5 +8,4 @@ else
 	GOLANGCI_VERSION="$1"
 fi
 
-curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh |
-	sh -s -- -b "$GOPATH"/bin "$GOLANGCI_VERSION"
+curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b "$GOPATH"/bin "$GOLANGCI_VERSION"

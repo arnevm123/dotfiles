@@ -2,3 +2,8 @@ profile {
 	output "DP-2" position 0,0 mode 2560x1440@59.951 scale 1.0 transform normal
 	output "eDP-1" position 2560,360 mode 1920x1080@59.999 scale 1.0 transform normal
 }
+
+profile {
+	output "eDP-1" position 2560,360 mode 1920x1080@59.999 scale 1.0 transform normal
+	output "DP-3" position 1920,0 mode 3840x2160@59.997 scale 1.5 transform normal
+}

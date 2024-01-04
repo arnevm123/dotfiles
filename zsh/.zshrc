@@ -2,6 +2,7 @@
 # export PATH=$HOME/bin
 export GOROOT=$HOME/go
 export GOPATH=$HOME/.gopath
+export GOTESTS_TEMPLATE=testify
 path+=/bin
 path+=/sbin
 path+=/usr/local/bin
@@ -123,20 +124,30 @@ fzf-conf() {
 	fi
 
 	if [[ "$PWD" != "$selected" ]]; then
-		pushd $selected && nvim . && popd;
+		pushd $selected && nvim . && popd || popd;
 	else
 		nvim .
 	fi
 }
 
-alias ls="ls --color=tty -F"
+_zshconf() {
+	if [[ "$PWD" != "$HOME" ]]; then
+		pushd $HOME && nvim .zshrc && popd || popd;
+	else
+		nvim .zshrc
+	fi
+	source ~/.zshrc
+}
 
+alias ls="ls --color=tty -F"
+alias dispdis=swaymsg "output eDP-1 disable"
+alias dispen=swaymsg "output eDP-1 enable"
 alias vim="nvim"
-alias vi="nvim --clean"
+alias vi="NVIM_APPNAME=nvim-minimal nvim"
 alias conf=fzf-conf
-alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd; else vim .; fi'
-alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf && popd ; else vim .tmux.conf; fi'
-alias zshconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .zshrc && popd && source ~/.zshrc; else vim .zshrc && source ~/.zshrc; fi'
+alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd || popd; else vim .; fi'
+alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf && popd || popd; else vim .tmux.conf; fi'
+alias zshconf=_zshconf
 alias zshsrc="source ~/.zshrc"
 alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-window=right,70% | xargs tldr'
 alias gcml='gcm && ggl && git fetch'
@@ -154,6 +165,7 @@ _tkfzf() {
 	fi
 }
 alias tkfzf=_tkfzf
+alias fix='nvim -q .lint.txt'
 
 alias ts='tmux-sessionizer'
 alias tw='tmux-switch'
@@ -167,6 +179,7 @@ alias dbg="go build -gcflags='all=-N -l' -o debug && ./debug && rm debug"
 
 alias cdnv="cd ~/.config/nvim"
 alias cdr='cd $(git rev-parse --show-toplevel)'
+alias tmpath="tmux display-message -p '#{session_path}'"
 alias cdt=_cdt
 _cdt () {
 	if tmux info &> /dev/null; then
@@ -190,8 +203,29 @@ _gmove() {
 }
 alias gmove=_gmove
 _fzfhash() {
-	git log --oneline --no-decorate --format='%h %<(40,trunc)%s %D' | fzf --preview 'GIT_EXTERNAL_DIFF="difft --width=$FZF_PREVIEW_COLUMNS --color=always" git show --ext-diff {1}' | awk '{ print $1 }'
+	git log --oneline --no-decorate --format='%h %<(40,trunc)%s %D' | fzf --preview 'GIT_EXTERNAL_DIFF="difft --display inline --width=$FZF_PREVIEW_COLUMNS --color=always" git show --ext-diff {1}' | awk '{ print $1 }'
 }
 alias fzfhash=_fzfhash
 
 alias mqttstart="mosquitto -p 7070 > /dev/null 2>&1 & mosquitto -p 1883 > /dev/null 2>&1 & "
+alias srcvenv="source .venv/bin/activate"
+
+_cdpos() {
+	selected=$( (find ~/Projects/lynxPositioning/dockers -mindepth 1 -maxdepth 2 -type d) | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
+	if [ -n "$selected" ]; then
+		cd ~/"$selected"
+		cd src
+	fi
+}
+
+alias cdpos=_cdpos
+
+_mkfile() {
+	mkdir -p $( dirname "$1") && touch "$1"
+}
+mkfile=_mkfile
+
+_mkfcd() {
+	mkdir -p $( dirname "$1") && touch "$1" && cd  $(dirname "$1")
+}
+alias mkfcd=_mkfcd

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 monitor=$(swaymsg -t get_outputs | jq 'map(.focused) | index(true)')
 if [ -z "$1" ]; then
-	TEMPERATURE=$(echo "" | dmenu -m "$monitor" -p "Colour temperature:")
+	TEMPERATURE=$(echo "" | dmenu -m $monitor -p "Colour temperature:")
 else
 	TEMPERATURE=$1
 fi
 
-busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q "$TEMPERATURE"
+busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q $TEMPERATURE
