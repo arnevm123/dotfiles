@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 pushd $DOTFILES
-for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
+for folder in $(echo $STOW_FOLDERS)
 do
-	echo "stow $folder"
+	echo "stow [$folder]"
 	stow --restow $folder
 done
 popd

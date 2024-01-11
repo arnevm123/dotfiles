@@ -3,6 +3,7 @@
 export GOROOT=$HOME/go
 export GOPATH=$HOME/.gopath
 export GOTESTS_TEMPLATE=testify
+export VALE_CONFIG_PATH="/home/arne/.config/linters/vale/vale.ini"
 path+=/bin
 path+=/sbin
 path+=/usr/local/bin
@@ -22,7 +23,9 @@ set -o ignoreeof
 export ZSH="$HOME/.oh-my-zsh"
 export NVIM_APPNAME="nvim"
 export NVIM_CONF="$HOME/.config/nvim"
+export EMACS_CONF="$HOME/.config/emacs"
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
+export BAT_THEME="base16"
 export TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
 
 # Set name of the theme to load --- if set to "random", it will
@@ -140,12 +143,14 @@ _zshconf() {
 }
 
 alias ls="ls --color=tty -F"
-alias dispdis=swaymsg "output eDP-1 disable"
-alias dispen=swaymsg "output eDP-1 enable"
+alias dispdis='swaymsg "output eDP-1 disable"'
+alias dispen='swaymsg "output eDP-1 enable"'
 alias vim="nvim"
 alias vi="NVIM_APPNAME=nvim-minimal nvim"
+alias noplug="NVIM_APPNAME=plugin-free-neovim nvim"
 alias conf=fzf-conf
 alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd || popd; else vim .; fi'
+alias emacsconf='if [[ "$PWD" != "$EMACS_CONF" ]]; then pushd "$EMACS_CONF" && vim . && popd || popd; else vim .; fi'
 alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf && popd || popd; else vim .tmux.conf; fi'
 alias zshconf=_zshconf
 alias zshsrc="source ~/.zshrc"

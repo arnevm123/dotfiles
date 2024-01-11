@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "dictionaryDefinitions": [
+    {
+      "name": "allowed-words",
+      "path": "./allowed-words",
+      "addWords": true
+    }
+  ],
+  "dictionaries": ["allowed-words"],
+  "ignorePaths": ["/allowed-words"]
+}
+
