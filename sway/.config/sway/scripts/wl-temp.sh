@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run the command in the background and capture the PID
-~/.cargo/bin/wl-gammarelay-rs watch "{t}" > /tmp/output.log 2>&1 &
+~/.cargo/bin/wl-gammarelay-rs watch "{t}" >/tmp/output.log 2>&1 &
 pid=$!
 
 # Wait for the command to produce some output
@@ -17,7 +17,9 @@ PCT=$(echo "$OUTPUT / 65" | bc)
 
 # Send the notification with the icon:
 ~/.config/sway/notify-send/notify-send.sh "$notification" \
-    --replace-file=/tmp/wl-notification \
-    -t 2000 \
-    -h int:value:"${PCT}" \
-    -h string:synchronous:brightness-change
+	--replace-file=/tmp/wl-notification \
+	-t 2000 \
+	-f \
+	-i "$HOME/.config/sway/icons/gamma.svg" \
+	-h int:value:"${PCT}" \
+	-h string:synchronous:brightness-change
