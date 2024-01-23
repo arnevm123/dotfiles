@@ -19,6 +19,7 @@ PCT=$(echo "$OUTPUT / 65" | bc)
 ~/.config/sway/notify-send/notify-send.sh "$notification" \
 	--replace-file=/tmp/wl-notification \
 	-t 2000 \
+	-u critical \
 	-f \
 	-i "$HOME/.config/sway/icons/gamma.svg" \
 	-h int:value:"${PCT}" \

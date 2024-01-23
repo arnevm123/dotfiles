@@ -12,6 +12,7 @@ LC_ALL=C
 ~/.config/sway/notify-send/notify-send.sh "Brightness ${PCT}%" \
 	--replace-file=/tmp/brightness-notification \
 	-t 2000 \
+	-u critical \
 	-f \
 	--icon ~/.config/sway/icons/brightness-icon.png \
 	-h int:value:"${PCT}" \

@@ -49,16 +49,12 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec foot
-
-bindsym $mod+b exec firefox
 bindsym $mod+Shift+p exec wlogout
-
 bindsym $mod+Shift+m exec ~/bin/swap
 
 # bindsym $mod+z exec makoctl dismiss -a
 
-bindsym $mod+z exec swaync-client --close-latest
-bindsym $mod+Shift+z exec swaync-client --close-all
+bindsym $mod+z exec swaync-client --close-all
 bindsym $mod+n exec swaync-client --toggle-panel --skip-wait
 bindsym $mod+Shift+n exec swaync-client --toggle-dnd
 
@@ -128,8 +124,10 @@ bindsym $mod+Shift+a focus child
 bindsym $mod+Shift+u move scratchpad
 bindsym $mod+u scratchpad show
 
-bindsym $mod+Shift+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") && grim - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
-bindsym $mod+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") && grim -g "$(slurp)" - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
+bindsym $mod+Shift+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") &&\
+	grim - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
+bindsym $mod+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") &&\
+	grim -g "$(slurp)" - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -277,6 +275,7 @@ bindswitch --reload --locked lid:off output eDP-1 enable
 
 # Startup programs
 exec --no-startup-id mpd
+exec --no-startup-id /home/arne/.gopath/bin/swaynag-battery
 exec --no-startup-id copyq --start-server
 exec --no-startup-id kanshi
 # exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png

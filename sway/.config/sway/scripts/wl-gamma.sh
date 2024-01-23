@@ -18,6 +18,7 @@ PCT=$(printf "%.0f" "$(echo "$OUTPUT * 100" | bc)")
 # Send the notification with the icon:
 ~/.config/sway/notify-send/notify-send.sh "$notification" \
 	--replace-file=/tmp/wl-notification \
+	-u critical \
 	-t 2000 \
 	-f \
 	-i "$HOME/.config/sway/icons/gamma.svg" \

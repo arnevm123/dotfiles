@@ -1,0 +1,39 @@
+[user]
+	email = arnevanmaele@gmail.com
+	name = Arne Van Maele
+
+[core]
+	; hooksPath = ~/.githooks
+[safe]
+	directory = /opt/keyd
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+
+[diff]
+	tool = difftastic
+
+[difftool]
+	prompt = false
+
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
+
+[pager]
+	difftool = true
+
+[alias]
+	dft = difftool
+
+[credential "https://github.com"]
+	useHttpPath = true
+
+[includeIf "gitdir:~/Projects/"]
+    path = .gitconfig-work
+
+[includeIf "gitdir:~/Personal/"]
+    path = .gitconfig-personal
+
+[includeIf "gitdir:~/Tools/"]
+    path = .gitconfig-personal

@@ -61,6 +61,7 @@ export EDITOR='nvim'
 
 # Enable vi mode
 bindkey -v
+bindkey -e
 
 bindkey "^X^X" edit-command-line
 bindkey "^y" autosuggest-accept
@@ -126,11 +127,22 @@ fzf-conf() {
 		selected="$HOME/.config/$1"
 	fi
 
-	if [[ "$PWD" != "$selected" ]]; then
-		pushd $selected && nvim . && popd || popd;
-	else
-		nvim .
-	fi
+    num_files=$(ls -1 "$selected/" | wc -l)
+    if [ "$num_files" -eq 1 ]; then
+        file_name=$(ls "$selected/")
+		if [[ "$PWD" != "$selected" ]]; then
+			pushd $selected && nvim "$file_name" && popd || popd;
+		else
+			nvim "$file_name"
+		fi
+    else
+		if [[ "$PWD" != "$selected" ]]; then
+			pushd $selected && nvim . && popd || popd;
+		else
+			nvim .
+		fi
+    fi
+
 }
 
 _zshconf() {

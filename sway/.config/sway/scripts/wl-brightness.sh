@@ -25,6 +25,7 @@ notification="Brightness ${OUTPUT}%"
 # Send the notification with the icon:
 ~/.config/sway/notify-send/notify-send.sh "$notification" \
 	--replace-file=/tmp/wl-notification \
+	-u critical \
 	-t 2000 \
 	-f \
 	-i "${ICON}" \
