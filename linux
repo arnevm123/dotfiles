@@ -17,6 +17,7 @@ done
 STOW_FOLDERS="
 tmux
 nvim-minimal
+omz-custom
 zsh
 bin
 sway

@@ -12,9 +12,9 @@ path+=/usr/sbin
 path+=$HOME/bin
 path+=$HOME/.local/bin
 path+=$HOME/.local/share/bob/nvim-bin
-path+="$HOME/.deno/bin"
-path+="$GOROOT/bin"
-path+="$GOPATH/bin"
+path+=$HOME/.deno/bin
+path+=$GOROOT/bin
+path+=$GOPATH/bin
 
 export PATH
 # Path to your oh-my-zsh installation.
@@ -25,11 +25,10 @@ export NVIM_APPNAME="nvim"
 export NVIM_CONF="$HOME/.config/nvim"
 export EMACS_CONF="$HOME/.config/emacs"
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
-export BAT_THEME="base16"
 export TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
 
 # Set name of the theme to load --- if set to "random", it will
-ZSH_THEME="robbyrussell"
+ZSH_THEME="mytheme"
 
 HYPHEN_INSENSITIVE="true"
 
@@ -39,7 +38,7 @@ HYPHEN_INSENSITIVE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load?
-plugins=(git fzf zsh-z zsh-autosuggestions omz-git)
+plugins=(git fzf zsh-z zsh-autosuggestions branch)
 
 # eval "$(zoxide init zsh)"
 
@@ -166,7 +165,6 @@ alias emacsconf='if [[ "$PWD" != "$EMACS_CONF" ]]; then pushd "$EMACS_CONF" && v
 alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf && popd || popd; else vim .tmux.conf; fi'
 alias zshconf=_zshconf
 alias zshsrc="source ~/.zshrc"
-alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-window=right,70% | xargs tldr'
 alias gcml='gcm && ggl && git fetch'
 alias gfco='git fetch && gco'
 alias gco=fzf-git-checkout
@@ -183,20 +181,23 @@ _tkfzf() {
 }
 alias tkfzf=_tkfzf
 alias fix='nvim -q .lint.txt'
+alias pwip='gwip && ggp'
+alias punwip='gunwip && ggf'
 
 alias ts='tmux-sessionizer'
-alias tw='tmux-switch'
 alias tks='tmux kill-server'
 alias open='xdg-open'
 alias ta='tmux attach'
 alias tl='tmuxifier load-window'
 alias tls='tmuxifier load-session'
-alias lnt="golangci-lint run --config=~/.golangci.yaml ./..."
+alias lnt="golangci-lint run --config=~/.config/linters/golangci.yaml ./..."
 alias dbg="go build -gcflags='all=-N -l' -o debug && ./debug && rm debug"
 
 alias cdnv="cd ~/.config/nvim"
 alias cdr='cd $(git rev-parse --show-toplevel)'
-alias tmpath="tmux display-message -p '#{session_path}'"
+alias GW="export GOOS=windows"
+alias GL="export GOOS=linux"
+alias GU="unset GOOS"
 alias cdt=_cdt
 _cdt () {
 	if tmux info &> /dev/null; then
@@ -246,3 +247,8 @@ _mkfcd() {
 	mkdir -p $( dirname "$1") && touch "$1" && cd  $(dirname "$1")
 }
 alias mkfcd=_mkfcd
+_mkvim() {
+	mkdir -p $( dirname "$1") && touch "$1" && cd  $(dirname "$1") && nvim $( basename "$1" )
+}
+
+alias mkvim=_mkvim
