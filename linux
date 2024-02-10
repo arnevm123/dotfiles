@@ -17,6 +17,7 @@ done
 STOW_FOLDERS="
 tmux
 nvim-minimal
+nvim
 omz-custom
 zsh
 bin
