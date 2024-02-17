@@ -30,4 +30,4 @@ notification="Brightness ${OUTPUT}%"
 	-f \
 	-i "${ICON}" \
 	-h int:value:"${OUTPUT}" \
-	-h string:synchronous:brightness-change
+	-h string:synchronous:brightness-wlgamma-progress

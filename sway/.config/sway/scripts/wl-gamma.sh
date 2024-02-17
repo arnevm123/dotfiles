@@ -23,4 +23,4 @@ PCT=$(printf "%.0f" "$(echo "$OUTPUT * 100" | bc)")
 	-f \
 	-i "$HOME/.config/sway/icons/gamma.svg" \
 	-h int:value:"${PCT}" \
-	-h string:synchronous:brightness-change
+	-h string:synchronous:gamma-progress

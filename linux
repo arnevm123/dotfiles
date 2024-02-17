@@ -33,6 +33,7 @@ git
 foot
 fonts
 linters
+emacs
 "
 
 DOTFILES=$HOME/dotfiles
@@ -47,4 +48,7 @@ fi
 if $flag_install
 then
 	STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES $DOTFILES/install
+
+	ln -s $DOTFILES/firefox/user.js $HOME/.mozilla/firefox/*.default-release
+	ln -s $DOTFILES/firefox/user.js $HOME/.var/app/one.ablaze.floorp/.floorp/yiwtzqlf.default-release
 fi

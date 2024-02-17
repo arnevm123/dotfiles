@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
 
+# List of folders
+folders=("Projects" "Personal" "Scratch" "Tools")
+
+# Generate find command to search within specified folders
+find_command="find "
+for folder in "${folders[@]}"; do
+	find_command+="$HOME/$folder "
+done
+find_command+="-mindepth 1 -maxdepth 1 -type d "
+
+
 if [[ $# -eq 1 ]]; then
 	selected=$1
 else
-	selected=$( (echo "home" && find ~/Projects ~/Personal ~/Scratch ~/Tools -mindepth 1 -maxdepth 1 -type d && echo "create") | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
+	selected=$( (echo "home" && $find_command && echo "bin" && echo "create") | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
 fi
 
 if [[ -z $selected ]]; then
@@ -14,9 +25,10 @@ selected="$HOME/$selected"
 selected_name=$(basename "$selected" | tr . _)
 
 if [[ "$selected_name" == "create" ]]; then
+	folder=$(printf "%s\n" "${folders[@]}" | fzf)
 	echo "Please enter the new folder name:"
 	read -r selected_name
-	selected="$HOME/Projects/$selected_name"
+	selected="$HOME/$folder/$selected_name"
 	mkdir "$selected"
 fi
 

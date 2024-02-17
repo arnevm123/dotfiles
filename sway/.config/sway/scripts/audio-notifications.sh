@@ -30,7 +30,7 @@ if [[ $MUTE == 'no' ]]; then
 		-f \
 		-i ${ICON} \
 		-h int:value:"${VOLUME}" \
-		-h string:synchronous:volume-change
+		-h string:synchronous:volume-progress
 
 # If volume is muted, display the mute sybol:
 else
@@ -40,5 +40,5 @@ else
 		-f \
 		-i ~/.config/sway/icons/vol-mute.svg \
 		-h int:value:"${VOLUME}" \
-		-h string:synchronous:volume-change
+		-h string:synchronous:volume-progress
 fi

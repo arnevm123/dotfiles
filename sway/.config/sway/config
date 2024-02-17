@@ -231,9 +231,9 @@ bindsym --locked {
 
 bindsym --locked {
 	$mod+Minus exec \
-		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02 && ~/.config/sway/scripts/wl-brightness.sh'
+		exec light -A -U 5 && ~/.config/sway/scripts/brightness-notifications.sh
 	$mod+Equal exec \
-		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02 && ~/.config/sway/scripts/wl-brightness.sh'
+		exec light -A 5 && ~/.config/sway/scripts/brightness-notifications.sh
 	$mod+Backslash exec \
 		'busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Brightness d 1.0 && ~/.config/sway/scripts/wl-brightness.sh'
 
@@ -255,9 +255,9 @@ bindsym --locked {
 
 # # Sreen brightness controls -- # https://github.com/haikarainen/light
 # # increase screen brightness
-# bindsym XF86MonBrightnessUp exec light -A 5 && ~/.config/sway/scripts/brightness-notifications.sh
+bindsym XF86MonBrightnessUp exec light -A 5 && ~/.config/sway/scripts/brightness-notifications.sh
 # # decrease screen brightness
-# bindsym XF86MonBrightnessDown exec light -U 5 && ~/.config/sway/scripts/brightness-notifications.sh
+bindsym XF86MonBrightnessDown exec light -U 5 && ~/.config/sway/scripts/brightness-notifications.sh
 
 # multimedia keys
 bindsym XF86AudioPlay exec playerctl play-pause
