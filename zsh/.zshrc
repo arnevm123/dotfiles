@@ -38,9 +38,10 @@ HYPHEN_INSENSITIVE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load?
-plugins=(git fzf zsh-z zsh-autosuggestions branch)
+plugins=(git fzf zsh-autosuggestions branch)
 
-# eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --cmd c)"
+eval "$(thefuck --alias)"
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zshexports
@@ -119,6 +120,9 @@ fzf-git-checkout() {
         git checkout $branch;
     fi
 }
+alias gfco='git fetch && gco'
+alias gco=fzf-git-checkout
+
 fzf-conf() {
 	if [ "$#" -eq 0 ]; then
 		selected=$(find -L ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
@@ -166,8 +170,6 @@ alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf &
 alias zshconf=_zshconf
 alias zshsrc="source ~/.zshrc"
 alias gcml='gcm && ggl && git fetch'
-alias gfco='git fetch && gco'
-alias gco=fzf-git-checkout
 alias gco-='git checkout -'
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
 alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} git branch -D '{}'"
@@ -193,6 +195,7 @@ alias tls='tmuxifier load-session'
 alias lnt="golangci-lint run --config=~/.config/linters/golangci.yaml ./..."
 alias dbg="go build -gcflags='all=-N -l' -o debug && ./debug && rm debug"
 
+alias gfst="gfo && gst"
 alias cdnv="cd ~/.config/nvim"
 alias cdr='cd $(git rev-parse --show-toplevel)'
 alias GW="export GOOS=windows"
@@ -252,3 +255,13 @@ _mkvim() {
 }
 
 alias mkvim=_mkvim
+
+
+# rebase current branch on top of upstream remote changes
+function _greb() {
+	UPSTREAM="$(git remote | grep upstream || git remote | grep origin)"
+	BRANCH="$UPSTREAM/${$(git branch -rl \*/HEAD | head -1 | rev | cut -d/ -f1 | rev):-master}"
+	git fetch "$UPSTREAM" && git --no-pager log --reverse --pretty=tformat:%s "$(git merge-base HEAD "$BRANCH")".."$BRANCH" && git rebase "$BRANCH"
+}
+
+alias greb=_greb

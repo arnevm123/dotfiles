@@ -37,3 +37,6 @@
 
 [includeIf "gitdir:~/Tools/"]
     path = .gitconfig-personal
+
+[merge]
+	conflictstyle = diff3

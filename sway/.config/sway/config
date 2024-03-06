@@ -51,6 +51,9 @@ floating_modifier $mod
 bindsym $mod+Return exec foot
 bindsym $mod+Shift+p exec wlogout
 bindsym $mod+Shift+m exec ~/bin/swap
+bindsym $mod+Shift+d exec ~/bin/wl-present mirror eDP-1 &
+bindsym $mod+Shift+f exec ~/bin/wl-present freeze
+bindsym $mod+Shift+g exec ~/bin/wl-present unfreeze
 
 # bindsym $mod+z exec makoctl dismiss -a
 
