@@ -40,3 +40,5 @@
 
 [merge]
 	conflictstyle = diff3
+[rerere]
+	enabled = true

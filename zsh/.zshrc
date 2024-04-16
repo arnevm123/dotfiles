@@ -84,11 +84,19 @@ alias kport=_kport
 fzf-git-branch() {
     git rev-parse HEAD > /dev/null 2>&1 || return
 
-    git branch --all --sort=-committerdate |
-        grep -v HEAD |
-        fzf --height 50% --ansi --no-multi --preview-window right:65% \
-            --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
-        sed "s/.* //"
+    if [[ $# -gt 0 ]]; then
+		git branch --all --sort=-committerdate |
+			grep -v HEAD |
+			fzf --query="$@" --height 50% --ansi --no-multi --preview-window right:65% \
+				--preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
+			sed "s/.* //"
+	else
+		git branch --all --sort=-committerdate |
+			grep -v HEAD |
+			fzf --height 50% --ansi --no-multi --preview-window right:65% \
+				--preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
+			sed "s/.* //"
+	fi
 }
 
 fzf-git-checkout() {
@@ -96,7 +104,12 @@ fzf-git-checkout() {
 
     local branch
 
-    branch=$(fzf-git-branch)
+	if [[ $# -eq 0 ]]; then
+		branch=$(fzf-git-branch)
+	else
+		branch=$(fzf-git-branch $@)
+	fi
+
     if [[ "$branch" = "" ]]; then
         echo "No branch selected."
         return
@@ -109,7 +122,8 @@ fzf-git-checkout() {
         output=$(git checkout --track "$branch")
         exit_status=$?
         if [[ "$exit_status" == "128" ]]; then
-            local=$(basename "$branch")
+			prefix="remotes/origin/"
+            local="${branch#$prefix}"
             echo "$local"
             git checkout $local;
         else
@@ -120,8 +134,11 @@ fzf-git-checkout() {
         git checkout $branch;
     fi
 }
+
 alias gfco='git fetch && gco'
 alias gco=fzf-git-checkout
+alias gco-="git checkout -"
+alias gcoo="git checkout"
 
 fzf-conf() {
 	if [ "$#" -eq 0 ]; then
@@ -170,7 +187,6 @@ alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf &
 alias zshconf=_zshconf
 alias zshsrc="source ~/.zshrc"
 alias gcml='gcm && ggl && git fetch'
-alias gco-='git checkout -'
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
 alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} git branch -D '{}'"
 alias vpn_tcit='sudo openfortivpn -c /etc/openfortivpn/tcit_vpn.conf --trusted-cert 15ef9850eb4025223a6d60a05c4a0378f6a7e34f0e50c69ec3e5f31d4a4c1ae1'
@@ -186,7 +202,7 @@ alias fix='nvim -q .lint.txt'
 alias pwip='gwip && ggp'
 alias punwip='gunwip && ggf'
 
-alias ts='tmux-sessionizer'
+alias tms='tmux-sessionizer'
 alias tks='tmux kill-server'
 alias open='xdg-open'
 alias ta='tmux attach'
@@ -265,3 +281,12 @@ function _greb() {
 }
 
 alias greb=_greb
+
+function _la() {
+	if [ "$#" -eq 0 ]; then
+		ls -lAh
+	else
+		ls -lAh | rg -i $1
+	fi
+}
+alias la=_la

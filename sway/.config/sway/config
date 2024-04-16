@@ -149,7 +149,6 @@ bindsym $mod+Shift+o \
 workspace $ws1; \
 exec firefox; \
 exec thunderbird; \
-exec flatpak run com.spotify.Client --disable-gpu; \
 exec flatpak run com.slack.Slack; \
 exec chromium-browser; \
 workspace $ws3; \
