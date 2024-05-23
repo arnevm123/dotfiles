@@ -16,7 +16,7 @@ set $mod Mod1
 # is used in the bar {} block below.
 # default_border pixel
 # default_floating_border pixel
-font pango:monospace 0
+font pango:monospace 0.001
 titlebar_border_thickness 3
 smart_borders on
 # titlebar_border_thickness 1

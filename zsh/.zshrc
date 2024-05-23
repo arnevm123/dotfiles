@@ -66,9 +66,6 @@ bindkey -e
 bindkey "^X^X" edit-command-line
 bindkey "^y" autosuggest-accept
 
-bindkey -M vicmd 'Y' vi-yank-whole-line
-bindkey -M vicmd '^r' redo
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -174,11 +171,21 @@ _zshconf() {
 	source ~/.zshrc
 }
 
+_v() {
+	if [ "$#" -eq 0 ]; then
+		nvim .
+	else
+		nvim $@
+	fi
+}
+
 alias ls="ls --color=tty -F"
 alias dispdis='swaymsg "output eDP-1 disable"'
 alias dispen='swaymsg "output eDP-1 enable"'
-alias vim="nvim"
-alias vi="NVIM_APPNAME=nvim-minimal nvim"
+alias v=_v
+alias vim=nvim
+alias vi='\vim'
+alias vimm="NVIM_APPNAME=nvim-minimal nvim"
 alias noplug="NVIM_APPNAME=plugin-free-neovim nvim"
 alias conf=fzf-conf
 alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd || popd; else vim .; fi'
@@ -290,3 +297,9 @@ function _la() {
 	fi
 }
 alias la=_la
+
+alias dcup='docker compose up -d'
+alias dcdown='docker compose stop'
+alias dcpull='docker compose pull'
+alias dclogs='docker compose logs -f --tail="150" '
+alias dcps='docker ps'

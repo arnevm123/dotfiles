@@ -73,6 +73,8 @@ eventserver
 existings
 exte
 extramessages
+ffhelp
+ffyaml
 filepth
 flagarize
 flatbuffer
@@ -81,6 +83,7 @@ foooooo
 fooooooo
 forbidigo
 frameoffset
+freddi
 freememory
 fset
 fstype
@@ -146,6 +149,7 @@ lljobs
 localtime
 logfile
 logfiles
+logline
 loglines
 logwriter
 lynxcontroller
@@ -192,6 +196,8 @@ oapclients
 objx
 onconnect
 paho
+pahomqtt
+parsefloat
 peterbourgon
 pgrep
 pkgname
@@ -204,6 +210,7 @@ processname
 procs
 promauto
 promhttp
+promql
 pushd
 rawjob
 rebootdevice
@@ -214,6 +221,7 @@ rogpeppe
 roomcontroller
 roomstate
 roomstates
+rootfs
 rotatedaily
 rssi
 samber
@@ -272,10 +280,12 @@ unmarshaling
 unmarshall
 unmarshalling
 unsub
+unsubscriptions
 upgrader
 upserts
 userid
 userstatus
+vals
 virtuals
 wcus
 webserver
