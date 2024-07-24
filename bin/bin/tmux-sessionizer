@@ -42,7 +42,7 @@ if [[ $selected == *.git ]]; then
 	selected="$selected/develop"
 fi
 
-existingSession=$(tmux list-sessions -F '#S' | grep "^$selected_name$")
+existingSession=$(tmux list-sessions -F '#S' tmux ls 2>/dev/null | grep "^$selected_name$")
 # wiki_path="$HOME/Wiki/wiki-$selected_name"
 
 if [[ -z $TMUX ]]; then

@@ -6,6 +6,7 @@
 	; hooksPath = ~/.githooks
 [safe]
 	directory = /opt/keyd
+	directory = *
 [init]
 	defaultBranch = main
 [pull]

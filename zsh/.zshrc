@@ -25,7 +25,6 @@ export NVIM_APPNAME="nvim"
 export NVIM_CONF="$HOME/.config/nvim"
 export EMACS_CONF="$HOME/.config/emacs"
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
-export TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
 
 # Set name of the theme to load --- if set to "random", it will
 ZSH_THEME="mytheme"
@@ -39,6 +38,15 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load?
 plugins=(git fzf zsh-autosuggestions branch)
+
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+	if tmux ls 2>/dev/null; then
+		tmux attach
+	else
+		tmux-sessionizer
+	fi
+fi
+
 
 eval "$(zoxide init zsh --cmd c)"
 eval "$(thefuck --alias)"
@@ -136,6 +144,7 @@ alias gfco='git fetch && gco'
 alias gco=fzf-git-checkout
 alias gco-="git checkout -"
 alias gcoo="git checkout"
+alias gpm="git pull origin master"
 
 fzf-conf() {
 	if [ "$#" -eq 0 ]; then
@@ -186,6 +195,7 @@ alias v=_v
 alias vim=nvim
 alias vi='\vim'
 alias vimm="NVIM_APPNAME=nvim-minimal nvim"
+alias mvim="NVIM_APPNAME=nativevim nvim"
 alias noplug="NVIM_APPNAME=plugin-free-neovim nvim"
 alias conf=fzf-conf
 alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd || popd; else vim .; fi'
@@ -210,6 +220,7 @@ alias pwip='gwip && ggp'
 alias punwip='gunwip && ggf'
 
 alias tms='tmux-sessionizer'
+alias th='tmux-sessionizer home'
 alias tks='tmux kill-server'
 alias open='xdg-open'
 alias ta='tmux attach'
@@ -303,3 +314,4 @@ alias dcdown='docker compose stop'
 alias dcpull='docker compose pull'
 alias dclogs='docker compose logs -f --tail="150" '
 alias dcps='docker ps'
+

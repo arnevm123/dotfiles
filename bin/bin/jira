@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ticket=$(git branch --show-current | grep -oP '^([a-zA-Z]{1,4}-\d{1,6})')
+xdg-open https://tcit.atlassian.net/browse/"$ticket"

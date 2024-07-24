@@ -125,6 +125,7 @@ initialised
 ipclient
 ipclientevent
 ipxf
+jmoiron
 kardianos
 khtml
 labelsets
@@ -138,6 +139,10 @@ ldevices
 ldevicetype
 ldevicetypes
 leds
+lemsresulttype
+lemstestresult
+lemstests
+lemstesttype
 licenseunmatched
 lightingtest
 linkdevice
@@ -183,6 +188,7 @@ mxfile
 myfoo
 mysqld
 mysqldump
+mysqlimport
 natefinch
 nbsp
 newname
@@ -216,6 +222,8 @@ rawjob
 rebootdevice
 redeclared
 reloadcompleted
+resultsapi
+robfig
 rodrigocfd
 rogpeppe
 roomcontroller
@@ -257,6 +265,7 @@ sqlpassword
 sqltest
 sqluser
 sqlusername
+sqlx
 srvc
 startrequest
 startservice
@@ -275,13 +284,17 @@ synccontacts
 testprotocol
 testresult
 timewriter
+tmpl
 totalmemory
 unmarshaling
 unmarshall
 unmarshalling
+unnotified
+unplannend
 unsub
 unsubscriptions
 upgrader
+upsert
 upserts
 userid
 userstatus

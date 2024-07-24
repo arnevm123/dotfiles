@@ -16,8 +16,15 @@ set $mod Mod1
 # is used in the bar {} block below.
 # default_border pixel
 # default_floating_border pixel
-font pango:monospace 0.001
-titlebar_border_thickness 3
+font pango:monospace 10
+titlebar_border_thickness 0
+
+# GET DEM BORDERS OUT OF HERE
+#
+# Thanks Childz
+for_window [class="^.*"] border pixel 2
+                          # class                 border  backgr. text    indicator child_border
+for_window [class="^.*"] client.focused          #2e9ef4 #285577 #ffffff #2e9ef4   #285577
 smart_borders on
 # titlebar_border_thickness 1
 
@@ -149,6 +156,7 @@ bindsym $mod+Shift+o \
 workspace $ws1; \
 exec firefox; \
 exec thunderbird; \
+exec spotify; \
 exec flatpak run com.slack.Slack; \
 exec chromium-browser; \
 workspace $ws3; \
