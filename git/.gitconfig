@@ -3,7 +3,7 @@
 	name = Arne Van Maele
 
 [core]
-	; hooksPath = ~/.githooks
+	hooksPath = ~/.githooks
 [safe]
 	directory = /opt/keyd
 	directory = *

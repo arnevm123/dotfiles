@@ -56,16 +56,10 @@ source $HOME/.zshexports
 
 # User configuration
 
-# Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='nvim'
- fi
 # set editors
 export GIT_EDITOR='nvim'
 export VISUAL='nvim'
-export EDITOR='nvim'
+export EDITOR=nvim
 
 # Enable vi mode
 bindkey -v
