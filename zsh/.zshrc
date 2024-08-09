@@ -308,4 +308,5 @@ alias dcdown='docker compose stop'
 alias dcpull='docker compose pull'
 alias dclogs='docker compose logs -f --tail="150" '
 alias dcps='docker ps'
-
+alias gd='git dft'
+alias gyolo='git commit -am "`curl -sL https://whatthecommit.com/index.txt`" &&  ggp'
