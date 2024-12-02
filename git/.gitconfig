@@ -4,6 +4,8 @@
 
 [core]
 	hooksPath = ~/.githooks
+	excludesfile = /home/arne/.gitignore_global
+
 [safe]
 	directory = /opt/keyd
 	directory = *

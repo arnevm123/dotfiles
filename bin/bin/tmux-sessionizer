@@ -48,9 +48,6 @@ existingSession=$(tmux list-sessions -F '#S' tmux ls 2>/dev/null | grep "^$selec
 if [[ -z $TMUX ]]; then
 	if [[ -z $existingSession ]]; then
 		tmux new-session -d -s "$selected_name" -c "$selected"
-		# if [[ -d "$wiki_path" ]]; then
-		# 	tmux new-window -t "$selected_name:8" -c "$wiki_path" -n "Wiki"
-		# fi
 
 		if $is_worktree; then
 			tmux new-window -t "$selected_name:2" -c "$selected" -n "develop"

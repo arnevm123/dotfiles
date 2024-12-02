@@ -1,22 +1,3 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin
-export GOROOT=$HOME/go
-export GOPATH=$HOME/.gopath
-export GOTESTS_TEMPLATE=testify
-export VALE_CONFIG_PATH="/home/arne/.config/linters/vale/vale.ini"
-path+=/bin
-path+=/sbin
-path+=/usr/local/bin
-path+=/usr/bin
-path+=/usr/sbin
-path+=$HOME/bin
-path+=$HOME/.local/bin
-path+=$HOME/.local/share/bob/nvim-bin
-path+=$HOME/.deno/bin
-path+=$GOROOT/bin
-path+=$GOPATH/bin
-
-export PATH
 # Path to your oh-my-zsh installation.
 setopt PUSHDSILENT
 set -o ignoreeof
@@ -25,6 +6,8 @@ export NVIM_APPNAME="nvim"
 export NVIM_CONF="$HOME/.config/nvim"
 export EMACS_CONF="$HOME/.config/emacs"
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
+
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ '
 
 # Set name of the theme to load --- if set to "random", it will
 ZSH_THEME="mytheme"
@@ -36,16 +19,17 @@ HYPHEN_INSENSITIVE="true"
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+export PYAUTOENV_VENV_NAME=venv
 # Which plugins would you like to load?
-plugins=(git fzf zsh-autosuggestions branch)
+plugins=(git fzf zsh-autosuggestions branch pyautoenv)
 
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-	if tmux ls 2>/dev/null; then
-		tmux attach
-	else
-		tmux-sessionizer
-	fi
-fi
+# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+# 	if tmux ls 2>/dev/null; then
+# 		tmux attach
+# 	else
+# 		tmux-sessionizer
+# 	fi
+# fi
 
 
 eval "$(zoxide init zsh --cmd c)"
@@ -187,6 +171,7 @@ alias dispdis='swaymsg "output eDP-1 disable"'
 alias dispen='swaymsg "output eDP-1 enable"'
 alias v=_v
 alias vim=nvim
+alias m=make
 alias vi='\vim'
 alias vimm="NVIM_APPNAME=nvim-minimal nvim"
 alias mvim="NVIM_APPNAME=nativevim nvim"
@@ -201,6 +186,7 @@ alias gcml='gcm && ggl && git fetch'
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
 alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} git branch -D '{}'"
 alias vpn_tcit='sudo openfortivpn -c /etc/openfortivpn/tcit_vpn.conf --trusted-cert 15ef9850eb4025223a6d60a05c4a0378f6a7e34f0e50c69ec3e5f31d4a4c1ae1'
+alias vpn_uzgent='echo "VJyT6GMmX1mp" ; echo "VJyT6GMmX1mp" | sudo openconnect -u AxioMob_SUP_prd --passwd-on-stdin --protocol nc vpn.uzgent.be/telecom-it --servercert pin-sha256:s2yMnasfCWxKWltIfQDi+91RNQHjcVZ6osV79mWsPbc='
 # alias -g P='| pe | fzf | read filename; [ ! -z $filename ] && vim $filename'
 _tkfzf() {
 	session=tmux ls | fzf | awk '{print $1;}'| sed 's/://'
@@ -284,6 +270,27 @@ _mkvim() {
 
 alias mkvim=_mkvim
 
+_gtap() {
+    if [[ -z "$1" ]]; then
+        echo "Tag name is required."
+        return 1
+    fi
+
+    tag_name=$1
+    message=$2
+
+    if [[ -n "$message" ]]; then
+        git tag -a "$tag_name" -m "$message" || return 1
+    else
+        git tag "$tag_name" || return 1
+    fi
+
+    git push origin "$tag_name" || return 1
+
+    echo "Tag '$tag_name' created and pushed successfully."
+}
+
+alias gtap=_gtap
 
 # rebase current branch on top of upstream remote changes
 function _greb() {
@@ -294,19 +301,25 @@ function _greb() {
 
 alias greb=_greb
 
-function _la() {
-	if [ "$#" -eq 0 ]; then
-		ls -lAh
-	else
-		ls -lAh | rg -i $1
-	fi
+function _dcsh() {
+	docker compose exec -it "$1" sh
 }
-alias la=_la
 
-alias dcup='docker compose up -d'
-alias dcdown='docker compose stop'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
 alias dcpull='docker compose pull'
 alias dclogs='docker compose logs -f --tail="150" '
 alias dcps='docker ps'
+alias dcsh='_dcsh'
+
 alias gd='git dft'
 alias gyolo='git commit -am "`curl -sL https://whatthecommit.com/index.txt`" &&  ggp'
+alias rmfuu='fc -s "rm=rm -rf"'
+alias ggf=ggfl
+alias wft='nmcli device wifi connect tcitWifi-Enterprise'
+alias wfv='nmcli device wifi connect Visitors'
+alias wf='nmcli device wifi connect'
+
+function git_main_branch() {
+  echo $(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+}
