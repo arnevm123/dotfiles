@@ -1,0 +1,66 @@
+---
+- name: Download Docker install script
+  ansible.builtin.get_url:
+    url: https://get.docker.com
+    dest: /tmp/install-docker.sh
+    mode: "0755"
+
+- name: Run Docker install script
+  become: true
+  ansible.builtin.command: /tmp/install-docker.sh
+  args:
+    creates: /usr/bin/docker
+
+- name: Install Docker packages
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    name:
+      - containerd.io
+      - docker-ce
+      - docker-ce-cli
+      - docker-compose-plugin
+      - python3-docker
+
+- name: Ensure /etc/docker directory exists
+  become: true
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+    owner: root
+    mode: "0755"
+
+- name: Upload docker daemon configuration
+  become: true
+  ansible.builtin.copy:
+    src: "{{ docker_daemon_json }}"
+    dest: /etc/docker/daemon.json
+    owner: root
+    mode: "0644"
+
+- name: Add current user to docker group
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+
+- name: Change ownership of /var/run/docker.sock to current user
+  become: true
+  ansible.builtin.file:
+    path: /var/run/docker.sock
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user_gid }}"
+    state: file
+
+- name: Log in to docker registry
+  community.docker.docker_login:
+    username: "{{ docker_username }}"
+    password: "{{ docker_password }}"
+    registry_url: "{{ docker_registry }}"
+
+- name: Reload docker
+  become: true
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
