@@ -289,8 +289,24 @@ _gtap() {
 
     echo "Tag '$tag_name' created and pushed successfully."
 }
-
 alias gtap=_gtap
+
+_gtad() {
+    if [[ -z "$1" ]]; then
+        echo "Tag name is required."
+        return 1
+    fi
+
+    tag_name=$1
+
+	git tag -d "$tag_name" || return 1
+
+    git push origin --delete "$tag_name" || return 1
+
+    echo "Tag '$tag_name' deleted successfully."
+}
+
+alias gtad=_gtad
 
 # rebase current branch on top of upstream remote changes
 function _greb() {

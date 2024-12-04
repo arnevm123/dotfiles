@@ -72,6 +72,7 @@ driveformat
 drivetype
 dupl
 eacch
+envars
 errgroup
 errwrap
 espa
@@ -192,6 +193,7 @@ mitchellh
 miterlimit
 mjpeg
 mjpegboundary
+mngr
 mobilecare
 mockdatabase
 mockmqtt
@@ -350,3 +352,4 @@ xlink
 yuki
 zerolog
 zilla
+zumtobel
