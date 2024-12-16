@@ -1,79 +1,64 @@
 #!/usr/bin/env bash
+switch_to() {
+	if [[ -z $TMUX ]]; then
+		tmux attach-session -t "$1"
+	else
+		tmux switch-client -t "$1"
+	fi
+}
+
+has_session() {
+	if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+		return 0
+	fi
+	tmux list-sessions | grep -q "^$1:"
+}
+
+hydrate() {
+	if [ -f "$2"/.tmux-sessionizer ] && [ -s "$2"/.tmux-sessionizer ]; then
+		tmux send-keys -t "$1" "source $2/.tmux-sessionizer $1" c-M
+	elif [ -f "$HOME"/.tmux-sessionizer ]; then
+		tmux send-keys -t "$1" "source $HOME/.tmux-sessionizer $1" c-M
+	fi
+}
 
 # List of folders
-folders=("Projects" "Personal" "Scratch" "Tools")
+folders=("$HOME/Projects" "$HOME/Personal" "$HOME/Scratch" "$HOME/Tools")
 
 # Generate find command to search within specified folders
+
 find_command="find "
 for folder in "${folders[@]}"; do
-	find_command+="$HOME/$folder "
+	find_command+="$folder "
 done
-find_command+="-mindepth 1 -maxdepth 1 -type d "
+find_command+="-mindepth 2 -maxdepth 2 -type f -name \".tmux-sessionizer\" | xargs -n1 dirname | sort -u"
+found_folders=$(eval "$find_command")
 
 if [[ $# -eq 1 ]]; then
 	selected=$1
 else
-	selected=$( (echo "home" && $find_command && echo "bin" && echo "create") | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
+	selected=$( (echo "home" && echo "$found_folders" && echo "bin" && echo "create") | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
 fi
 
 if [[ -z $selected ]]; then
 	exit 0
 fi
 
-selected="$HOME/$selected"
-selected_name=$(basename "$selected" | tr . _)
-
-if [[ "$selected_name" == "create" ]]; then
-	folder=$(printf "%s\n" "${folders[@]}" | fzf)
-	echo "Please enter the new folder name:"
-	read -r selected_name
-	selected="$HOME/$folder/$selected_name"
-	mkdir "$selected"
-fi
-
-if [[ "$selected_name" == "home" ]]; then
-	selected="$HOME"
-fi
-
-is_worktree=false
+full_path=$HOME/$selected
 if [[ $selected == *.git ]]; then
-	is_worktree=true
-	selected_name=${selected_name//_git/}
-	selected="$selected/develop"
+	full_path=$full_path/develop
+fi
+selected_name=$(basename "$selected" | tr . _)
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+	tmux new-session -ds "$selected_name" -c "$full_path"
+	hydrate "$selected_name" "$HOME/$selected"
 fi
 
-existingSession=$(tmux list-sessions -F '#S' tmux ls 2>/dev/null | grep "^$selected_name$")
-# wiki_path="$HOME/Wiki/wiki-$selected_name"
-
-if [[ -z $TMUX ]]; then
-	if [[ -z $existingSession ]]; then
-		tmux new-session -d -s "$selected_name" -c "$selected"
-
-		if $is_worktree; then
-			tmux new-window -t "$selected_name:2" -c "$selected" -n "develop"
-		else
-			tmux new-window -t "$selected_name:2" -c "$selected"
-		fi
-		tmux kill-window -t "$selected_name:1"
-		tmux new-window -t "$selected_name:1" -c "$selected"
-		tmux attach -t "$selected_name"
-	else
-		tmux attach -t "$selected_name"
-	fi
-else
-	if [[ -z $existingSession ]]; then
-		tmux new-session -d -s "$selected_name" -c "$selected"
-		# if [[ -d "$wiki_path" ]]; then
-		# 	tmux new-window -t "$selected_name:8" -c "$wiki_path" -n "Wiki"
-		# fi
-
-		if $is_worktree; then
-			tmux new-window -t "$selected_name:2" -c "$selected" -n "develop"
-		else
-			tmux new-window -t "$selected_name:2" -c "$selected"
-		fi
-
-		tmux switch-client -t "$selected_name:1"
-	fi
-	tmux switch-client -t "$selected_name"
+if ! has_session "$selected_name"; then
+	tmux new-session -ds "$selected_name" -c "$full_path"
+	hydrate "$selected_name" "$HOME/$selected"
 fi
+
+switch_to "$selected_name"
