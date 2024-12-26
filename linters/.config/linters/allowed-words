@@ -67,6 +67,7 @@ difflib
 digi
 digicom
 diskname
+displaytext
 downloadlogfiles
 driveformat
 drivetype
@@ -250,6 +251,7 @@ rawjob
 rebootdevice
 redeclared
 reloadcompleted
+resty
 resultsapi
 resulttype
 robfig

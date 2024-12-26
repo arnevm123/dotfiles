@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# List of folders
+folders=("Projects" "Personal" "Scratch" "Tools")
+
+# Generate find command to search within specified folders
+find_command="find "
+for folder in "${folders[@]}"; do
+	find_command+="$HOME/$folder "
+done
+find_command+="-mindepth 1 -maxdepth 1 -type d "
+
+if [[ $# -eq 1 ]]; then
+	selected=$1
+else
+	selected=$( (echo "home" && $find_command && echo "bin" && echo "create") | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
+fi
+
+if [[ -z $selected ]]; then
+	exit 0
+fi
+
+selected="$HOME/$selected"
+selected_name=$(basename "$selected" | tr . _)
+
+if [[ "$selected_name" == "create" ]]; then
+	folder=$(printf "%s\n" "${folders[@]}" | fzf)
+	echo "Please enter the new folder name:"
+	read -r selected_name
+	selected="$HOME/$folder/$selected_name"
+	mkdir "$selected"
+fi
+
+if [[ "$selected_name" == "home" ]]; then
+	selected="$HOME"
+fi
+
+is_worktree=false
+if [[ $selected == *.git ]]; then
+	is_worktree=true
+	selected_name=${selected_name//_git/}
+	selected="$selected/develop"
+fi
+
+existingSession=$(tmux list-sessions -F '#S' tmux ls 2>/dev/null | grep "^$selected_name$")
+# wiki_path="$HOME/Wiki/wiki-$selected_name"
+
+if [[ -z $TMUX ]]; then
+	if [[ -z $existingSession ]]; then
+		tmux new-session -d -s "$selected_name" -c "$selected"
+
+		if $is_worktree; then
+			tmux new-window -t "$selected_name:2" -c "$selected" -n "develop"
+		else
+			tmux new-window -t "$selected_name:2" -c "$selected"
+		fi
+		tmux kill-window -t "$selected_name:1"
+		tmux new-window -t "$selected_name:1" -c "$selected"
+		tmux attach -t "$selected_name"
+	else
+		tmux attach -t "$selected_name"
+	fi
+else
+	if [[ -z $existingSession ]]; then
+		tmux new-session -d -s "$selected_name" -c "$selected"
+		# if [[ -d "$wiki_path" ]]; then
+		# 	tmux new-window -t "$selected_name:8" -c "$wiki_path" -n "Wiki"
+		# fi
+
+		if $is_worktree; then
+			tmux new-window -t "$selected_name:2" -c "$selected" -n "develop"
+		else
+			tmux new-window -t "$selected_name:2" -c "$selected"
+		fi
+
+		tmux switch-client -t "$selected_name:1"
+	fi
+	tmux switch-client -t "$selected_name"
+fi

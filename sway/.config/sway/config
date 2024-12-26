@@ -159,16 +159,13 @@ exec firefox; \
 exec thunderbird; \
 exec spotify; \
 exec flatpak run com.slack.Slack; \
-exec chromium-browser; \
 workspace $ws3; \
 exec foot
 
 # default desktops
 assign [app_id="org.mozilla.thunderbird"] workspace number $ws5
 assign [class="Slack"] workspace number $ws5
-assign [class="Spotify"] workspace number $ws7
-assign [class="Chromium-browser"] workspace number $ws4
-# assign [class="floorp"] workspace number $ws8
+assign [class="Spotify"] workspace number $ws8
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1

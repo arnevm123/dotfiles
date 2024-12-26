@@ -22,22 +22,75 @@ hydrate() {
 	fi
 }
 
+# ANSI color codes
+GREEN='\033[32m'
+YELLOW='\033[33m'
+RESET='\033[0m'
+BOLD='\033[1m'
 # List of folders
 folders=("$HOME/Projects" "$HOME/Personal" "$HOME/Scratch" "$HOME/Tools")
 
 # Generate find command to search within specified folders
-
-find_command="find "
+find_command="find -L "
 for folder in "${folders[@]}"; do
 	find_command+="$folder "
 done
-find_command+="-mindepth 2 -maxdepth 2 -type f -name \".tmux-sessionizer\" | xargs -n1 dirname | sort -u"
+find_command+="-mindepth 1 -maxdepth 2 -type f -name \".tmux-sessionizer\" | xargs -n1 dirname | sort -u"
 found_folders=$(eval "$find_command")
 
 if [[ $# -eq 1 ]]; then
 	selected=$1
 else
-	selected=$( (echo "home" && echo "$found_folders" && echo "bin" && echo "create") | sed 's#^\(/[^/]*\)\{2\}/##' | fzf)
+	# Get list of active tmux sessions
+	active_sessions=$(tmux list-sessions 2>/dev/null | cut -d: -f1 || echo "")
+
+	# Get current session if inside tmux
+	current_session=""
+	if [[ -n $TMUX ]]; then
+		current_session=$(tmux display-message -p '#S')
+	fi
+
+	# Format the default entries
+	# Handle fixed entries first
+	fixed_entries=$(
+		# echo "${BOLD}${YELLOW}+${RESET} create"
+		echo "${BOLD}${YELLOW}~${RESET} home"
+	)
+
+	# Process and sort the project folders
+	sorted_folders=$(
+		echo "$found_folders" |
+			sed 's#^\(/[^/]*\)\{2\}/##' |
+			while read -r folder; do
+				folder_name=$(basename "$folder" | tr . _)
+				if [[ "$folder_name" == "$current_session" ]]; then
+					continue
+				elif echo "$active_sessions" | grep -q "^${folder_name}$"; then
+					# Add to bottom with green arrow
+					echo "1:${GREEN}>${RESET} ${folder}"
+				else
+					# Add to top with dot
+					echo "2:• ${folder}"
+				fi
+			done |
+			sort -t: -k1,1 -k2 |
+			cut -d: -f2-
+	)
+
+	# Combine fixed entries with sorted folders
+	all_entries=$(echo -e "${sorted_folders}\n${fixed_entries}")
+
+	# Create header with current session
+	header="NO CURRENT SESSION"
+	if [[ -n $current_session ]]; then
+		header=$(echo -e "> ${current_session}")
+	fi
+
+	selected=$(echo -e "$all_entries" | fzf --ansi --header="$header" \
+		--bind "ctrl-x:execute(tmux kill-session -t {+} && echo {+} killed > /dev/tty)")
+
+	# Remove the indicators
+	selected=$(echo "$selected" | sed -E 's/^(\033\[[0-9;]*m)?[>•~] //')
 fi
 
 if [[ -z $selected ]]; then
