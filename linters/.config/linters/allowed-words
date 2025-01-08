@@ -1,5 +1,6 @@
 aeroscout
 alaris
+alarmlist
 alecthomas
 alertmanager
 alertmessages
@@ -124,12 +125,14 @@ gopls
 gopsutil
 goqu
 gorm
+gosec
 gosimple
 gotest
 gotests
 gotestsum
 hasbackup
 headerf
+heathcheck
 hybridgroup
 iferr
 ifnull
@@ -170,6 +173,7 @@ lleffects
 lljob
 lljobs
 llvirtualdevicedevices
+lmessage
 loadfile
 localtime
 logfile

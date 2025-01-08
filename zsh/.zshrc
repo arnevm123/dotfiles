@@ -185,7 +185,7 @@ alias zshsrc="source ~/.zshrc"
 alias gcml='gcm && ggl && git fetch'
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
 alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} git branch -D '{}'"
-alias vpn_tcit='sudo openfortivpn -c /etc/openfortivpn/tcit_vpn.conf --trusted-cert 15ef9850eb4025223a6d60a05c4a0378f6a7e34f0e50c69ec3e5f31d4a4c1ae1'
+alias vpn_tcit='sudo openfortivpn -c /etc/openfortivpn/tcit_vpn.conf'
 alias vpn_uzgent='echo "VJyT6GMmX1mp" ; echo "VJyT6GMmX1mp" | sudo openconnect -u AxioMob_SUP_prd --passwd-on-stdin --protocol nc vpn.uzgent.be/telecom-it --servercert pin-sha256:s2yMnasfCWxKWltIfQDi+91RNQHjcVZ6osV79mWsPbc='
 # alias -g P='| pe | fzf | read filename; [ ! -z $filename ] && vim $filename'
 _tkfzf() {
