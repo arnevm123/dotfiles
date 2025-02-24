@@ -55,8 +55,10 @@ davecgh
 dbbackup
 dbentry
 dbrestore
+dbtx
 dedup
 denisenkom
+denpeshkov
 departmentdistribution
 desbt
 descd
@@ -74,6 +76,7 @@ driveformat
 drivetype
 dupl
 eacch
+emailmodule
 envars
 errgroup
 errwrap
@@ -133,7 +136,9 @@ gotestsum
 hasbackup
 headerf
 heathcheck
+httpswagger
 hybridgroup
+iface
 iferr
 ifnull
 incrementalbackup
@@ -154,6 +159,7 @@ lalala
 lastlogon
 lastupdated
 ldevice
+ldevicefunctions
 ldevices
 ldevicetype
 ldevicetypes
@@ -166,6 +172,7 @@ lemstesttype
 licenseunmatched
 lightingtest
 linkdevice
+linkdown
 litecom
 llefect
 lleffect
@@ -222,6 +229,7 @@ mysqldump
 mysqlimport
 natefinch
 nbsp
+netplan
 newname
 noctx
 nolint
@@ -232,6 +240,7 @@ numericrotation
 oapclients
 objx
 onconnect
+onlink
 paho
 pahomqtt
 parsefloat
@@ -254,6 +263,7 @@ pushd
 rawjob
 rebootdevice
 redeclared
+rediser
 reloadcompleted
 resty
 resultsapi
@@ -268,6 +278,7 @@ rootfs
 rotatedaily
 rssi
 samber
+sarama
 sdump
 sendinitsms
 sendinitsmsremovesimid
@@ -322,6 +333,7 @@ synccontacts
 testprotocol
 testresult
 testtime
+timeframe
 timewriter
 tmpl
 totalleds

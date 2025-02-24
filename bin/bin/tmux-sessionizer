@@ -1,26 +1,4 @@
 #!/usr/bin/env bash
-switch_to() {
-	if [[ -z $TMUX ]]; then
-		tmux attach-session -t "$1"
-	else
-		tmux switch-client -t "$1"
-	fi
-}
-
-has_session() {
-	if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-		return 0
-	fi
-	tmux list-sessions | grep -q "^$1:"
-}
-
-hydrate() {
-	if [ -f "$2"/.tmux-sessionizer ] && [ -s "$2"/.tmux-sessionizer ]; then
-		tmux send-keys -t "$1" "source $2/.tmux-sessionizer $1" c-M
-	elif [ -f "$HOME"/.tmux-sessionizer ]; then
-		tmux send-keys -t "$1" "source $HOME/.tmux-sessionizer $1" c-M
-	fi
-}
 
 # ANSI color codes
 GREEN='\033[32m'
@@ -97,21 +75,30 @@ if [[ -z $selected ]]; then
 	exit 0
 fi
 
+is_worktree=false
 full_path=$HOME/$selected
 if [[ $selected == *.git ]]; then
 	full_path=$full_path/develop
+	selected=${selected//\.git/}
+	is_worktree=true
 fi
+
 selected_name=$(basename "$selected" | tr . _)
-tmux_running=$(pgrep tmux)
 
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+if ! tmux list-sessions 2>/dev/null | grep -q "^$1:"; then
 	tmux new-session -ds "$selected_name" -c "$full_path"
-	hydrate "$selected_name" "$HOME/$selected"
+
+	if $is_worktree; then
+		tmux new-window -t "$selected_name:2" -c "$full_path" -n "develop"
+	else
+		tmux new-window -t "$selected_name:2" -c "$full_path"
+	fi
+	tmux kill-window -t "$selected_name:1"
+	tmux new-window -t "$selected_name:1" -c "$full_path"
 fi
 
-if ! has_session "$selected_name"; then
-	tmux new-session -ds "$selected_name" -c "$full_path"
-	hydrate "$selected_name" "$HOME/$selected"
+if [[ -z $TMUX ]]; then
+	tmux attach-session -t "$selected_name"
+else
+	tmux switch-client -t "$selected_name"
 fi
-
-switch_to "$selected_name"

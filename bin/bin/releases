@@ -1,0 +1,19 @@
+#!/bin/bash
+
+attempts=0
+max_attempts=10
+
+while [[ -z "$project" && $attempts -lt $max_attempts ]]; do
+	attempts=$((attempts + 1))
+	project=$(git log -n $attempts --pretty=%D | grep -oP '(?<=origin/)[a-zA-Z]{1,4}(?=-\d{1,6})' | head -n 1)
+done
+
+# Check if a project name was found
+if [[ -z "$project" ]]; then
+	echo "No project name found in the last $max_attempts commits, opening jira project page."
+	xdg-open https://tcit.atlassian.net/projects
+	exit 1
+fi
+
+echo "Opening release page for $project"
+xdg-open https://tcit.atlassian.net/projects/"$project"?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page

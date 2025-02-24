@@ -194,6 +194,9 @@ _tkfzf() {
 		tmux kill-session -t $session
 	fi
 }
+_tko() {
+	tmux list-sessions | awk -v cur="$(tmux display-message -p '#{session_name}')" '$1 != cur":" {print $1}' | xargs -r tmux kill-session -t
+}
 alias tkfzf=_tkfzf
 alias fix='nvim -q .lint.txt'
 alias pwip='gwip && ggp'
@@ -202,6 +205,7 @@ alias punwip='gunwip && ggf'
 alias tms='tmux-sessionizer'
 alias th='tmux-sessionizer home'
 alias tks='tmux kill-server'
+alias tko=_tko
 alias open='xdg-open'
 alias ta='tmux attach'
 alias tl='tmuxifier load-window'
@@ -229,6 +233,7 @@ _setbg () {
     swaybg -i ${1} -m fill &!
 }
 alias setbg=_setbg
+
 _gmove() {
   git stash -- $(git diff --staged --name-only) &&
   gwip ;
@@ -237,6 +242,7 @@ _gmove() {
   git stash pop
 }
 alias gmove=_gmove
+
 _fzfhash() {
 	git log --oneline --no-decorate --format='%h %<(40,trunc)%s %D' | fzf --preview 'GIT_EXTERNAL_DIFF="difft --display inline --width=$FZF_PREVIEW_COLUMNS --color=always" git show --ext-diff {1}' | awk '{ print $1 }'
 }
@@ -271,25 +277,47 @@ _mkvim() {
 alias mkvim=_mkvim
 
 _gtap() {
-    if [[ -z "$1" ]]; then
-        echo "Tag name is required."
-        return 1
-    fi
+	if [[ -z "$1" ]]; then
+		echo "Tag name is required."
+		return 1
+	fi
 
-    tag_name=$1
-    message=$2
+	tag_name=$1
+	message=$2
 
-    if [[ -n "$message" ]]; then
-        git tag -a "$tag_name" -m "$message" || return 1
-    else
-        git tag "$tag_name" || return 1
-    fi
 
-    git push origin "$tag_name" || return 1
+	if [[ -n "$message" ]]; then
+		echo "Push tag $tag_name with message $message? (y/n)"
+	else
+		echo "Push tag $tag_name? (y/n)"
+	fi
+	read -r yn
+	case $yn in
+		[Yy]* ) git tag -d "$tag_name" || return 1;;
+		* ) echo "Aborted."; return 1;;
+	esac
 
-    echo "Tag '$tag_name' created and pushed successfully."
+	if [[ -n "$message" ]]; then
+		git tag -a "$tag_name" -m "$message" || return 1
+	else
+		git tag "$tag_name" || return 1
+	fi
+
+	git push origin "$tag_name" || return 1
+
+	echo "Tag '$tag_name' created and pushed successfully."
+	echo "DON'T FORGET TO PUBLISH THE RELEASE ON JIRA!"
+	releases
 }
+
+_gtp() {
+    git tag "$1"
+	releases
+}
+
 alias gtap=_gtap
+alias gtp=_gtp
+alias gte='echo $1 && releases'
 
 _gtad() {
     if [[ -z "$1" ]]; then
@@ -297,7 +325,16 @@ _gtad() {
         return 1
     fi
 
+
     tag_name=$1
+
+	echo "Delete tag $tag_name?"
+
+	read p "(y/n) " yn
+	case $yn in
+		[Yy]* ) git tag -d "$tag_name" || return 1;;
+		* ) echo "Aborted."; return 1;;
+	esac
 
 	git tag -d "$tag_name" || return 1
 
@@ -341,3 +378,4 @@ alias wf='nmcli device wifi connect'
 function git_main_branch() {
   echo $(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
 }
+alias pwdcp="pwd | tr -d '\n' | wl-copy"

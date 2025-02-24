@@ -163,7 +163,7 @@ workspace $ws3; \
 exec foot
 
 # default desktops
-assign [app_id="org.mozilla.thunderbird"] workspace number $ws5
+assign [app_id="net.thunderbird.Thunderbird"] workspace number $ws5
 assign [class="Slack"] workspace number $ws5
 assign [class="Spotify"] workspace number $ws8
 
