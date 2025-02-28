@@ -1,0 +1,8 @@
+#!/bin/bash
+type="$1"
+shift
+message="$*"
+ticket=$(git branch --show-current | grep -oP '^([a-zA-Z]{1,4}-\d{1,6})')
+
+git commit -m "$type [$ticket]: $message"
+
