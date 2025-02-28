@@ -1,8 +1,25 @@
 #!/bin/bash
+VALID_TYPES=("feat" "fix" "chore" "docs" "style" "refactor" "perf" "test" "ci" "build" "revert" "boyscout")
 type="$1"
 shift
 message="$*"
 ticket=$(git branch --show-current | grep -oP '^([a-zA-Z]{1,4}-\d{1,6})')
 
+if [[ ! " ${VALID_TYPES[*]} " =~ " ${type} " ]]; then
+    echo "❌ Invalid commit type: $type"
+    echo "Allowed types: ${VALID_TYPES[*]}"
+    exit 1
+fi
+
+if [[ -z "$message" ]]; then
+    echo "❌ Message is empty."
+    exit 1
+fi
+
+if [[ -z "$ticket" ]]; then
+	ticket="NO TICKET"
+fi
+
+echo git commit -m "$type [$ticket]: $message"
 git commit -m "$type [$ticket]: $message"
 
