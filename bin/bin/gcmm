@@ -20,6 +20,6 @@ if [[ -z "$ticket" ]]; then
 	ticket="NO TICKET"
 fi
 
-echo git commit -m "$type [$ticket]: $message"
-git commit -m "$type [$ticket]: $message"
+echo git commit -m "${type}[$ticket]: $message"
+git commit -m "${type}[$ticket]: $message"
 

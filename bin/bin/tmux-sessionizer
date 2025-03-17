@@ -6,7 +6,7 @@ YELLOW='\033[33m'
 RESET='\033[0m'
 BOLD='\033[1m'
 # List of folders
-folders=("$HOME/Projects" "$HOME/Personal" "$HOME/Scratch" "$HOME/Tools")
+folders=("$HOME/Projects" "$HOME/Personal" "$HOME/Scratch" "$HOME/Tools" "$HOME/Projects/infrastructure.git/develop/system-requirements/ansible")
 
 # Generate find command to search within specified folders
 find_command="find -L "
@@ -40,7 +40,8 @@ else
 		echo "$found_folders" |
 			sed 's#^\(/[^/]*\)\{2\}/##' |
 			while read -r folder; do
-				folder_name=$(basename "$folder" | tr . _)
+				folder_name=${folder//\.git/}
+				folder_name=$(basename "$folder_name" | tr . _)
 				if [[ "$folder_name" == "$current_session" ]]; then
 					continue
 				elif echo "$active_sessions" | grep -q "^${folder_name}$"; then
@@ -95,6 +96,7 @@ if ! tmux list-sessions 2>/dev/null | grep -q "^$1:"; then
 	fi
 	tmux kill-window -t "$selected_name:1"
 	tmux new-window -t "$selected_name:1" -c "$full_path"
+	# disown
 fi
 
 if [[ -z $TMUX ]]; then

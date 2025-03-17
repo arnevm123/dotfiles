@@ -104,7 +104,9 @@ freememory
 fset
 fstype
 fuzzel
+fuzzyfinder
 gcflags
+gianluca
 ginswagger
 gliffy
 goarch
@@ -133,6 +135,7 @@ gosimple
 gotest
 gotests
 gotestsum
+gotmux
 hasbackup
 headerf
 heathcheck
@@ -303,6 +306,7 @@ softwareversion
 softwareversions
 sourcegraph
 spectralink
+sqlc
 sqldb
 sqlhost
 sqlip
@@ -338,6 +342,10 @@ timewriter
 tmpl
 totalleds
 totalmemory
+uacgroup
+uacgroupuser
+uacuser
+uacusers
 unmarshaling
 unmarshall
 unmarshalling
