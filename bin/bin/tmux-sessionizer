@@ -6,7 +6,15 @@ YELLOW='\033[33m'
 RESET='\033[0m'
 BOLD='\033[1m'
 # List of folders
-folders=("$HOME/Projects" "$HOME/Personal" "$HOME/Scratch" "$HOME/Tools" "$HOME/Projects/infrastructure.git/develop/system-requirements/ansible")
+folders=(
+	"$HOME/Projects"
+	"$HOME/Personal"
+	"$HOME/Scratch"
+	"$HOME/Tools"
+	"$HOME/Projects/infrastructure.git/develop/system-requirements/ansible"
+	"$HOME/Projects/lynxPositioning/connectors/"
+	"$HOME/Projects/lynxPositioning/tools/"
+)
 
 # Generate find command to search within specified folders
 find_command="find -L "
@@ -65,15 +73,12 @@ else
 		header=$(echo -e "> ${current_session}")
 	fi
 
-	selected=$(echo -e "$all_entries" | fzf --ansi --header="$header" \
-		--bind "ctrl-x:execute(tmux kill-session -t {+} && echo {+} killed > /dev/tty)")
+	selected=$(echo -e "$all_entries" | fzf --ansi --header="$header" --bind 'ctrl-x:execute-silent(echo {} >> /tmp/fzf_tmp)+accept' --expect=ctrl-x)
 
-	# Remove the indicators
-	selected=$(echo "$selected" | sed -E 's/^(\033\[[0-9;]*m)?[>•~] //')
-fi
+	key=$(head -1 <<<"$selected")
+	selection=$(tail -n +2 <<<"$selected")
+	selected=$(echo "$selection" | sed -E 's/^(\033\[[0-9;]*m)?[>•~] //')
 
-if [[ -z $selected ]]; then
-	exit 0
 fi
 
 is_worktree=false
@@ -85,6 +90,17 @@ if [[ $selected == *.git ]]; then
 fi
 
 selected_name=$(basename "$selected" | tr . _)
+
+
+if [ "$key" = "ctrl-x" ]; then
+	tmux kill-session -t "$selected_name"
+	tmux-sessionizer
+	exit 0
+fi
+
+if [[ -z $selected ]]; then
+	exit 0
+fi
 
 if ! tmux list-sessions 2>/dev/null | grep -q "^$1:"; then
 	tmux new-session -ds "$selected_name" -c "$full_path"

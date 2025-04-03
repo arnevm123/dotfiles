@@ -293,13 +293,15 @@ _gtap() {
 	fi
 	read -r yn
 	case $yn in
-		[Yy]* ) git tag -d "$tag_name" || return 1;;
+		[Yy]* ) echo "Adding tag $tag_name" || return 1;;
 		* ) echo "Aborted."; return 1;;
 	esac
 
 	if [[ -n "$message" ]]; then
+		echo "Tag '$tag_name' created and pushed successfully."
 		git tag -a "$tag_name" -m "$message" || return 1
 	else
+		echo "Tag '$tag_name' created and pushed successfully."
 		git tag "$tag_name" || return 1
 	fi
 
@@ -328,11 +330,11 @@ _gtad() {
 
     tag_name=$1
 
-	echo "Delete tag $tag_name?"
+	echo "Delete tag $tag_name? (y/n)"
 
-	read p "(y/n) " yn
+	read -r yn
 	case $yn in
-		[Yy]* ) git tag -d "$tag_name" || return 1;;
+		[Yy]* ) echo "Deleting tag $tag_name" || return 1;;
 		* ) echo "Aborted."; return 1;;
 	esac
 
@@ -379,3 +381,4 @@ function git_main_branch() {
   echo $(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
 }
 alias pwdcp="pwd | tr -d '\n' | wl-copy"
+alias tt='touch .tmux-sessionizer'
