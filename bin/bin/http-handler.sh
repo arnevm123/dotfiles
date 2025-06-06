@@ -1,3 +1,3 @@
 #!/bin/sh
-swaymsg exec firefox "$@" >/dev/null 2>&1
-swaymsg '[app_id = "org.mozilla.firefox"] focus' >/dev/null 2>&1
+flatpak run net.waterfox.waterfox "$@"
+swaymsg '[app_id="waterfox"] focus' >/dev/null 2>&1

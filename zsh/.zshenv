@@ -5,6 +5,7 @@ export GOROOT=$HOME/go
 export GOPATH=$HOME/.gopath
 export GOTESTS_TEMPLATE=testify
 export VALE_CONFIG_PATH="/home/arne/.config/linters/vale/vale.ini"
+export ODIN_ROOT="/home/arne/Tools/Odin"
 path+=/bin
 path+=/sbin
 path+=/usr/local/bin
@@ -16,5 +17,6 @@ path+=$HOME/.local/share/bob/nvim-bin
 path+=$HOME/.deno/bin
 path+=$GOROOT/bin
 path+=$GOPATH/bin
+path+=$ODIN_ROOT
 
 export PATH

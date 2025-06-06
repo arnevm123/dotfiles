@@ -3,12 +3,12 @@
 		"position": "bottom",
 		"modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
 		"modules-center": [""],
-		"modules-right": ["custom/notification", "network", "pulseaudio", "custom/temperature", "backlight", "battery", "clock", "tray"],
+		"modules-right": ["network", "custom/notification", "pulseaudio", "custom/temperature", "backlight", "battery", "clock", "tray"],
 		"sway/window": {
 			"max-length": 50
 		},
 		"network": {
-			"format-wifi": " {essid}  {signalStrength}%",
+			"format-wifi": "<span color='#999' font-size='70%' rise='-2000'>{signalStrength}%</span> {essid}",
 			"format-ethernet": " : {ipaddr}/{cidr}",
 			"format-linked": "  (No IP)",
 			"format-disconnected": " ⚠",
@@ -20,8 +20,8 @@
 			//"format-icons": ["", ""],
 			//"format-icons": ["", ""],
 			"format-icons": [""],
-			"on-scroll-down": "light -A 1",
-			"on-scroll-up": "light -U 1"
+			"on-scroll-down": "light -U 5",
+			"on-scroll-up": "light -A 5"
 		},
 		"pulseaudio": {
 			"format": "{icon} {volume}",
@@ -75,7 +75,7 @@
 			"format": "{icon}",
 			"format-icons": {
 				"notification": "<span foreground='red'><sup></sup></span>",
-				"none": "",
+				"none": "  ",
 				"dnd-notification": "<span foreground='red'><sup></sup></span>",
 				"dnd-none": "",
 				"inhibited-notification": "<span foreground='orange'><sup></sup></span>",

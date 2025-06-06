@@ -22,9 +22,9 @@ titlebar_border_thickness 0
 # GET DEM BORDERS OUT OF HERE
 #
 # Thanks Childz
-for_window [class="^.*"] border pixel 2
-                          # class                 border  backgr. text    indicator child_border
-for_window [class="^.*"] client.focused          #2e9ef4 #285577 #ffffff #2e9ef4   #285577
+for_window [class="^.*"] border pixel 5
+# class                 border  backgr. text    indicator child_border
+client.focused          #2e9ef4 #285577 #ffffff #2e9ef4   #285577
 smart_borders on
 # titlebar_border_thickness 1
 
@@ -59,6 +59,7 @@ bindsym $mod+Return exec foot
 bindsym $mod+Shift+p exec wlogout
 bindsym $mod+Shift+m exec ~/bin/swap
 bindsym $mod+Shift+d exec ~/bin/wl-present mirror eDP-1 &
+bindsym $mod+Shift+c exec ~/bin/lidclose.sh
 bindsym $mod+Shift+f exec ~/bin/wl-present freeze
 bindsym $mod+Shift+g exec ~/bin/wl-present unfreeze
 bindsym $mod+Shift+w exec swaymsg "output eDP-1 toggle"
@@ -344,14 +345,15 @@ bindsym $mod+shift+ctrl+m [workspace=".*"] move to workspace 10; workspace numbe
 
 for_window [class="^.*"] inhibit_idle fullscreen
 for_window [app_id="^.*"] inhibit_idle fullscreen
+focus_on_window_activation focus
 
 exec swayidle -w \
-    timeout 800 'swaylock -f' \
+    timeout 800 'gtklock -d -S' \
     timeout 810 'swaymsg "output * dpms off"' \
 		resume 'swaymsg "output * dpms on"' \
-    timeout 5 'if pgrep -x swaylock; then pactl set-sink-mute @DEFAULT_SINK@ 1 &&  playerctl pause && swaymsg "output * dpms off"; fi' \
+    timeout 5 'if pgrep -x gtklock; then pactl set-sink-mute @DEFAULT_SINK@ 1 &&  playerctl pause && swaymsg "output * dpms off"; fi' \
 		resume 'swaymsg "output * dpms on"' \
-	before-sleep 'swaylock -f'\
+	before-sleep 'gtklock -d -S'\
 
 
 exec swaymsg workspace '1'

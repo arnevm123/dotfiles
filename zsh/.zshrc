@@ -180,9 +180,10 @@ alias conf=fzf-conf
 alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd || popd; else vim .; fi'
 alias emacsconf='if [[ "$PWD" != "$EMACS_CONF" ]]; then pushd "$EMACS_CONF" && vim . && popd || popd; else vim .; fi'
 alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf && popd || popd; else vim .tmux.conf; fi'
+alias sshconf='if [[ "$PWD" != "$HOME/.ssh" ]]; then pushd $HOME/.ssh && vim config && popd || popd; else vim config; fi'
 alias zshconf=_zshconf
 alias zshsrc="source ~/.zshrc"
-alias gcml='gcm && ggl && git fetch'
+alias gcml='gfo && gcm && ggl'
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
 alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} git branch -D '{}'"
 alias vpn_tcit='sudo openfortivpn -c /etc/openfortivpn/tcit_vpn.conf'
@@ -219,6 +220,14 @@ alias cdr='cd $(git rev-parse --show-toplevel)'
 alias GW="export GOOS=windows"
 alias GL="export GOOS=linux"
 alias GU="unset GOOS"
+alias cdg=_cdg
+_cdg () {
+    if git rev-parse --is-inside-work-tree &> /dev/null; then
+        cd "$(git rev-parse --show-toplevel)"
+    else
+        echo "Not inside a Git repository."
+    fi
+}
 alias cdt=_cdt
 _cdt () {
 	if tmux info &> /dev/null; then
@@ -362,6 +371,7 @@ function _dcsh() {
 
 alias dcu='docker compose up -d'
 alias dcd='docker compose down'
+alias dcr='docker compose down && docker compose up -d'
 alias dcpull='docker compose pull'
 alias dclogs='docker compose logs -f --tail="150" '
 alias dcl='docker compose logs -f --tail="150" '
@@ -382,3 +392,55 @@ function git_main_branch() {
 }
 alias pwdcp="pwd | tr -d '\n' | wl-copy"
 alias tt='touch .tmux-sessionizer'
+cd() {
+    if [ $# -eq 0 ]; then
+        # If no argument, go to home dir (default cd behavior)
+        builtin cd
+    elif [ -d "$1" ]; then
+        # If directory exists, use normal cd
+        builtin cd "$1"
+	elif [ "$1" = "-" ]; then
+		builtin cd -
+    else
+		echo "Fzf for directory $1? (y/n)"
+		read -r yn
+		case $yn in
+			[Yy]* ) ci "$1";;
+			* ) echo "Aborted.";;
+		esac
+    fi
+}
+
+cl() {
+    local dir
+	dir=$(find $(pwd) -type d | grep "^$(pwd)" | fzf) && cd "$dir"
+}
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh --disable-up-arrow)"
+qq() {
+    clear
+
+    logpath="$TMPDIR/q"
+    if [[ -z "$TMPDIR" ]]; then
+        logpath="/tmp/q"
+    fi
+
+    if [[ ! -f "$logpath" ]]; then
+        echo 'Q LOG' > "$logpath"
+    fi
+
+    tail -100f -- "$logpath"
+}
+
+rmqq() {
+    logpath="$TMPDIR/q"
+    if [[ -z "$TMPDIR" ]]; then
+        logpath="/tmp/q"
+    fi
+    if [[ -f "$logpath" ]]; then
+        rm "$logpath"
+    fi
+    qq
+}

@@ -1,6 +1,6 @@
 {
     "label" : "lock",
-    "action" : "swaylock",
+    "action" : "gtklock -d -S",
     "text" : "Q",
     "keybind" : "q"
 }

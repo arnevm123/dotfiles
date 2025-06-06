@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Simple script to fzf over ~/.ssh/config entries
+
+CONFIG_FILE="$HOME/.ssh/config"
+
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "No SSH config file found at $CONFIG_FILE"
+    exit 1
+fi
+
+# Extract host entries (ignoring wildcards and other special cases)
+HOSTS=$(grep -iE '^Host ' "$CONFIG_FILE" | grep -v '[?*]' | awk '{print $2}' | sort)
+
+if [ -z "$HOSTS" ]; then
+    echo "No valid hosts found in $CONFIG_FILE"
+    exit 1
+fi
+
+SELECTED=$(echo "$HOSTS" | fzf --height 40% --reverse --prompt="Select SSH host: ")
+
+if [ -n "$SELECTED" ]; then
+    echo "Connecting to $SELECTED..."
+    ssh "$SELECTED"
+else
+    echo "No host selected"
+fi
