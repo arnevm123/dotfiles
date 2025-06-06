@@ -3,19 +3,20 @@
 		"position": "bottom",
 		"modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
 		"modules-center": [""],
-		"modules-right": ["network", "custom/notification", "pulseaudio", "custom/temperature", "backlight", "battery", "clock", "tray"],
+		"modules-right": ["custom/notification", "network", "pulseaudio", "custom/temperature", "backlight", "battery", "clock", "tray"],
 		"sway/window": {
 			"max-length": 50
 		},
 		"network": {
-			"format-wifi": "<span color='#999' font-size='70%' rise='-2000'>{signalStrength}%</span> {essid}",
-			"format-ethernet": " : {ipaddr}/{cidr}",
+			"format-wifi": " <span color='#999' font-size='70%' rise='-2000'>{signalStrength}%</span>",
+			"format-ethernet": " ",
 			"format-linked": "  (No IP)",
-			"format-disconnected": " ⚠",
-			"format-alt": "{ifname}: {ipaddr}/{cidr}"
+			"format-disconnected": "󰖪",
+			"tooltip": true,
+			"tooltip-format": "Connected to {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%"
 		},
 		"backlight": {
-			"format": "{icon} {percent}%",
+			"format": "{icon}<span color='#999' font-size='70%' rise='-2000'>{percent}%</span>",
 			"format-alt-click": "click-right",
 			//"format-icons": ["", ""],
 			//"format-icons": ["", ""],
@@ -24,9 +25,9 @@
 			"on-scroll-up": "light -A 5"
 		},
 		"pulseaudio": {
-			"format": "{icon} {volume}",
+			"format": "{icon} <span color='#999' font-size='70%' rise='-2000'>{volume}%</span>",
 			"format-alt": "{icon} {volume}",
-			"format-muted": "{icon} X{volume}",
+			"format-muted": "󰸈 <span color='#999' font-size='70%' rise='-2000'>{volume}%</span>",
 			"format-alt-click": "click-right",
 			"format-icons": {
 				"headphones": "",
@@ -35,16 +36,16 @@
 				"phone": "",
 				"portable": "",
 				"car": "",
-				"default": ["", "", ""]
+				"default": ["󰕿", "󰖀", "󰕾"]
 			},
 			"scroll-step": 5,
 			"on-click": "pavucontrol",
-			"tooltip": false
+			"tooltip": true
 		},
 		"battery": {
-			"format": "{icon} {capacity}%",
-			"format-charging": " {capacity}%",
-			"format-plugged": " {capacity}%",
+			"format": " {icon}<span color='#999' font-size='70%' rise='-2000'>{capacity}%</span>",
+			"format-charging": "  <span color='#999' font-size='70%' rise='-2000'>{capacity}%</span>",
+			"format-plugged": "  <span color='#999' font-size='70%' rise='-2000'>{capacity}%</span>",
 			"format-icons": ["", "", "", "", ""]
 		},
 		"clock": {
@@ -53,7 +54,7 @@
 			"tooltip": false
 		},
 		"custom/temperature": {
-			"format": " {} ",
+			"format": "  <span color='#999' font-size='70%' rise='-2000'>{}</span>",
 			"exec": "~/.cargo/bin/wl-gammarelay-rs watch {t}",
 			"on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +100",
 			"on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100"
@@ -77,11 +78,11 @@
 				"notification": "<span foreground='red'><sup></sup></span>",
 				"none": "  ",
 				"dnd-notification": "<span foreground='red'><sup></sup></span>",
-				"dnd-none": "",
+				"dnd-none": "  ",
 				"inhibited-notification": "<span foreground='orange'><sup></sup></span>",
 				"inhibited-none": "",
 				"dnd-inhibited-notification": "<span foreground='orange'><sup></sup></span>",
-				"dnd-inhibited-none": ""
+				"dnd-inhibited-none": "  "
 			},
 			"return-type": "json",
 			"exec-if": "which swaync-client",

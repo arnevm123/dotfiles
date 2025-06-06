@@ -91,7 +91,6 @@ fi
 
 selected_name=$(basename "$selected" | tr . _)
 
-
 if [ "$key" = "ctrl-x" ]; then
 	tmux kill-session -t "$selected_name"
 	tmux-sessionizer
@@ -102,7 +101,7 @@ if [[ -z $selected ]]; then
 	exit 0
 fi
 
-if ! tmux list-sessions 2>/dev/null | grep -q "^$1:"; then
+if ! tmux list-sessions 2>/dev/null | grep -q "^$selected_name:"; then
 	tmux new-session -ds "$selected_name" -c "$full_path"
 
 	if $is_worktree; then
