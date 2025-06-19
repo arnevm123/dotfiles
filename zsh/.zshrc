@@ -381,7 +381,7 @@ alias dc='docker compose'
 
 alias gd='git dft'
 alias gyolo='git commit -am "`curl -sL https://whatthecommit.com/index.txt`" &&  ggp'
-alias rmfuu='fc -s "rm=rm -rf"'
+alias rmrf='fc -s "rm=rm -rf"'
 alias ggf=ggfl
 alias wft='nmcli device wifi connect tcitWifi-Enterprise'
 alias wfv='nmcli device wifi connect Visitors'
