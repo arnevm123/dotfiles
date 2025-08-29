@@ -46,7 +46,7 @@
 			"tooltip": true
 		},
 		"battery": {
-			"format": " {icon}<span color='#999' font-size='70%' rise='-2000'>{capacity}%</span>",
+			"format": " {icon} <span color='#999' font-size='70%' rise='-2000'>{capacity}%</span>",
 			"format-charging": "  <span color='#999' font-size='70%' rise='-2000'>{capacity}%</span>",
 			"format-plugged": "  <span color='#999' font-size='70%' rise='-2000'>{capacity}%</span>",
 			"format-icons": ["", "", "", "", ""]

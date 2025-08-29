@@ -175,6 +175,7 @@ alias m=make
 alias vi='\vim'
 alias vimm="NVIM_APPNAME=nvim-minimal nvim"
 alias mvim="NVIM_APPNAME=nativevim nvim"
+alias rvim="NVIM_APPNAME=nvim_repro nvim"
 alias noplug="NVIM_APPNAME=plugin-free-neovim nvim"
 alias conf=fzf-conf
 alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim . && popd || popd; else vim .; fi'
@@ -216,7 +217,6 @@ alias dbg="go build -gcflags='all=-N -l' -o debug && ./debug && rm debug"
 
 alias gfst="gfo && gst"
 alias cdnv="cd ~/.config/nvim"
-alias cdr='cd $(git rev-parse --show-toplevel)'
 alias GW="export GOOS=windows"
 alias GL="export GOOS=linux"
 alias GU="unset GOOS"
@@ -399,8 +399,10 @@ cd() {
     elif [ -d "$1" ]; then
         # If directory exists, use normal cd
         builtin cd "$1"
-	elif [ "$1" = "-" ]; then
-		builtin cd -
+	# elif [ "$1" = "-" ]; then
+	# 	builtin cd -
+	elif [[ "$1" == [-+]* ]]; then
+		builtin cd "$1"
     else
 		echo "Fzf for directory $1? (y/n)"
 		read -r yn
