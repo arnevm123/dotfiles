@@ -73,7 +73,16 @@ else
 		header=$(echo -e "> ${current_session}")
 	fi
 
-	selected=$(echo -e "$all_entries" | fzf --ansi --header="$header" --bind 'ctrl-x:execute-silent(echo {} >> /tmp/fzf_tmp)+accept' --expect=ctrl-x)
+	selected=$(
+		echo -e "$all_entries" | fzf \
+			--ansi \
+			--header="$header" \
+			--preview='lsd --icon always --group-dirs last --color always --oneline "$(echo {} | sed -E "s/^(\033\[[0-9;]*m)?[>•~] /\/home\/arne\//;; s/\.git$/.git\/develop/")"' \
+			--bind 'ctrl-x:execute-silent(echo {} >> /tmp/fzf_tmp)+accept' \
+			--expect=ctrl-x
+	)
+	# --preview='erd --color force -I --suppress-size -L 1 --layout inverted "$(echo {} | sed -E "s/^(\033\[[0-9;]*m)?[>•~] /\/home\/arne\//;; s/\.git$/.git\/develop/")"' \
+	# --preview='tmux capture-pane -pe -t "$(echo {} | sed -E "s/^(\033\[[0-9;]*m)?[>•~] //; s/\.git$//" | xargs basename)" | bat -p' \
 
 	key=$(head -1 <<<"$selected")
 	selection=$(tail -n +2 <<<"$selected")

@@ -68,30 +68,45 @@ fzf-git-branch() {
     git rev-parse HEAD > /dev/null 2>&1 || return
 
     if [[ $# -gt 0 ]]; then
-		git branch --all --sort=-committerdate |
-			grep -v HEAD |
-			fzf --query="$@" --height 50% --ansi --no-multi --preview-window right:65% \
-				--preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
-			sed "s/.* //"
+		(
+			git branch --all --sort=-committerdate | sed 's/^/branch: /'
+			git tag --sort=-creatordate | sed 's/^/tag: /'
+		) |
+		grep -v 'branch:.*HEAD' |
+		fzf --query="$@" --height 80% --ansi --no-multi --preview-window right:55% \
+		--preview '
+			ref=$(sed "s/.*: //" <<< {} | sed "s/.* //")
+			git log -n 50 --color=always --date=short \
+			  --pretty="format:%C(auto)%cd %h%d %s" "$ref"
+		' |
+		sed "s/.*: //" |
+		sed "s/.* //"
 	else
-		git branch --all --sort=-committerdate |
-			grep -v HEAD |
-			fzf --height 50% --ansi --no-multi --preview-window right:65% \
-				--preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
-			sed "s/.* //"
+		(
+			git branch --all --sort=-committerdate | sed 's/^/branch: /'
+			git tag --sort=-creatordate | sed 's/^/tag: /'
+		) |
+		grep -v 'branch:.*HEAD' |
+		fzf --height 50% --ansi --no-multi --preview-window right:55% \
+		--preview '
+			ref=$(sed "s/.*: //" <<< {} | sed "s/.* //")
+			git log -n 50 --color=always --date=short \
+			  --pretty="format:%C(auto)%cd %h%d %s" "$ref"
+		' |
+		sed "s/.*: //" |
+		sed "s/.* //"
 	fi
 }
 
 fzf-git-checkout() {
-    git rev-parse HEAD > /dev/null 2>&1 || return
-
-    local branch
-
-	if [[ $# -eq 0 ]]; then
-		branch=$(fzf-git-branch)
-	else
-		branch=$(fzf-git-branch $@)
+	if [[ $# -ne 0 ]]; then
+		git checkout "$@"
+		return
 	fi
+
+    git rev-parse HEAD > /dev/null 2>&1 || { echo "Not in a git repository" && return }
+
+	branch=$(fzf-git-branch)
 
     if [[ "$branch" = "" ]]; then
         echo "No branch selected."
@@ -120,8 +135,6 @@ fzf-git-checkout() {
 
 alias gfco='git fetch && gco'
 alias gco=fzf-git-checkout
-alias gco-="git checkout -"
-alias gcoo="git checkout"
 alias gpm="git pull origin master"
 
 fzf-conf() {
@@ -231,7 +244,12 @@ _cdg () {
 alias cdt=_cdt
 _cdt () {
 	if tmux info &> /dev/null; then
-		cd $(tmux display-message -p '#{session_path}')
+		pth=$(tmux display-message -p '#{session_path}')
+		if [[ "$pth" == "/home/arne/home" ]]; then
+			cd "$HOME"
+		else
+			cd "$pth"
+		fi
 	else
 		echo no tmux session running
 	fi
@@ -392,26 +410,27 @@ function git_main_branch() {
 }
 alias pwdcp="pwd | tr -d '\n' | wl-copy"
 alias tt='touch .tmux-sessionizer'
-cd() {
-    if [ $# -eq 0 ]; then
-        # If no argument, go to home dir (default cd behavior)
-        builtin cd
-    elif [ -d "$1" ]; then
-        # If directory exists, use normal cd
-        builtin cd "$1"
-	# elif [ "$1" = "-" ]; then
-	# 	builtin cd -
-	elif [[ "$1" == [-+]* ]]; then
-		builtin cd "$1"
-    else
-		echo "Fzf for directory $1? (y/n)"
-		read -r yn
-		case $yn in
-			[Yy]* ) ci "$1";;
-			* ) echo "Aborted.";;
-		esac
-    fi
-}
+alias weer='curl wttr.in/Lichtervelde'
+# cd () {
+#     if [ $# -eq 0 ]; then
+#         # If no argument, go to home dir (default cd behavior)
+#         builtin cd
+#     elif [ -d "$1" ]; then
+#         # If directory exists, use normal cd
+#         builtin cd "$1"
+# 	# elif [ "$1" = "-" ]; then
+# 	# 	builtin cd -
+# 	elif [[ "$1" == [-+]* ]]; then
+# 		builtin cd "$1"
+#     else
+# 		echo "Fzf for directory $1? (y/n)"
+# 		read -r yn
+# 		case $yn in
+# 			[Yy]* ) ci "$1";;
+# 			* ) echo "Aborted.";;
+# 		esac
+#     fi
+# }
 
 cl() {
     local dir
@@ -446,3 +465,24 @@ rmqq() {
     fi
     qq
 }
+
+#compdef gitlab-ci-local
+###-begin-gitlab-ci-local-completions-###
+#
+# yargs command completion script
+#
+# Installation: /usr/local/sbin/gitlab-ci-local completion >> ~/.zshrc
+#    or /usr/local/sbin/gitlab-ci-local completion >> ~/.zprofile on OSX.
+#
+_gitlab-ci-local_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" /usr/local/sbin/gitlab-ci-local --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  _describe 'values' reply
+}
+compdef _gitlab-ci-local_yargs_completions gitlab-ci-local
+###-end-gitlab-ci-local-completions-###
+alias gcl='gitlab-ci-local'
