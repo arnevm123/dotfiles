@@ -393,6 +393,7 @@ alias dcr='docker compose down && docker compose up -d'
 alias dcpull='docker compose pull'
 alias dclogs='docker compose logs -f --tail="150" '
 alias dcl='docker compose logs -f --tail="150" '
+alias dce='docker compose exec -it'
 alias dcps='docker ps'
 alias dcsh='_dcsh'
 alias dc='docker compose'
@@ -486,3 +487,5 @@ _gitlab-ci-local_yargs_completions()
 compdef _gitlab-ci-local_yargs_completions gitlab-ci-local
 ###-end-gitlab-ci-local-completions-###
 alias gcl='gitlab-ci-local'
+
+[ -f "/home/arne/.ghcup/env" ] && . "/home/arne/.ghcup/env" # ghcup-env

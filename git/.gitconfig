@@ -15,6 +15,7 @@
 [safe]
 	directory = /opt/keyd
 	directory = *
+	directory = /home/arne/Projects/lynxController.git/develop
 [init]
 	defaultBranch = main
 [pull]
