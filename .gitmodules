@@ -2,7 +2,3 @@
 	path = sway/.config/sway/notify-send
 	url = git@github.com:vlevit/notify-send.sh.git
 	branch = master
-[submodule "nvim/.config/nvim"]
-	path = nvim/.config/nvim
-	url = git@github.com:arnevm123/vimsetup.git
-	branch = master
