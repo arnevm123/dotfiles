@@ -489,3 +489,35 @@ compdef _gitlab-ci-local_yargs_completions gitlab-ci-local
 alias gcl='gitlab-ci-local'
 
 [ -f "/home/arne/.ghcup/env" ] && . "/home/arne/.ghcup/env" # ghcup-env
+
+# Redirect stderr to /dev/null
+alias -g NE='2>/dev/null'
+
+# Redirect stdout to /dev/null
+alias -g NO='>/dev/null'
+
+# Redirect both stdout and stderr to /dev/null
+alias -g NUL='>/dev/null 2>&1'
+
+# Pipe to jq
+alias -g J='| jq'
+
+# Copy output to clipboard (macOS)
+alias -g C='| wl-copy'
+
+autoload -Uz zmv
+
+function copy-buffer-to-clipboard() {
+  echo -n "$BUFFER" | wl-copy
+  zle -M "Copied to clipboard"
+}
+
+zle -N copy-buffer-to-clipboard
+
+bindkey '^Xcp' copy-buffer-to-clipboard
+# Insert git commit template (Ctrl+X, G, C)
+# \C-b moves cursor back one position
+bindkey -s '^Xgc' 'git commit -m ""\C-b'
+
+eval "$(grove switch shell-init)"
+eval "$(grove completion zsh)"
