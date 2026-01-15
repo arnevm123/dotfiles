@@ -214,6 +214,8 @@ _tko() {
 }
 alias tkfzf=_tkfzf
 alias fix='nvim -q .lint.txt'
+alias cfix='codex exec "$(printf "Fix all linting errors described below. Make minimal changes. Do not refactor.\n\n%s" "$(cat .lint.txt)")"'
+alias lfix='codex exec "$(printf "Fix all linting errors described below. Make minimal changes. Do not refactor.\n\n%s" "$(golangci-lint run --config=./.golangci.yaml)")"'
 alias pwip='gwip && ggp'
 alias punwip='gunwip && ggf'
 

@@ -96,6 +96,9 @@ if [[ $selected == *.git ]]; then
 	full_path=$full_path/develop
 	selected=${selected//\.git/}
 	is_worktree=true
+elif [[ -d "$full_path/.bare" ]]; then
+	full_path=$full_path/develop
+	is_worktree=true
 fi
 
 selected_name=$(basename "$selected" | tr . _)
