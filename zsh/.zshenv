@@ -15,6 +15,7 @@ path+=$HOME/bin
 path+=$HOME/.local/bin
 path+=$HOME/.local/share/bob/nvim-bin
 path+=$HOME/.deno/bin
+path+=$HOME/.npm/bin
 path+=$GOROOT/bin
 path+=$GOPATH/bin
 path+=$ODIN_ROOT

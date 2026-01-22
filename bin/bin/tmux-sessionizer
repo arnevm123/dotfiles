@@ -11,9 +11,6 @@ folders=(
 	"$HOME/Personal"
 	"$HOME/Scratch"
 	"$HOME/Tools"
-	"$HOME/Projects/infrastructure.git/develop/system-requirements/ansible"
-	"$HOME/Projects/lynx-data/services/connectors/"
-	"$HOME/Projects/lynx-data/services/stream-processing/"
 )
 
 # Generate find command to search within specified folders
