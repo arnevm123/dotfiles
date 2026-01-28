@@ -1,0 +1,74 @@
+#!/usr/bin/env sh
+set -eu
+
+if [ $# -ne 1 ]; then
+	echo "Usage: markdown-preview <markdown-file>" >&2
+	exit 1
+fi
+
+FILE="$(realpath "$1")"
+
+# IPC
+FIFO="$(mktemp -u)"
+mkfifo "$FIFO"
+PREVIEW_ID_FILE="$(mktemp)"
+
+cleanup() {
+	# Stop tatum
+	[ -n "${TATUM_PID:-}" ] && kill "$TATUM_PID" 2>/dev/null || true
+
+	# Close preview window if it exists
+	if [ -f "$PREVIEW_ID_FILE" ]; then
+		PREVIEW_CON_ID="$(cat "$PREVIEW_ID_FILE" 2>/dev/null || true)"
+		[ -n "$PREVIEW_CON_ID" ] && swaymsg "[con_id=$PREVIEW_CON_ID]" kill >/dev/null 2>&1 || true
+	fi
+
+	rm -f "$FIFO" "$PREVIEW_ID_FILE"
+}
+trap cleanup EXIT INT TERM
+
+# Start tatum (prints address:port, then blocks)
+tatum serve --quiet >"$FIFO" &
+TATUM_PID=$!
+
+# Read server address
+read -r ADDR <"$FIFO"
+
+# Save currently focused container
+FOCUS="$(swaymsg -t get_tree | jq -r '.. | objects | select(.focused==true).id')"
+
+# Open browser in split
+swaymsg split h >/dev/null
+qutebrowser --desktop-file-name qt-markdown-preview "http://$ADDR/?path=$FILE" >/dev/null 2>&1 &
+
+# When preview window opens: store container ID + restore focus
+(
+	swaymsg -t subscribe '["window"]' |
+		jq -r 'select(.change=="new" and .container.app_id=="qt-markdown-preview") | .container.id' |
+		while read -r id; do
+			echo "$id" >"$PREVIEW_ID_FILE"
+			swaymsg "[con_id=$FOCUS]" focus >/dev/null
+			break
+		done
+) &
+
+# When preview window closes: stop tatum + exit script
+(
+	STOPPED=0
+	while [ "$STOPPED" -eq 0 ]; do
+
+		swaymsg -t subscribe '["window"]' |
+			jq -r 'select(.change=="close") | .container.id' |
+			while read -r id; do
+				PREVIEW_CON_ID="$(cat "$PREVIEW_ID_FILE" 2>/dev/null || true)"
+				if [ "$id" = "$PREVIEW_CON_ID" ]; then
+					STOPPED=1
+					kill "$TATUM_PID" 2>/dev/null
+					exit 0
+				fi
+			done
+	done
+) &
+
+# Keep script alive while tatum runs
+wait "$TATUM_PID"

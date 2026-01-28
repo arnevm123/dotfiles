@@ -523,3 +523,7 @@ bindkey -s '^Xgc' 'git commit -m ""\C-b'
 
 eval "$(grove switch shell-init)"
 eval "$(grove completion zsh)"
+
+# opencode
+export PATH=/home/arne/.opencode/bin:$PATH
+
