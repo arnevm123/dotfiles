@@ -9,8 +9,11 @@ fi
 FILE="$1"
 
 PREVIEW_ID_FILE="$(mktemp)"
-HOST="${MD_PREVIEW_HOST:-localhost}"
-PORT="${MD_PREVIEW_PORT:-3333}"
+PORT="${MD_PREVIEW_PORT:-37681}"
+
+if PID=$(lsof -ti :"$PORT"); then
+	kill -9 "$PID"
+fi
 
 cleanup() {
 	# Stop markdown preview
@@ -27,7 +30,7 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 # Start markdown preview (blocks)
-gh markdown-preview --disable-auto-open --host "$HOST" --port "$PORT" "$FILE" >/dev/null 2>&1 &
+gh markdown-preview --disable-auto-open --port "$PORT" "$FILE" >/dev/null 2>&1 &
 MD_PREVIEW_PID=$!
 
 # Save currently focused container
@@ -35,7 +38,7 @@ FOCUS="$(swaymsg -t get_tree | jq -r '.. | objects | select(.focused==true).id')
 
 # Open browser in split
 swaymsg split h >/dev/null
-qutebrowser --desktop-file-name qt-markdown-preview "http://$HOST:$PORT/$FILE" >/dev/null 2>&1 &
+qutebrowser --desktop-file-name qt-markdown-preview "http://localhost:$PORT/$FILE" >/dev/null 2>&1 &
 
 # When preview window opens: store container ID + restore focus
 (
