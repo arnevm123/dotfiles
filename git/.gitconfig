@@ -6,12 +6,6 @@
 	hooksPath = ~/.githooks
 	excludesfile = /home/arne/.gitignore_global
 
-[url "ssh://git@gitlab.telecom-it.be/"]
-      insteadOf = https://unmatched.eu/internal/
-
-[url "ssh://git@gitlab.telecom-it.be/"]
-      insteadOf = https://gitlab.telecom-it.be/
-
 [safe]
 	directory = /opt/keyd
 	directory = *
@@ -42,13 +36,13 @@
 [includeIf "gitdir:~/Projects/"]
     path = .gitconfig-personal
 
-[includeIf "gitdir:~/allproject/"]
-    path = .gitconfig-work
-
 [includeIf "gitdir:~/Personal/"]
     path = .gitconfig-personal
 
 [includeIf "gitdir:~/Tools/"]
+    path = .gitconfig-personal
+
+[includeIf "gitdir:~/dotfiles/"]
     path = .gitconfig-personal
 
 [merge]
