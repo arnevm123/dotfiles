@@ -40,7 +40,7 @@
 	useHttpPath = true
 
 [includeIf "gitdir:~/Projects/"]
-    path = .gitconfig-work
+    path = .gitconfig-personal
 
 [includeIf "gitdir:~/allproject/"]
     path = .gitconfig-work
