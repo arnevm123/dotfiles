@@ -106,7 +106,7 @@ format fmt:
 	fi
 
 	@if command -v goimports-reviser > /dev/null; then \
-	    goimports-reviser -rm-unused -project-name=unmatched.eu ./... ;\
+	    goimports-reviser -rm-unused -project-name=project ./... ;\
 	else \
 		echo "goimports-reviser not installed; make install-tools to get all tools."; \
 		echo "Or install manually: go install -v github.com/incu6us/goimports-reviser/v3@latest" ;\
