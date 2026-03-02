@@ -17,7 +17,7 @@ else
 fi
 
 # Send the notification with the icon:
-~/.config/sway/notify-send/notify-send.sh "Brightness ${PCT}%" \
+~/bin/notify-send.sh "Brightness ${PCT}%" \
 	--replace-file=/tmp/brightness-notification \
 	-t 2000 \
 	-u critical \

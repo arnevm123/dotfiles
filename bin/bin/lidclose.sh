@@ -17,5 +17,5 @@ if $external_display; then
 		pactl set-sink-mute @DEFAULT_SINK@ 0
 	fi
 else
-	gtlock --daemonize && systemctl suspend -i
+	gtklock --daemonize && systemctl suspend -i
 fi

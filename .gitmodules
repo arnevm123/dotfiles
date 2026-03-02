@@ -1,4 +1,0 @@
-[submodule "sway/.config/sway/notify-send"]
-	path = sway/.config/sway/notify-send
-	url = git@github.com:vlevit/notify-send.sh.git
-	branch = master

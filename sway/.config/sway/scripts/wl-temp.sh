@@ -16,7 +16,7 @@ notification="Temperature ${OUTPUT}"
 PCT=$(echo "$OUTPUT / 65" | bc)
 
 # Send the notification with the icon:
-~/.config/sway/notify-send/notify-send.sh "$notification" \
+~/bin/notify-send.sh "$notification" \
 	--replace-file=/tmp/wl-notification \
 	-t 2000 \
 	-u critical \
