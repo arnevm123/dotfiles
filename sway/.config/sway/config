@@ -133,9 +133,9 @@ bindsym $mod+Shift+a focus child
 bindsym $mod+Shift+u move scratchpad
 bindsym $mod+u scratchpad show
 
-bindsym $mod+Shift+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") &&\
+bindsym $mod+Shift+s exec bash -c 'mkdir -p ~/Screenshots/$(date +"%Y_%m") &&\
 	grim - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
-bindsym $mod+s exec 'mkdir -p ~/Screenshots/$(date +"%Y_%m") &&\
+bindsym $mod+s exec bash -c 'mkdir -p ~/Screenshots/$(date +"%Y_%m") &&\
 	grim -g "$(slurp)" - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
 
 # focus the child container
