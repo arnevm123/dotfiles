@@ -227,7 +227,7 @@ alias open='xdg-open'
 alias ta='tmux attach'
 alias tl='tmuxifier load-window'
 alias tls='tmuxifier load-session'
-alias lnt="golangci-lint run --config=~/.config/linters/golangci.yaml ./..."
+alias lnt="golangci-lint run 2>&1 | tee .lint.txt"
 alias dbg="go build -gcflags='all=-N -l' -o debug && ./debug && rm debug"
 
 alias gfst="gfo && gst"
@@ -537,3 +537,9 @@ bindkey '^Xcp' copy-buffer-to-clipboard
 # Insert git commit template (Ctrl+X, G, C)
 # \C-b moves cursor back one position
 bindkey -s '^Xgc' 'git commit -m ""\C-b'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+eval "$(grove switch shell-init)"
+eval "$(grove completion zsh)"

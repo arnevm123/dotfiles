@@ -6,7 +6,7 @@ shift
 set -- "$@" # reset args
 message="$*"
 
-ticket=$(git branch --show-current | grep -oP '^([a-zA-Z]{1,4}-\d{1,6})')
+ticket=$(git branch --show-current | grep -oP '^\d{1,6}(?=-)')
 
 if [[ ! " ${VALID_TYPES[*]} " =~ " ${type} " ]]; then
     echo "❌ Invalid commit type: $type"
@@ -19,9 +19,10 @@ if [[ -z "$message" ]]; then
     exit 1
 fi
 
-if [[ -z "$ticket" ]]; then
-    ticket="NO TICKET"
+if [[ -n "$ticket" ]]; then
+    echo "Constructing commit with footer: Refs #$ticket"
+    git commit -m "${type}: ${message}" -m "Refs: #$ticket"
+else
+    echo "No ticket found in branch name. Committing without footer."
+    git commit -m "${type}: ${message}"
 fi
-
-echo git commit -m "${type}[$ticket]: $message"
-git commit -m "${type}[$ticket]: $message"

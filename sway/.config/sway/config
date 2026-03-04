@@ -62,7 +62,6 @@ bindsym $mod+Shift+d exec ~/bin/wl-present mirror eDP-1 &
 bindsym $mod+Shift+c exec ~/bin/lidclose.sh
 bindsym $mod+Shift+f exec ~/bin/wl-present freeze
 bindsym $mod+Shift+g exec ~/bin/wl-present unfreeze
-bindsym $mod+Shift+w exec swaymsg "output eDP-1 toggle"
 
 # bindsym $mod+z exec makoctl dismiss -a
 
@@ -156,17 +155,17 @@ set $ws10 "10"
 
 bindsym $mod+Shift+o \
 workspace $ws1; \
-exec flatpak run net.waterfox.waterfox; \
+exec flatpak run one.ablaze.floorp; \
 exec thunderbird; \
-exec spotify; \
+exec flatpak run com.spotify.Client; \
 exec flatpak run com.slack.Slack; \
 workspace $ws3; \
 exec foot
 
 # default desktops
-assign [app_id="net.thunderbird.Thunderbird"] workspace number $ws5
 assign [class="Slack"] workspace number $ws5
-assign [class="Spotify"] workspace number $ws8
+assign [app_id="thunderbird"] workspace number $ws5
+assign [app_id="spotify"] workspace number $ws8
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -358,6 +357,8 @@ exec swayidle -w \
 
 
 exec swaymsg workspace '1'
+
+exec /usr/bin/playerctld daemon
 
 exec ~/.cargo/bin/wl-gammarelay-rs
 
