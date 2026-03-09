@@ -1,6 +1,6 @@
 #!/bin/bash
 VALID_TYPES=("feat" "fix" "chore" "docs" "style" "refactor" "perf" "test" "ci" "build" "revert" "boyscout")
-type="$1"
+type="${1%:}"
 shift
 
 set -- "$@" # reset args

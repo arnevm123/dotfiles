@@ -5,7 +5,8 @@ GREEN='\033[32m'
 YELLOW='\033[33m'
 RESET='\033[0m'
 BOLD='\033[1m'
-# List of folders
+
+# Default list of folders
 folders=(
 	"$HOME/Projects"
 	"$HOME/Personal"
@@ -13,13 +14,32 @@ folders=(
 	"$HOME/Tools"
 )
 
-# Generate find command to search within specified folders
-find_command="find -L "
-for folder in "${folders[@]}"; do
-	find_command+="$folder "
+# Parse command-line arguments
+found_folders=""
+manual_folders=false
+while [[ $# -gt 0 ]]; do
+	case $1 in
+	--folders)
+		found_folders="$2"
+		manual_folders=true
+		shift 2
+		;;
+	*)
+		break
+		;;
+	esac
 done
-find_command+="-mindepth 1 -maxdepth 2 -type f -name \".tmux-sessionizer\" | xargs -n1 dirname | sort -u"
-found_folders=$(eval "$find_command")
+
+# If found_folders was passed via --folders, use it directly; otherwise search
+if [[ -z "$found_folders" ]]; then
+	# Generate find command to search within specified folders
+	find_command="find -L "
+	for folder in "${folders[@]}"; do
+		find_command+="$folder "
+	done
+	find_command+="-mindepth 1 -maxdepth 3 -type f -name \".tmux-sessionizer\" | xargs -n1 dirname | sort -u"
+	found_folders=$(eval "$find_command")
+fi
 
 if [[ $# -eq 1 ]]; then
 	selected=$1
@@ -33,20 +53,31 @@ else
 		current_session=$(tmux display-message -p '#S')
 	fi
 
-	# Format the default entries
-	# Handle fixed entries first
-	fixed_entries=$(
-		# echo "${BOLD}${YELLOW}+${RESET} create"
-		echo "${BOLD}${YELLOW}~${RESET} home"
-	)
-
+	# Format the default entries (only if not manually provided folders)
+	fixed_entries=""
+	if [[ "$manual_folders" = false ]]; then
+		fixed_entries=$(
+			echo "${BOLD}${YELLOW}~${RESET} home"
+		)
+	fi
 	# Process and sort the project folders
 	sorted_folders=$(
 		echo "$found_folders" |
 			sed 's#^\(/[^/]*\)\{2\}/##' |
 			while read -r folder; do
 				folder_name=${folder//\.git/}
-				folder_name=$(basename "$folder_name" | tr . _)
+				# Extract depth and first folder for naming
+				depth=$(($(echo "$folder" | awk -F/ '{print NF}') - 2))
+				first_folder=$(echo "$folder" | cut -d/ -f1)
+				base_name=$(basename "$folder_name" | tr . _)
+
+				# Use first_folder:base_name if subfolder (depth > 0)
+				if [[ $depth -gt 0 ]]; then
+					folder_name="${first_folder}:${base_name}"
+				else
+					folder_name="$base_name"
+				fi
+
 				if [[ "$folder_name" == "$current_session" ]]; then
 					continue
 				elif echo "$active_sessions" | grep -q "^${folder_name}$"; then
@@ -87,18 +118,24 @@ else
 
 fi
 
-is_worktree=false
 full_path=$HOME/$selected
 if [[ $selected == *.git ]]; then
 	full_path=$full_path/develop
 	selected=${selected//\.git/}
-	is_worktree=true
 elif [[ -d "$full_path/.bare" ]]; then
 	full_path=$full_path/develop
-	is_worktree=true
 fi
 
-selected_name=$(basename "$selected" | tr . _)
+# Calculate depth and create session name format
+depth=$(($(echo "$selected" | awk -F/ '{print NF}') - 2))
+base_name=$(basename "$selected" | tr . _)
+if [[ $depth -gt 0 ]]; then
+	first_folder=$(basename "$(dirname "$selected")")
+	selected_name="${first_folder}>${base_name}"
+else
+	selected_name="$base_name"
+fi
+echo "Selected session name: $selected_name"
 
 if [ "$key" = "ctrl-x" ]; then
 	tmux kill-session -t "$selected_name"
@@ -113,14 +150,9 @@ fi
 if ! tmux list-sessions 2>/dev/null | grep -q "^$selected_name:"; then
 	tmux new-session -ds "$selected_name" -c "$full_path"
 
-	if $is_worktree; then
-		tmux new-window -t "$selected_name:2" -c "$full_path" -n "develop"
-	else
-		tmux new-window -t "$selected_name:2" -c "$full_path"
-	fi
+	tmux new-window -t "$selected_name:2" -c "$full_path"
 	tmux kill-window -t "$selected_name:1"
 	tmux new-window -t "$selected_name:1" -c "$full_path"
-	# disown
 fi
 
 if [[ -z $TMUX ]]; then

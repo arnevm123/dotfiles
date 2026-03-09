@@ -60,41 +60,41 @@ bindkey "^y" autosuggest-accept
 # Example aliases
 
 _kport () {
-    kill -9 `lsof -ti :${1}`
+	kill -9 `lsof -ti :${1}`
 }
 alias kport=_kport
 
 fzf-git-branch() {
-    git rev-parse HEAD > /dev/null 2>&1 || return
+	git rev-parse HEAD > /dev/null 2>&1 || return
 
-    if [[ $# -gt 0 ]]; then
+	if [[ $# -gt 0 ]]; then
 		(
 			git branch --all --sort=-committerdate | sed 's/^/branch: /'
 			git tag --sort=-creatordate | sed 's/^/tag: /'
-		) |
-		grep -v 'branch:.*HEAD' |
-		fzf --query="$@" --height 80% --ansi --no-multi --preview-window right:55% \
-		--preview '
+			) |
+				grep -v 'branch:.*HEAD' |
+				fzf --query="$@" --height 80% --ansi --no-multi --preview-window right:55% \
+				--preview '
 			ref=$(sed "s/.*: //" <<< {} | sed "s/.* //")
 			git log -n 50 --color=always --date=short \
-			  --pretty="format:%C(auto)%cd %h%d %s" "$ref"
-		' |
-		sed "s/.*: //" |
-		sed "s/.* //"
-	else
-		(
-			git branch --all --sort=-committerdate | sed 's/^/branch: /'
-			git tag --sort=-creatordate | sed 's/^/tag: /'
-		) |
-		grep -v 'branch:.*HEAD' |
-		fzf --height 50% --ansi --no-multi --preview-window right:55% \
-		--preview '
-			ref=$(sed "s/.*: //" <<< {} | sed "s/.* //")
-			git log -n 50 --color=always --date=short \
-			  --pretty="format:%C(auto)%cd %h%d %s" "$ref"
-		' |
-		sed "s/.*: //" |
-		sed "s/.* //"
+				--pretty="format:%C(auto)%cd %h%d %s" "$ref"
+			' |
+				sed "s/.*: //" |
+				sed "s/.* //"
+		else
+			(
+				git branch --all --sort=-committerdate | sed 's/^/branch: /'
+				git tag --sort=-creatordate | sed 's/^/tag: /'
+				) |
+					grep -v 'branch:.*HEAD' |
+					fzf --height 50% --ansi --no-multi --preview-window right:55% \
+					--preview '
+				ref=$(sed "s/.*: //" <<< {} | sed "s/.* //")
+				git log -n 50 --color=always --date=short \
+					--pretty="format:%C(auto)%cd %h%d %s" "$ref"
+				' |
+					sed "s/.*: //" |
+					sed "s/.* //"
 	fi
 }
 
@@ -104,33 +104,33 @@ fzf-git-checkout() {
 		return
 	fi
 
-    git rev-parse HEAD > /dev/null 2>&1 || { echo "Not in a git repository" && return }
+	git rev-parse HEAD > /dev/null 2>&1 || { echo "Not in a git repository" && return }
 
 	branch=$(fzf-git-branch)
 
-    if [[ "$branch" = "" ]]; then
-        echo "No branch selected."
-        return
-    fi
+	if [[ "$branch" = "" ]]; then
+		echo "No branch selected."
+		return
+	fi
 
-    # If branch name starts with 'remotes/' then it is a remote branch. By
-    # using --track and a remote branch name, it is the same as:
-    # git checkout -b branchName --track origin/branchName
-    if [[ "$branch" = 'remotes/'* ]]; then
-        output=$(git checkout --track "$branch")
-        exit_status=$?
-        if [[ "$exit_status" == "128" ]]; then
+	# If branch name starts with 'remotes/' then it is a remote branch. By
+	# using --track and a remote branch name, it is the same as:
+	# git checkout -b branchName --track origin/branchName
+	if [[ "$branch" = 'remotes/'* ]]; then
+		output=$(git checkout --track "$branch")
+		exit_status=$?
+		if [[ "$exit_status" == "128" ]]; then
 			prefix="remotes/origin/"
-            local="${branch#$prefix}"
-            echo "$local"
-            git checkout $local;
-        else
-            echo $resp
-            echo "does not already exists"
-        fi
-    else
-        git checkout $branch;
-    fi
+			local="${branch#$prefix}"
+			echo "$local"
+			git checkout $local;
+		else
+			echo $resp
+			echo "does not already exists"
+		fi
+	else
+		git checkout $branch;
+	fi
 }
 
 alias gfco='git fetch && gco'
@@ -144,21 +144,21 @@ fzf-conf() {
 		selected="$HOME/.config/$1"
 	fi
 
-    num_files=$(ls -1 "$selected/" | wc -l)
-    if [ "$num_files" -eq 1 ]; then
-        file_name=$(ls "$selected/")
+	num_files=$(ls -1 "$selected/" | wc -l)
+	if [ "$num_files" -eq 1 ]; then
+		file_name=$(ls "$selected/")
 		if [[ "$PWD" != "$selected" ]]; then
 			pushd $selected && nvim "$file_name" && popd || popd;
 		else
 			nvim "$file_name"
 		fi
-    else
+	else
 		if [[ "$PWD" != "$selected" ]]; then
 			pushd $selected && nvim . && popd || popd;
 		else
 			nvim .
 		fi
-    fi
+	fi
 
 }
 
@@ -237,11 +237,11 @@ alias GL="export GOOS=linux"
 alias GU="unset GOOS"
 alias cdg=_cdg
 _cdg () {
-    if git rev-parse --is-inside-work-tree &> /dev/null; then
-        cd "$(git rev-parse --show-toplevel)"
-    else
-        echo "Not inside a Git repository."
-    fi
+	if git rev-parse --is-inside-work-tree &> /dev/null; then
+		cd "$(git rev-parse --show-toplevel)"
+	else
+		echo "Not inside a Git repository."
+	fi
 }
 alias cdt=_cdt
 _cdt () {
@@ -259,17 +259,18 @@ _cdt () {
 
 _setbg () {
 	kill -9 $(ps -aux  | grep swaybg -i | awk '{ print $2}')
-    swaybg -i ${1} -m fill &!
+	swaybg -i ${1} -m fill &!
 }
 alias setbg=_setbg
 
 _gmove() {
-  git stash -- $(git diff --staged --name-only) &&
-  gwip ;
-  git branch $1 $2 &&
-  git checkout $1 &&
-  git stash pop
+	git stash -- $(git diff --staged --name-only) &&
+		gwip ;
+	git branch $1 $2 &&
+		git checkout $1 &&
+		git stash pop
 }
+
 alias gmove=_gmove
 
 _fzfhash() {
@@ -342,7 +343,7 @@ _gtap() {
 }
 
 _gtp() {
-    git tag "$1"
+	git tag "$1"
 	releases
 }
 
@@ -350,31 +351,31 @@ alias gtap=_gtap
 alias gtp=_gtp
 alias gte='echo $1 && releases'
 _extract() {
-    if [ -f "$1" ]; then
-        case "$1" in
-            *.tar.bz2)   tar xjf "$1"    ;;
-            *.tar.gz)    tar xzf "$1"    ;;
-            *.bz2)       bunzip2 "$1"    ;;
-            *.rar)       unrar x "$1"    ;;
-            *.gz)        gunzip "$1"     ;;
-            *.tar)       tar xf "$1"     ;;
-            *.zip)       unzip "$1"      ;;
-            *.Z)         uncompress "$1" ;;
-            *)           echo "'$1' cannot be extracted" ;;
-        esac
-    fi
+	if [ -f "$1" ]; then
+		case "$1" in
+			*.tar.bz2)   tar xjf "$1"    ;;
+			*.tar.gz)    tar xzf "$1"    ;;
+			*.bz2)       bunzip2 "$1"    ;;
+			*.rar)       unrar x "$1"    ;;
+			*.gz)        gunzip "$1"     ;;
+			*.tar)       tar xf "$1"     ;;
+			*.zip)       unzip "$1"      ;;
+			*.Z)         uncompress "$1" ;;
+			*)           echo "'$1' cannot be extracted" ;;
+		esac
+	fi
 }
 
 alias extract=_extract
 
 _gtad() {
-    if [[ -z "$1" ]]; then
-        echo "Tag name is required."
-        return 1
-    fi
+	if [[ -z "$1" ]]; then
+		echo "Tag name is required."
+		return 1
+	fi
 
 
-    tag_name=$1
+	tag_name=$1
 
 	echo "Delete tag $tag_name? (y/n)"
 
@@ -386,9 +387,9 @@ _gtad() {
 
 	git tag -d "$tag_name" || return 1
 
-    git push origin --delete "$tag_name" || return 1
+	git push origin --delete "$tag_name" || return 1
 
-    echo "Tag '$tag_name' deleted successfully."
+	echo "Tag '$tag_name' deleted successfully."
 }
 
 alias gtad=_gtad
@@ -426,7 +427,7 @@ alias wfv='nmcli device wifi connect Visitors'
 alias wf='nmcli device wifi connect'
 
 function git_main_branch() {
-  echo $(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+	echo $(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
 }
 alias pwdcp="pwd | tr -d '\n' | wl-copy"
 alias tt='touch .tmux-sessionizer'
@@ -453,7 +454,7 @@ alias weer='curl wttr.in/Lichtervelde'
 # }
 
 cl() {
-    local dir
+	local dir
 	dir=$(find $(pwd) -type d | grep "^$(pwd)" | fzf) && cd "$dir"
 }
 
@@ -461,29 +462,29 @@ cl() {
 
 eval "$(atuin init zsh --disable-up-arrow)"
 qq() {
-    clear
+	clear
 
-    logpath="$TMPDIR/q"
-    if [[ -z "$TMPDIR" ]]; then
-        logpath="/tmp/q"
-    fi
+	logpath="$TMPDIR/q"
+	if [[ -z "$TMPDIR" ]]; then
+		logpath="/tmp/q"
+	fi
 
-    if [[ ! -f "$logpath" ]]; then
-        echo 'Q LOG' > "$logpath"
-    fi
+	if [[ ! -f "$logpath" ]]; then
+		echo 'Q LOG' > "$logpath"
+	fi
 
-    tail -100f -- "$logpath"
+	tail -100f -- "$logpath"
 }
 
 rmqq() {
-    logpath="$TMPDIR/q"
-    if [[ -z "$TMPDIR" ]]; then
-        logpath="/tmp/q"
-    fi
-    if [[ -f "$logpath" ]]; then
-        rm "$logpath"
-    fi
-    qq
+	logpath="$TMPDIR/q"
+	if [[ -z "$TMPDIR" ]]; then
+		logpath="/tmp/q"
+	fi
+	if [[ -f "$logpath" ]]; then
+		rm "$logpath"
+	fi
+	qq
 }
 
 #compdef gitlab-ci-local
@@ -496,12 +497,12 @@ rmqq() {
 #
 _gitlab-ci-local_yargs_completions()
 {
-  local reply
-  local si=$IFS
-  IFS=$'
-' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" /usr/local/sbin/gitlab-ci-local --get-yargs-completions "${words[@]}"))
-  IFS=$si
-  _describe 'values' reply
+	local reply
+	local si=$IFS
+	IFS=$'
+	' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" /usr/local/sbin/gitlab-ci-local --get-yargs-completions "${words[@]}"))
+	IFS=$si
+	_describe 'values' reply
 }
 compdef _gitlab-ci-local_yargs_completions gitlab-ci-local
 ###-end-gitlab-ci-local-completions-###
@@ -524,11 +525,13 @@ alias -g J='| jq'
 # Copy output to clipboard (macOS)
 alias -g C='| wl-copy'
 
+alias -g G='| rg '
+
 autoload -Uz zmv
 
 function copy-buffer-to-clipboard() {
-  echo -n "$BUFFER" | wl-copy
-  zle -M "Copied to clipboard"
+	echo -n "$BUFFER" | wl-copy
+	zle -M "Copied to clipboard"
 }
 
 zle -N copy-buffer-to-clipboard
@@ -543,3 +546,13 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 eval "$(grove switch shell-init)"
 eval "$(grove completion zsh)"
+
+# bun completions
+[ -s "/home/arne/.bun/_bun" ] && source "/home/arne/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias checkout=grove-checkout
+alias grove-fzf=grove-tmux
