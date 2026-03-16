@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Git checkout with grove worktree integration
+
+# If explicit branch/ref passed, use grove-tmux directly
+if [[ $# -gt 0 && "$1" != "-"* ]]; then
+	exec "$HOME/bin/grove-tmux" "$@"
+fi
+
+# Not in a git repository
+if ! git rev-parse HEAD > /dev/null 2>&1; then
+	echo "Not in a git repository"
+	exit 1
+fi
+
+# Use fzf to select branch
+branch=$("$HOME"/bin/fzf-git-branch)
+
+if [[ "$branch" = "" ]]; then
+	echo "No branch selected."
+	exit 0
+fi
+
+# Handle remote branches
+if [[ "$branch" = 'remotes/'* ]]; then
+	output=$(git checkout --track "$branch")
+	exit_status=$?
+	if [[ "$exit_status" == "128" ]]; then
+		prefix="remotes/origin/"
+		local_branch="${branch#"$prefix"}"
+		echo "$local_branch"
+		exec "$HOME/bin/grove-tmux" "$local_branch"
+	else
+		echo "$output"
+		echo "does not already exist"
+		exit 1
+	fi
+else
+	exec "$HOME/bin/grove-tmux" "$branch"
+fi

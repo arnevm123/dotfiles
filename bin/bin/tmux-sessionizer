@@ -135,8 +135,6 @@ if [[ $depth -gt 0 ]]; then
 else
 	selected_name="$base_name"
 fi
-echo "Selected session name: $selected_name"
-
 if [ "$key" = "ctrl-x" ]; then
 	tmux kill-session -t "$selected_name"
 	tmux-sessionizer

@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Manage grove worktrees with tmux integration
+
+# Get the current path relative to home, removing the deepest folder
+relative_path="${PWD#"$HOME"/}"
+base_path="${relative_path%/*}"
+
+# If no arguments, use fzf to select from grove list
+if [[ $# -eq 0 ]]; then
+	worktrees=($(grove --plain list | awk '{print $1}' | sed 's/^\\*//'))
+	folders=()
+	for wt in "${worktrees[@]}"; do
+		folders+=("$HOME/$base_path/$wt")
+	done
+	"$HOME"/bin/tmux-sessionizer --folders "${folders[@]}"
+fi
+
+# Handle --pr flag
+if [[ "$1" == "--pr" && -n "$2" ]]; then
+	grove add --pr "$2"
+	touch "$base_path/pr-$2/.tmux-sessionizer"
+	"$HOME"/bin/tmux-sessionizer "$base_path/pr-$2"
+fi
+
+# Handle --name flag: grove-tmux [branch] --name [custom_name]
+branch="$1"
+shift
+grove_args=("$branch")
+
+# Pass through remaining arguments (including --name)
+grove_args+=("$@")
+
+grove add "${grove_args[@]}"
+
+# Determine the worktree directory name
+wt_name=""
+if [[ "$*" == *"--name"* ]]; then
+	# Extract the name after --name
+	prev_arg=""
+	for arg in "$@"; do
+		if [[ "$prev_arg" == "--name" ]]; then
+			wt_name="$arg"
+			break
+		fi
+		prev_arg="$arg"
+	done
+else
+	# Grove will create a directory from the branch name (replace / with -)
+	wt_name="${branch//\//-}"
+fi
+
+touch "$HOME/$base_path/$wt_name/.tmux-sessionizer"
+"$HOME"/bin/tmux-sessionizer "$base_path/$wt_name"

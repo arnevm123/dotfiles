@@ -60,7 +60,7 @@ bindsym $mod+Shift+p exec wlogout
 bindsym $mod+Shift+m exec ~/bin/swap
 bindsym $mod+Shift+d exec ~/bin/wl-present mirror eDP-1 &
 bindsym $mod+Shift+c exec ~/bin/lidclose.sh
-bindsym $mod+Shift+f exec ~/bin/wl-present freeze
+# bindsym $mod+Shift+f exec ~/bin/wl-present freeze
 bindsym $mod+Shift+g exec ~/bin/wl-present unfreeze
 
 # bindsym $mod+z exec makoctl dismiss -a
@@ -119,7 +119,7 @@ bindsym $mod+f layout toggle tabbed splith
 
 # change container layout (stacked, tabbed, toggle split)
 # bindsym $mod+s layout stacking
-bindsym $mod+w fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
@@ -133,9 +133,10 @@ bindsym $mod+Shift+u move scratchpad
 bindsym $mod+u scratchpad show
 
 bindsym $mod+Shift+s exec bash -c 'mkdir -p ~/Screenshots/$(date +"%Y_%m") &&\
-	grim - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
+			grim - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
+
 bindsym $mod+s exec bash -c 'mkdir -p ~/Screenshots/$(date +"%Y_%m") &&\
-	grim -g "$(slurp)" - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
+			grim -g "$(slurp)" - | swappy -f - -o - | tee >(wl-copy) > ~/Screenshots/$(date +"%Y_%m")/ps_$(date +"%Y_%m_%d-%H%M%S").png'
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -154,13 +155,13 @@ set $ws9 "9"
 set $ws10 "10"
 
 bindsym $mod+Shift+o \
-workspace $ws1; \
-exec flatpak run one.ablaze.floorp; \
-exec thunderbird; \
-exec flatpak run com.spotify.Client; \
-exec flatpak run com.slack.Slack; \
-workspace $ws3; \
-exec foot
+	workspace $ws1; \
+	exec flatpak run one.ablaze.floorp; \
+	exec thunderbird; \
+	exec flatpak run com.spotify.Client; \
+	exec flatpak run com.slack.Slack; \
+	workspace $ws3; \
+	exec foot
 
 # default desktops
 assign [class="Slack"] workspace number $ws5
@@ -196,71 +197,35 @@ bindsym $mod+Shift+r reload
 bindsym $mod+semicolon exec copyq toggle
 for_window [app_id="copyq"] floating enable
 for_window [app_id="copyq"] sticky enable
-for_window [app_id="Bitwarden"] floating enable
-# do not focus preview window on open
-no_focus [title="^Peek preview$"]
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-# exit i3 (logs you out of your X session)
-# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'swaymsg exit'"
 
-# resize window (you can also use the mouse for that)
 mode "resize" {
-# These bindings trigger as soon as you enter the resize mode
+	bindsym h resize shrink width 10 px or 10 ppt
+	bindsym j resize grow height 10 px or 10 ppt
+	bindsym k resize shrink height 10 px or 10 ppt
+	bindsym l resize grow width 10 px or 10 ppt
 
-# Pressing left will shrink the window’s width.
-# Pressing right will grow the window’s width.
-# Pressing up will shrink the window’s height.
-# Pressing down will grow the window’s height.
-		bindsym h resize shrink width 10 px or 10 ppt
-		bindsym j resize grow height 10 px or 10 ppt
-		bindsym k resize shrink height 10 px or 10 ppt
-		bindsym l resize grow width 10 px or 10 ppt
-# same bindings, but for the arrow keys
-		bindsym Left resize shrink width 10 px or 10 ppt
-		bindsym Down resize grow height 10 px or 10 ppt
-		bindsym Up resize shrink height 10 px or 10 ppt
-		bindsym Right resize grow width 10 px or 10 ppt
+	bindsym Left resize shrink width 10 px or 10 ppt
+	bindsym Down resize grow height 10 px or 10 ppt
+	bindsym Up resize shrink height 10 px or 10 ppt
+	bindsym Right resize grow width 10 px or 10 ppt
 
-# back to normal: Enter or Escape or $mod+r
-		bindsym Return mode "default"
-		bindsym Escape mode "default"
-		bindsym $mod+r mode "default"
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym $mod+r mode "default"
 }
 
 bindsym $mod+r mode "resize"
-bindsym --locked {
-    XF86AudioRaiseVolume exec \
-        'pactl set-sink-volume @DEFAULT_SINK@ +${STEP:-5}% && ~/.config/sway/scripts/audio-notifications.sh'
-    XF86AudioLowerVolume exec \
-        'pactl set-sink-volume @DEFAULT_SINK@ -${STEP:-5}% && ~/.config/sway/scripts/audio-notifications.sh'
-    XF86AudioMute exec \
-		'pactl set-sink-mute @DEFAULT_SINK@ toggle && ~/.config/sway/scripts/audio-notifications.sh'
-    XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-}
 
-bindsym --locked {
-	$mod+Minus exec \
-		exec light -A -U 5 && ~/.config/sway/scripts/brightness-notifications.sh
-	$mod+Equal exec \
-		exec light -A 5 && ~/.config/sway/scripts/brightness-notifications.sh
-	$mod+Backslash exec \
-		'busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Brightness d 1.0 && ~/.config/sway/scripts/wl-brightness.sh'
+bindsym XF86AudioRaiseVolume exec \
+	'pactl set-sink-volume @DEFAULT_SINK@ +${STEP:-5}% && ~/.config/sway/scripts/audio-notifications.sh'
 
-	$mod+Control+Minus exec \
-		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100 && ~/.config/sway/scripts/wl-temp.sh'
-	$mod+Control+Equal exec \
-		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +100 && ~/.config/sway/scripts/wl-temp.sh'
+bindsym XF86AudioLowerVolume exec \
+	'pactl set-sink-volume @DEFAULT_SINK@ -${STEP:-5}% && ~/.config/sway/scripts/audio-notifications.sh'
 
-	$mod+Control+0 exec \
-		'busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 6500 && ~/.config/sway/scripts/wl-temp.sh'
+bindsym XF86AudioMute exec \
+	'pactl set-sink-mute @DEFAULT_SINK@ toggle && ~/.config/sway/scripts/audio-notifications.sh'
 
-	$mod+Control+Underscore exec \
-		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d -0.02 && ~/.config/sway/scripts/wl-gamma.sh'
-	$mod+Control+Plus exec \
-		'busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d +0.02 && ~/.config/sway/scripts/wl-gamma.sh'
-	$mod+Control+ParenRight exec \
-		'busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Gamma d 1.0 && ~/.config/sway/scripts/wl-gamma.sh'
-}
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # # Sreen brightness controls -- # https://github.com/haikarainen/light
 # # increase screen brightness
@@ -281,43 +246,17 @@ bindswitch --reload --locked lid:off output eDP-1 enable
 
 # Startup programs
 exec --no-startup-id mpd
-exec --no-startup-id /home/arne/.gopath/bin/swaynag-battery
 exec --no-startup-id copyq --start-server
 exec --no-startup-id kanshi
-# exec_always feh --bg-scale ~/Pictures/bestFriend-wallpaper-07-1920x1200.png
 exec_always swaybg -i ~/dotfiles/background/default.png -m fill
-# exec --no-startup-id mako --layer overlay --icons 0
+
 exec --no-startup-id swaync
 exec --no-startup-id nm-applet --indicator
 exec --no-startup-id blueman-applet
 exec --no-startup-id "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
 
-# bindsym $mod+Shift+p      mode $power_mode
-# mode $power_mode {
-#     bindsym p         exec systemctl poweroff
-#     bindsym r         exec systemctl reboot
-#     bindsym l         exec systemctl logout
-#     bindsym q         exec --no-startup-id swaymsg exit, mode "default"
-#     bindsym h         exec systemctl hibernate
-#     # bindsym l         exec swaylock, mode "default"
-#     # bindsym s        exec sudo  /lib/systemd/systemd-sleep hybrid-sleep
-#     bindsym s         exec pm-suspend
-#
-#     bindsym Return    mode "default"
-#     bindsym Escape    mode "default"
-# }
-
 input * accel_profile flat
 
-# input "type:keyboard" {
-# 	 # xcape -e 'Caps_Lock=Escape'
-# 	xkb_options caps:escape
-# }
-
-# output HDMI-A-2 resolution 2560x1440@59.951hz
-# output eDP-1 scale 0.8
-
-# define display output names
 set $disp1 "eDP-1"
 set $disp2 "DP-2"
 set $disp3 "DP-3"
@@ -335,33 +274,28 @@ workspace 9 output $disp2 $disp3
 workspace 10 output $disp1
 
 input type:touchpad {
-       dwt enabled
-       tap enabled
-       natural_scroll enabled
-       middle_emulation enabled
+	dwt enabled
+	tap enabled
+	natural_scroll enabled
+	middle_emulation enabled
 }
-
-bindsym $mod+shift+ctrl+m [workspace=".*"] move to workspace 10; workspace number 10, mode "default"
 
 for_window [class="^.*"] inhibit_idle fullscreen
 for_window [app_id="^.*"] inhibit_idle fullscreen
 focus_on_window_activation focus
 
 exec swayidle -w \
-    timeout 800 'gtklock -d -S' \
-    timeout 810 'swaymsg "output * dpms off"' \
-		resume 'swaymsg "output * dpms on"' \
-    timeout 5 'if pgrep -x gtklock; then pactl set-sink-mute @DEFAULT_SINK@ 1 &&  playerctl pause && swaymsg "output * dpms off"; fi' \
-		resume 'swaymsg "output * dpms on"' \
+	timeout 800 'gtklock -d -S' \
+	timeout 810 'swaymsg "output * dpms off"' \
+	resume 'swaymsg "output * dpms on"' \
+	timeout 5 'if pgrep -x gtklock; then pactl set-sink-mute @DEFAULT_SINK@ 1 &&  playerctl pause && swaymsg "output * dpms off"; fi' \
+	resume 'swaymsg "output * dpms on"' \
 	before-sleep 'gtklock -d -S'\
 
-
 exec swaymsg workspace '1'
-
 exec /usr/bin/playerctld daemon
-
 exec ~/.cargo/bin/wl-gammarelay-rs
 
 bar {
-        swaybar_command waybar
+	swaybar_command waybar
 }

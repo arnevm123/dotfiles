@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+if [[ $# -ne 0 ]]; then
+	git checkout "$@"
+	return
+fi
+
+git rev-parse HEAD > /dev/null 2>&1 || { echo "Not in a git repository" && return; }
+
+branch=$(fzf-git-branch)
+
+if [[ "$branch" = "" ]]; then
+	echo "No branch selected."
+	exit 0
+fi
+
+# If branch name starts with 'remotes/' then it is a remote branch. By
+# using --track and a remote branch name, it is the same as:
+# git checkout -b branchName --track origin/branchName
+if [[ "$branch" = 'remotes/'* ]]; then
+	output=$(git checkout --track "$branch")
+	exit_status=$?
+	if [[ "$exit_status" == "128" ]]; then
+		prefix="remotes/origin/"
+		local="${branch#"$prefix"}"
+		echo "$local"
+		git checkout "$local";
+	else
+		echo "$output"
+		echo "does not already exists"
+	fi
+else
+	git checkout "$branch";
+fi

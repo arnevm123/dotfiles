@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2016
+
+fzf-git-branch() {
+	git rev-parse HEAD > /dev/null 2>&1 || return
+
+	if [[ $# -gt 0 ]]; then
+		(
+			git branch --all --sort=-committerdate | sed 's/^/branch: /'
+			git tag --sort=-creatordate | sed 's/^/tag: /'
+			) |
+			grep -v 'branch:.*HEAD' |
+			fzf --query="$*" --height 80% --ansi --no-multi --preview-window right:55% --preview '
+			ref=$(sed "s/.*: //" <<< {} | sed "s/.* //")
+			git log -n 50 --color=always --date=short \
+				--pretty="format:%C(auto)%cd %h%d %s" "$ref"
+			' |
+			sed "s/.*: //" |
+			sed "s/.* //"
+	else
+		(
+			git branch --all --sort=-committerdate | sed 's/^/branch: /'
+			git tag --sort=-creatordate | sed 's/^/tag: /'
+			) |
+			grep -v 'branch:.*HEAD' |
+			fzf --height 50% --ansi --no-multi --preview-window right:55% --preview '
+			ref=$(sed "s/.*: //" <<< {} | sed "s/.* //")
+			git log -n 50 --color=always --date=short \
+				--pretty="format:%C(auto)%cd %h%d %s" "$ref"
+			' |
+			sed "s/.*: //" |
+			sed "s/.* //"
+	fi
+}
+
+fzf-git-branch "$@"

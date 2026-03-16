@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if ! tmux info &>/dev/null; then
+	echo no tmux session running
+	exit 0
+fi
+
+pth=$(tmux display-message -p '#{session_path}')
+pth="${pth%/*}"
+pth="${pth#"$HOME"}"
+
+"$HOME"/bin/tmux-sessionizer "$pth"
