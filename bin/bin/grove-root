@@ -7,6 +7,6 @@ fi
 
 pth=$(tmux display-message -p '#{session_path}')
 pth="${pth%/*}"
-pth="${pth#"$HOME"}"
+pth="${pth#"$HOME"/}"
 
 "$HOME"/bin/tmux-sessionizer "$pth"

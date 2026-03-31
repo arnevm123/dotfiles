@@ -13,6 +13,7 @@ alias gcml='gfo && gcm && ggl'
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
 alias gitdelete="git branch --no-color | fzf -m | sed 's/^* //g' | xargs -I {} git branch -D '{}'"
 alias gyolo='git commit -am "`curl -sL https://whatthecommit.com/index.txt`" &&  ggp'
+alias gdate='git commit -am "Last Sync: $(date +%Y-%m-%d\ %H:%M) (Manual commit)" && ggp'
 alias ggf=ggfl
 
 # editor aliases
@@ -42,7 +43,6 @@ alias dc='docker compose'
 
 # go aliases
 alias lnt="golangci-lint run 2>&1 | tee .lint.txt"
-alias lnt-fix="golangci-lint run --fix 2>&1 | tee .lint.txt"
 alias dbg="go build -gcflags='all=-N -l' -o debug && ./debug && rm debug"
 alias GW="export GOOS=windows"
 alias GL="export GOOS=linux"

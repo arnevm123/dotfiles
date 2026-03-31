@@ -1,215 +1,185 @@
 version: "2"
-
 run:
   concurrency: 4
   timeout: 10m
-  issues-exit-code: 1
-  tests: true # lint test files
-  # skip-dirs:
-  # - src/external_libs
-  # skip-files:
-  #  - "protobuf/.*.go"
+  tests: true
   modules-download-mode: readonly
-  allow-parallel-runners: false
-  go: "" # empty -> fetch go version from go.mod
+
+issues:
+  max-issues-per-linter: 0 # 0 = unlimited
+  max-same-issues: 0
+
 linters:
-  default: all
   enable:
-    # Check for pass []any as any in variadic func(...any).
-    # Rare case but saved me from debugging a few times.
-    - asasalint
-    # Symbol `∆` instead of `delta` looks cool but no thanks.
-    - asciicheck
-    # Checks for dangerous unicode character sequences.
-    # Super rare but why not to be a bit paranoid?
-    - bidichk
-    # Checks whether HTTP response body is closed successfully.
-    - bodyclose
-    # Check whether the function uses a non-inherited context.
-    - contextcheck
-    - decorder
-    # Tool for code clone detection.
-    - dupl
-    # Check for two durations multiplied together.
-    - durationcheck
-    # Forces to not skip error check.
-    - errcheck
-    # Checks `Err-` prefix for var and `-Error` suffix for error type.
-    - errname
-    # Suggests to use `%w` for error-wrapping.
-    - errorlint
-    # Checks for `exhaustive` switch statements.
-    # We might want to switch to explicit mode in the future
-    # https://pkg.go.dev/github.com/nishanths/exhaustive#section-documentation
-    - exhaustive
-    # Checks for pointers to enclosing loop variables.
-    - copyloopvar
-    # Forbids fmt.println and others from being used.
-    # - forbidigo
-    # Finds forced type assertions, very good for juniors.
-    - forcetypeassert
-    # As you already know I'm a co-author. It would be strange to not use
-    # one of my warmly loved projects.
-    - gocritic
-    # Reports magic consts. Might be noisy but still good.
-    - mnd
-    # Powerful security-oriented linter. But requires some time to
-    # configure it properly, see https://github.com/securego/gosec#available-rules
-    - gosec
-    # Official Go tool. Must have.
-    - govet
-    # Detects when assignments to existing variables are not used
-    - ineffassign
-    # Fix all the misspells, amazing thing.
-    - misspell
-    # Finds naked/bare returns and requires change them.
-    - nakedret
-    # Both require a bit more explicit returns.
-    - nilerr
-    - nilnil
-    # Finds sending HTTP request without context.Context.
-    - noctx
-    # Finds misuse of Sprintf with host:port in a URL. Cool but rare.
-    - nosprintfhostport
-    # Finds slices that could potentially be pre-allocated.
-    - prealloc
-    # Finds shadowing of Go's predeclared identifiers.
-    - predeclared
-    # Lint your Prometheus metrics name.
-    - promlinter
-    # Checks that package variables are not reassigned.
-    - reassign
-    # Drop-in replacement of `golint`.
-    - revive
-    # Somewhat similar to `bodyclose` but for `database/sql` package.
-    - sqlclosecheck
-    # I have found that it's not the same as staticcheck binary :\
-    - staticcheck
-    # Check struct tags.
-    - tagliatelle
-    # Test-related checks. All of them are good.
-    - usetesting
-    - testableexamples
-    - thelper
-    - tparallel
-    # Remove unnecessary type conversions, make code cleaner
-    - unconvert
-    # Might be noisy but better to know what is unused
-    - unparam
-    # Must have. Finds unused declarations.
-    - unused
-    # Detect the possibility to use variables/constants from stdlib.
-    - usestdlibvars
-    # Finds wasted assignment statements.
-    - wastedassign
+    # correctness
+    - asasalint # pass []any as any in variadic func(...any)
+    - copyloopvar # loop variable copy issues (Go 1.22+)
+    - durationcheck # detect time.Duration * time.Duration bugs
+    - errcheck # unchecked error returns and type assertions
+    - errorlint # correct use of errors.Is/As and %w wrapping (Go 1.13+)
+    - govet # built-in checker: copylocks, printf formats, struct tags, unreachable code
+    - nakedret # naked/bare returns
+    - nosprintfhostport # misuse of Sprintf with host:port in a URL
+    - reassign # package-level variable reassignment
+    - staticcheck # extensive static analysis: deprecated APIs, common mistakes, simplifications
+    - unused # unused variables, functions, types
+    - wastedassign # wasted assignment statements
+    # TODO
+    - nilerr # returning nil error when err is non-nil
+    - forcetypeassert # type assertions without comma-ok check
+
+    # style
+    - asciicheck # non-ASCII identifiers (prevents homoglyph/trojan source attacks)
+    - dupword # duplicate words in comments and strings (the the, is is)
+    - errname # error type/var naming conventions (ErrFoo, FooError)
+    - predeclared # shadowing Go built-ins (len, cap, error)
+    # TODO
+    - gocritic # opinionated style: unnecessary conversions, range copies, redundant code
+    - revive # naming conventions, exported types, stuttered package names
+    - whitespace # trailing whitespace, unnecessary blank lines
+    - misspell # common English misspellings in identifiers and comments
+
+    # complexity
+    # TODO
+    - gocyclo # cyclomatic complexity threshold
+    - nestif # deeply nested if/else chains
+    - funlen # function length limits (lines and statements)
+    - dupl # code duplication detection
+
+    # performance
+    - ineffassign # assignments to variables never read
+    - prealloc # slice pre-allocation
+    - unconvert # unnecessary type conversions
+    # TODO run with --fix
+    - perfsprint # faster alternatives to fmt.Sprintf
+    # TODO
+    - goconst # repeated literals that should be constants
+
+    # security & resources
+    - bidichk # dangerous bidirectional Unicode sequences (trojan source CVE-2021-42574)
+    - fatcontext # context.WithValue/WithCancel in loops (unbounded context chain, memory leak)
+    - rowserrcheck # unchecked sql.Rows.Err() after iteration
+    - sqlclosecheck # unclosed sql.Rows and sql.Stmt
+    # TODO
+    - gosec # security scanner: SQL injection, hardcoded credentials, weak crypto, path traversal
+    - bodyclose # unclosed HTTP response bodies (connection leaks)
+
+    # logging
+    - loggercheck # key-value pair validation for structured loggers (zap, slog, logr)
+    - sloglint # consistent log/slog code style
+
+    # testing
+    - testableexamples # testable Go examples
+    - thelper # test helpers missing t.Helper()
+    - tparallel # detects inappropriate use of t.Parallel()
+    - usetesting # use t.Setenv/t.TempDir instead of os equivalents in tests
+    # TODO
+    - testifylint # testify best practices
+    - paralleltest # tests and subtests missing t.Parallel()
+
+    # modernization & meta
+    ## TODO
+    - exhaustive # switch statements not covering all enum values
+    - exptostd # replace golang.org/x/exp/ functions with stdlib equivalents
+    - intrange # range over integer instead of C-style loop (Go 1.22+)
+    - nolintlint # enforces proper //nolint directive usage
+    # TODO run with --fix
+    - usestdlibvars # use stdlib constants instead of hardcoded values
+    # TODO: there are a lot of structs with omitempty, maybe we should
+    # see if we should omitzero with custom IsZero methods instead.
+    - modernize # old patterns replaceable with newer Go features
+
   disable:
-    # Detects struct contained context.Context field. Not a problem.
-    - containedctx
-    # Checks function and package cyclomatic complexity.
-    - cyclop
-    # Check declaration order of types, consts, vars and funcs.
-    # - decorder
-    # Checks if package imports are in a list of acceptable packages.
-    - depguard
-    # Checks assignments with too many blank identifiers. Very rare.
-    - dogsled
-    # Find duplicate words, rare.
-    - dupword
-    - err113
-    # I'm fine to check the error from json.Marshal ¯\_(ツ)_/¯
-    - errchkjson
-    # All SQL queries MUST BE covered with tests.
-    - exhaustruct
-    # Forbids fmt.println and others from being used.
-    # Disabled, because we are using this file for scripts mostly.
-    - forbidigo
-    # I might have long but a simple function.
-    - funlen
-    # I'm not a fan of ginkgo and gomega packages.
-    - ginkgolinter
-    # Checks that compiler directive comments (//go:) are valid. Rare.
-    - gocheckcompilerdirectives
-    # Globals and init() are ok.
-    - gochecknoglobals
-    - gochecknoinits
-    # Same as `cyclop` linter (see above)
-    - gocognit
-    - goconst
-    - gocyclo
-    # Forces to put `.` at the end of the comment. Code is poetry.
-    - godot
-    # TODO and friends are ok.
-    - godox
-    # I don't use file headers.
-    - goheader
-    # Allow or ban replace directives in go.mod
-    # or force explanation for retract directives.
-    - gomoddirectives
-    # Allowed/blocked packages to import. I prefer to do it manually.
-    - gomodguard
-    # Printf-like functions must have -f.
-    - goprintffuncname
-    # Groupt declarations, I prefer manually.
-    - grouper
-    # Checks imports aliases, rare.
-    - importas
-    # Forces tiny interfaces, very subjective.
-    - interfacebloat
-    # Accept interfaces, return types. Not always.
-    - ireturn
-    # I don't set line length. 120 is fine by the way ;)
-    - lll
-    # Some log checkers, might be useful.
-    - loggercheck
-    # Maintainability index of each function, subjective.
-    - maintidx
-    # Slice declarations with non-zero initial length. Not my case.
-    - makezero
-    # Enforce tags in un/marshaled structs. Cool but not my case.
-    - musttag
-    # Deeply nested if statements, subjective.
-    - nestif
-    # Forces newlines in some places.
-    - nlreturn
-    # Reports all named returns, not that bad.
-    - nonamedreturns
-    # Forces comment why another check is disabled.
-    # Better not to have //nolint: at all ;)
-    - nolintlint
-    # I don't use t.Parallel() that much.
-    - paralleltest
-    # no need
-    - rowserrcheck
-    # Conflicts with gofumpt
-    - tagalign
-    # Often non-`_test` package is ok.
-    - testpackage
-    # I'm fine with long variable names with a small scope.
-    - varnamelen
-    # gofmt,gofumpt covers that (from what I know).
-    - whitespace
-    # Don't find it useful to wrap all errors from external packages.
-    - wrapcheck
-    # Forces you to use empty lines. Great if configured correctly.
-    # I mean there is an agreement in a team.
-    - wsl
-    - wsl_v5
-    # Allow inline errors
-    - noinlineerr
+    - containedctx # context.Context stored in struct fields instead of passed as parameter
+    - cyclop # cyclomatic complexity — redundant with gocyclo
+    - decorder # declaration order — too opinionated
+    - depguard # import allow/deny lists — requires per-project configuration
+    - dogsled # too many blank identifiers — very rare
+    - embeddedstructfieldcheck # embedded type placement — minor style, not worth enforcing
+    - err113 # forces package-level sentinel errors — too opinionated, breaks common patterns
+    - errchkjson # json.Marshal error checking — too strict
+    - exhaustruct # all struct fields must be set — extremely noisy, breaks zero-value idiom
+    - funcorder # function ordering — too opinionated for a default
+    - ginkgolinter # ginkgo/gomega — not used
+    - gocheckcompilerdirectives # compiler directive validation — rare
+    - gochecknoglobals # no global variables — too strict, many valid uses
+    - gochecknoinits # no init() functions — too strict, many valid uses
+    - gocognit # cognitive complexity — redundant with gocyclo + nestif
+    - godoclint # godoc validation — overlaps with godot and revive
+    - godot # exported-symbol comments must end with a period
+    - godox # TODO/FIXME comments — acceptable in code
+    - goheader # file header enforcement — project-specific policy
+    - gomoddirectives # go.mod directive restrictions — not needed
+    - gomodguard # module allow/block lists — not needed
+    - goprintffuncname # printf-like function naming — minor
+    - grouper # declaration grouping — preference only
+    - iface # interface pollution detector — too opinionated, not mature enough
+    - importas # import alias enforcement — requires per-project configuration
+    - interfacebloat # interface size limits — subjective
+    - iotamixing # iota in mixed const blocks — very rare issue
+    - ireturn # return concrete types — not always applicable
+    - lll # line length — handled by gofmt/gofumpt
+    - maintidx # maintainability index — subjective
+    - makezero # flags make([]T, n) — noisy, often wrong about intent
+    - mirror # bytes/strings mirror patterns — very few real hits
+    - mnd # magic number detector — extremely noisy, flags obvious constants like HTTP 200
+    - musttag # struct tag enforcement — not needed
+    - nlreturn # newlines before returns — too opinionated
+    - noinlineerr # bans `if err := ...; err != nil {}` — this is idiomatic Go
+    - nonamedreturns # no named returns — too strict
+    - protogetter # proto field access via getters — only for protobuf users
+    - recvcheck # receiver type consistency — overlaps with gocritic
+    - spancheck # OpenTelemetry span checks — only for OTel users
+    - tagalign # tag alignment — conflicts with gofumpt
+    - testpackage # forces _test package — valid but too opinionated as a default
+    - unparam # unused function parameters — medium false-positive rate with interfaces
+    - unqueryvet # SELECT * detection — too niche for a default config
+    - varnamelen # variable name length — too opinionated, Go favors short names
+    - wrapcheck # forces wrapping all external errors — too noisy as a default
+    - wsl # whitespace linter (v1) — superseded by wsl_v5
+    - wsl_v5 # whitespace and blank line rules for readability
+    - zerologlint # zerolog usage — only for zerolog users
+
+  exclusions:
+    paths:
+      - vendor$
+      - third_party$
+      - testutils$
+      - examples$
+
   settings:
+    errcheck:
+      check-blank: false
+      exclude-functions:
+        - (*archive/zip.Writer).Close
+        - (*database/sql.DB).Close
+        - (*database/sql.Rows).Close
+        - (*database/sql.Stmt).Close
+        - (*go.mongodb.org/mongo-driver/mongo.Cursor).Close
+        - (*os.File).Close
+        - (io.Closer).Close
+        - io.Copy(*bytes.Buffer)
+        - io.Copy(os.Stdout)
+        - io/ioutil.ReadFile
+    govet:
+      disable:
+        - fieldalignment
+    exhaustive:
+      default-signifies-exhaustive: false
+      ignore-enum-types: ^reflect\.Kind$|^golang\.org/x/net/html\.TokenType$
     revive:
       enable-all-rules: true
       rules:
         - name: unused-parameter
           arguments:
-            - allowRegex: "^_"
+            - allowRegex: "^_|^.$"
         - name: var-naming
           arguments:
-            # don't enforce
             - []
-            # enforce
             - ["MQTT"]
         - name: exported
+          disabled: true
+        - name: enforce-switch-style
           disabled: true
         - name: add-constant
           disabled: true
@@ -227,7 +197,6 @@ linters:
           disabled: true
         - name: cyclomatic
           disabled: true
-          # Method differs only by capitalization
         - name: confusing-naming
           disabled: true
         - name: flag-parameter
@@ -236,8 +205,6 @@ linters:
           disabled: true
         - name: package-comments
           disabled: true
-    mnd:
-      ignored-numbers: ["24","60","1000"]
     gocritic:
       enabled-tags:
         - diagnostic
@@ -248,62 +215,48 @@ linters:
       disabled-checks:
         - unnamedResult
         - whyNoLint
-        # These 3 will detect many cases, but they do sense
-        # if it's performance oriented code
         - hugeParam
         - rangeExprCopy
         - rangeValCopy
-    errcheck:
-      #
-      check-type-assertions: true # Report `a := b.(MyStruct)` when `a, ok := ...` should be.    # Report skipped checks:`num, _ := strconv.Atoi(numStr)`.
-      check-blank: false # allow ignoring err by assigning to _
-      exclude-functions:
-        - io/ioutil.ReadFile
-        - io.Copy(*bytes.Buffer)
-        - io.Copy(os.Stdout)
-        - (io.Closer).Close
-    # forbidigo:
-    #   # Forbid the following identifiers (list of regexp).
-    #   # Default: ["^(fmt\\.Print(|f|ln)|print|println)$"]
-    #   forbid:
-    #     - pattern: ^fmt\.Print.*$
-    #       msg: Do not commit print statements.
-    #     - pattern: ^spew\.(ConfigState\.)?Dump$
-    #       msg: Do not commit dump statements.
-    #     - pattern: ^litter\.(ConfigState\.)?Dump$
-    #       msg: Do not commit dump statements.
-    govet:
-      disable:
-        - fieldalignment # I'm ok to waste some bytes
     gosec:
       excludes:
-        - G104 # Already covered by errcheck
-    nakedret:
-      max-func-lines: 1
-    tagliatelle:
-      case:
-        rules:
-          json: snake
-          yaml: snake
-          xml: camel
-          bson: camel
-          avro: snake
-          mapstructure: kebab
+        - G104
+    dupl:
+      threshold: 100
+    funlen:
+      lines: 120
+      statements: 80
+    goconst:
+      min-len: 3
+      min-occurrences: 4
+    gocyclo:
+      min-complexity: 13
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+
 formatters:
   enable:
-    - gofmt
+    - gci
     - gofumpt
-    - goimports
-    - golines
+  # disable:
+  #   - gofmt
+  #   - goimports  # import management — redundant with gofumpt
+  #   - golines    # line wrapping — too opinionated, can break readability
+  #   - swaggo     # swaggo comment formatting — only for swaggo users
   settings:
-    golines:
-      max-len: 120
-      tab-len: 4
-      shorten-comments: false
-      reformat-tags: true
-      chain-split-dots: true
-issues:
-  max-issues-per-linter: 0
-  max-same-issues: 0
-  new: false
-  fix: false
+    gofumpt:
+      extra-rules: true
+    gci:
+      custom-order: true
+      sections:
+        - standard
+        - default
+        - localmodule
+
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

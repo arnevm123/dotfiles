@@ -1,4 +1,6 @@
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then
+    . "$HOME/.cargo/env"
+fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin
 export GOROOT=$HOME/go
@@ -20,5 +22,6 @@ path+=$HOME/.opencode/bin:$PATH
 path+=$GOROOT/bin
 path+=$GOPATH/bin
 path+=$ODIN_ROOT
+path+=$HOME/.nimble/bin
 
 export PATH

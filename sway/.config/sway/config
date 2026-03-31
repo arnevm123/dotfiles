@@ -194,9 +194,15 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
 bindsym $mod+Shift+r reload
-bindsym $mod+semicolon exec copyq toggle
+set $terminal-wide foot -o initial-window-size-chars=80x20
+set $clipboard $terminal-wide --app-id cclip -T foot fsel --cclip
+bindsym $mod+semicolon exec $clipboard
+for_window [app_id="cclip"] floating enable
+# bindsym $mod+semicolon exec copyq toggle
 for_window [app_id="copyq"] floating enable
 for_window [app_id="copyq"] sticky enable
+# Float Bitwarden popup by geometry before title is set (avoids tiling flash)
+exec /home/arne/.config/sway/scripts/float-bitwarden.sh
 
 mode "resize" {
 	bindsym h resize shrink width 10 px or 10 ppt
@@ -246,16 +252,24 @@ bindswitch --reload --locked lid:off output eDP-1 enable
 
 # Startup programs
 exec --no-startup-id mpd
-exec --no-startup-id copyq --start-server
+# exec --no-startup-id copyq --start-server
 exec --no-startup-id kanshi
+exec --no-startup-id cclipd -s 2 -t "image/png" -t "image/*" -t "text/plain;charset=utf-8" -t "text/*" -t "*"
 exec_always swaybg -i ~/dotfiles/background/default.png -m fill
 
 exec --no-startup-id swaync
 exec --no-startup-id nm-applet --indicator
 exec --no-startup-id blueman-applet
 exec --no-startup-id "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
+exec /usr/bin/playerctld daemon
+exec swayidle -w \
+	timeout 800 'gtklock -d -S' \
+	timeout 810 'swaymsg "output * dpms off"' \
+	resume 'swaymsg "output * dpms on"' \
+	timeout 5 'if pgrep -x gtklock; then pactl set-sink-mute @DEFAULT_SINK@ 1 &&  playerctl pause && swaymsg "output * dpms off"; fi' \
+	resume 'swaymsg "output * dpms on"' \
+	before-sleep 'gtklock -d -S'
 
-input * accel_profile flat
 
 set $disp1 "eDP-1"
 set $disp2 "DP-2"
@@ -273,6 +287,7 @@ workspace 8 output $disp2 $disp3
 workspace 9 output $disp2 $disp3
 workspace 10 output $disp1
 
+input * accel_profile flat
 input type:touchpad {
 	dwt enabled
 	tap enabled
@@ -280,21 +295,9 @@ input type:touchpad {
 	middle_emulation enabled
 }
 
-for_window [class="^.*"] inhibit_idle fullscreen
-for_window [app_id="^.*"] inhibit_idle fullscreen
 focus_on_window_activation focus
 
-exec swayidle -w \
-	timeout 800 'gtklock -d -S' \
-	timeout 810 'swaymsg "output * dpms off"' \
-	resume 'swaymsg "output * dpms on"' \
-	timeout 5 'if pgrep -x gtklock; then pactl set-sink-mute @DEFAULT_SINK@ 1 &&  playerctl pause && swaymsg "output * dpms off"; fi' \
-	resume 'swaymsg "output * dpms on"' \
-	before-sleep 'gtklock -d -S'\
-
 exec swaymsg workspace '1'
-exec /usr/bin/playerctld daemon
-exec ~/.cargo/bin/wl-gammarelay-rs
 
 bar {
 	swaybar_command waybar

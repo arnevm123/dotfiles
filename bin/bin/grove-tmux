@@ -7,12 +7,13 @@ base_path="${relative_path%/*}"
 
 # If no arguments, use fzf to select from grove list
 if [[ $# -eq 0 ]]; then
-	worktrees=($(grove --plain list | awk '{print $1}' | sed 's/^\\*//'))
+	mapfile -t worktrees < <(grove --plain list 2>/dev/null | awk '/^\*/ {print $2} /^  / {print $1}')
 	folders=()
 	for wt in "${worktrees[@]}"; do
 		folders+=("$HOME/$base_path/$wt")
 	done
 	"$HOME"/bin/tmux-sessionizer --folders "${folders[@]}"
+	exit 0
 fi
 
 # Handle --pr flag

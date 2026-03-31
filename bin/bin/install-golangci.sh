@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
 if [ -z "$1" ]; then
-	# If no argument is provided, use the latest Go version
-	GOLANGCI_VERSION="latest"
+	GOLANGCI_VERSION=$(curl -s https://api.github.com/repos/golangci/golangci-lint/releases/latest | jq -r '.tag_name' | sed 's/^v//')
 else
-	# If an argument is provided, use that version
-	GOLANGCI_VERSION="$1"
+	GOLANGCI_VERSION="${1#v}"
 fi
 
-curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b "$GOPATH"/bin "$GOLANGCI_VERSION"
+CURRENT_VERSION=$(golangci-lint version 2>/dev/null | awk '{print $4}')
+if [ "$CURRENT_VERSION" = "$GOLANGCI_VERSION" ]; then
+	echo "golangci-lint $GOLANGCI_VERSION is already installed"
+	exit 0
+fi
+
+echo "updating golangci-lint $CURRENT_VERSION -> $GOLANGCI_VERSION"
+
+curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b "$GOPATH"/bin "v$GOLANGCI_VERSION"
