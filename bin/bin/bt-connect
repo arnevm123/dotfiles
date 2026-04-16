@@ -1,0 +1,52 @@
+#!/bin/bash
+# Pick any paired Bluetooth device via fuzzel and connect to it.
+# Audio devices are connected via headphones-connect (sets up PipeWire sink).
+# Non-audio devices are connected via bluetoothctl directly.
+
+NOTIFY="$HOME/bin/notify-send.sh"
+ICON=~/.config/sway/icons/headphones.svg
+
+declare -A device_macs
+declare -A device_types
+devices=""
+
+while read -r _ mac name; do
+	if bluetoothctl info "$mac" 2>/dev/null | grep -qiE 'Audio Sink|Handsfree|A2DP'; then
+		label="[Audio] $name"
+		device_types["$label"]="audio"
+	else
+		label="[Other] $name"
+		device_types["$label"]="other"
+	fi
+	device_macs["$label"]="$mac"
+	devices+="$label"$'\n'
+done < <(bluetoothctl devices Paired)
+
+devices=$(echo -n "$devices" | sed '/^$/d')
+
+if [ -z "$devices" ]; then
+	$NOTIFY "No paired Bluetooth devices found" -t 2000
+	exit 1
+fi
+
+selected=$(echo "$devices" | fuzzel --dmenu --prompt="Connect: ")
+
+if [ -z "$selected" ]; then
+	exit 0
+fi
+
+name="${selected#\[Audio\] }"
+name="${name#\[Other\] }"
+mac="${device_macs[$selected]}"
+type="${device_types[$selected]}"
+
+if [ "$type" = "audio" ]; then
+	~/bin/headphones-connect "$name"
+else
+	$NOTIFY "$name: connecting..." -t 2000 -i "$ICON"
+	if bluetoothctl connect "$mac" 2>&1 | tail -1 | grep -qi "successful"; then
+		$NOTIFY "$name: connected" -t 2000 -i "$ICON"
+	else
+		$NOTIFY "$name: failed to connect" -t 2000 -i "$ICON"
+	fi
+fi

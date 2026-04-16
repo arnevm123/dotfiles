@@ -61,6 +61,9 @@ alias pwdcp="pwd | tr -d '\n' | wl-copy"
 alias checkout=grove-checkout
 alias grove-fzf=grove-tmux
 
+alias oc=opencode
+alias occ='opencode -c'
+
 # global aliases
 alias -g NE='2>/dev/null'
 alias -g NO='>/dev/null'

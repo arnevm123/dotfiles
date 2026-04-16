@@ -239,10 +239,10 @@ formatters:
   enable:
     - gci
     - gofumpt
+    - golines
   # disable:
   #   - gofmt
   #   - goimports  # import management — redundant with gofumpt
-  #   - golines    # line wrapping — too opinionated, can break readability
   #   - swaggo     # swaggo comment formatting — only for swaggo users
   settings:
     gofumpt:
@@ -253,6 +253,10 @@ formatters:
         - standard
         - default
         - localmodule
+    golines:
+      max-len: 130
+      shorten-comments: false
+      reformat-tags: false
 
   exclusions:
     generated: lax

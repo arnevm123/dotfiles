@@ -1,0 +1,22 @@
+#!/bin/bash
+# Pick a paired Bluetooth audio device via fuzzel and connect to it.
+
+devices=""
+while read -r _ mac name; do
+	if bluetoothctl info "$mac" 2>/dev/null | grep -qiE 'Audio Sink|Handsfree|A2DP'; then
+		devices+="$name"$'\n'
+	fi
+done < <(bluetoothctl devices Paired)
+
+devices=$(echo -n "$devices" | sed '/^$/d')
+
+if [ -z "$devices" ]; then
+	notify-send "No paired audio devices found" -t 2000
+	exit 1
+fi
+
+selected=$(echo "$devices" | fuzzel --dmenu --prompt="Connect: ")
+
+if [ -n "$selected" ]; then
+	~/bin/headphones-connect "$selected"
+fi

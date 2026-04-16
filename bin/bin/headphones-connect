@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# Connect to Bluetooth headphones and set them as default audio output.
+# Usage: headphones-connect [name]
+#        headphones-connect "CMF Buds Pro 2,Baseus F01B 5.0"
+# Tries each name in order, connects the first one found paired.
+
+HEADPHONES="${1:-CMF Buds Pro 2,Melomania P100 SE}"
+NOTIFY="$HOME/bin/notify-send.sh"
+ICON=~/.config/sway/icons/headphones.svg
+
+notify() {
+	$NOTIFY "$1" \
+		-t 2000 \
+		-f \
+		-i "$ICON"
+}
+
+paired_devices=$(bluetoothctl devices Paired)
+
+# Try each comma-separated name in order
+IFS=',' read -ra NAMES <<< "$HEADPHONES"
+matched_name=""
+paired_line=""
+
+for name in "${NAMES[@]}"; do
+	name=$(echo "$name" | xargs) # trim whitespace
+	paired_line=$(echo "$paired_devices" | grep -i "$name" || true)
+	if [[ -n "$paired_line" ]]; then
+		matched_name="$name"
+		break
+	fi
+done
+
+if [[ -z "$paired_line" ]]; then
+	notify "No paired headphones found"
+	exit 1
+fi
+
+mac=$(echo "$paired_line" | awk '{print $2}')
+mac_underscored=${mac//:/_}
+
+# Check if already connected
+connected_line=$(bluetoothctl devices Connected | grep -i "$matched_name" || true)
+
+if [[ -z "$connected_line" ]]; then
+	notify "$matched_name: connecting..."
+	if ! bluetoothctl connect "$mac" 2>&1 | tail -1; then
+		notify "$matched_name: failed to connect"
+		exit 1
+	fi
+
+	# Wait for the Bluetooth sink to appear in PipeWire
+	for i in $(seq 1 10); do
+		sleep 1
+		if pactl list sinks short 2>/dev/null | grep -q "$mac_underscored"; then
+			break
+		fi
+		if [[ $i -eq 10 ]]; then
+			notify "$matched_name: connected but no audio sink"
+			exit 1
+		fi
+	done
+fi
+
+# Find the sink name for these headphones
+sink_name=$(pactl list sinks short | grep "$mac_underscored" | awk '{print $2}')
+
+if [[ -z "$sink_name" ]]; then
+	notify "$matched_name: no audio sink found"
+	exit 1
+fi
+
+# Set as default sink if not already
+default_sink=$(pactl get-default-sink)
+
+if [[ "$default_sink" != "$sink_name" ]]; then
+	pactl set-default-sink "$sink_name"
+fi
+
+# Unmute if muted
+if pactl get-sink-mute "$sink_name" | grep -q "yes"; then
+	pactl set-sink-mute "$sink_name" 0
+fi
+
+notify "$matched_name: connected"

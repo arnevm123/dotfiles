@@ -15,17 +15,13 @@ while (( $# )); do
 done
 
 STOW_FOLDERS="
-alacritty
 bin
-emacs
 fonts
 foot
 fuzzel
 git
-i3
-kanshi
 linters
-nvim-minimal
+nvim
 omz-custom
 sway
 swaylock
