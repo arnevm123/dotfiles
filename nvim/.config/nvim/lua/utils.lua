@@ -226,12 +226,7 @@ end
 function M.restart_with_current_file()
 	local file = vim.fn.fnameescape(vim.fn.expand("%:p"))
 	-- stylua: ignore
-	local cmd = "lua vim.api.nvim_create_autocmd('VimEnter', "
-		.."{ once = true, callback = function() "
-		.. "vim.defer_fn(function() "
-		.. "vim.cmd.edit('" .. file .. "') "
-		.. "end, 50) "
-		.. "end })"
+	local cmd = "edit " .. file
 	vim.cmd("restart " .. cmd)
 end
 

@@ -56,6 +56,13 @@ alias ls="ls --color=tty -F"
 alias open='xdg-open'
 alias rmrf='fc -s "rm=rm -rf"'
 
+alias llt='LOG_LEVEL=trace'
+alias lld='LOG_LEVEL=debug'
+alias lli='LOG_LEVEL=info'
+alias llw='LOG_LEVEL=warn'
+alias lle='LOG_LEVEL=error'
+alias llf='LOG_LEVEL=fatal'
+
 # misc aliases
 alias pwdcp="pwd | tr -d '\n' | wl-copy"
 alias checkout=grove-checkout
