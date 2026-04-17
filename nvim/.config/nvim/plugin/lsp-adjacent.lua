@@ -76,13 +76,8 @@ require("rulebook").setup({ ---@diagnostic disable-line: missing-fields
 require("inc_rename").setup({})
 
 -- Keymaps
-local keymap = vim.keymap.set
-keymap("n", "<Leader>le", "<cmd>lua require('rulebook').ignoreRule()<CR>", { desc = "Diagnostic: ignore" })
-keymap("n", "<Leader>ll", "<cmd>lua require('rulebook').lookupRule()<CR>", { desc = "Diagnostic: lookup rule" })
-keymap("n", "<Leader>ly", "<cmd>lua require('rulebook').lookupRule()<CR>", { desc = "Diagnostic: lookup rule" })
-keymap(
-	{ "n", "x" },
-	"<Leader>lo",
-	"<cmd>lua require('rulebook').suppressFormatter()<CR>",
-	{ desc = "Diagnostic: suppress formatter" }
-)
+local map = require("keymaps").map
+map("n", "<Leader>le", "<cmd>lua require('rulebook').ignoreRule()<CR>", "Diagnostic: ignore rule")
+map("n", "<Leader>ll", "<cmd>lua require('rulebook').lookupRule()<CR>", "Diagnostic: lookup rule")
+map("n", "<Leader>ly", "<cmd>lua require('rulebook').lookupRule()<CR>", "Diagnostic: lookup rule (alt)")
+map({ "n", "x" }, "<Leader>lo", "<cmd>lua require('rulebook').suppressFormatter()<CR>", "Diagnostic: suppress formatter")

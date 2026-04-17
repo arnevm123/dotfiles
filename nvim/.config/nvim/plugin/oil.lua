@@ -69,4 +69,4 @@ require("oil").setup({
 	},
 })
 
-vim.keymap.set("n", "-", "<cmd>Oil<cr>", { desc = "Oil" })
+require("keymaps").map("n", "-", "<cmd>Oil<cr>", "Oil file browser")

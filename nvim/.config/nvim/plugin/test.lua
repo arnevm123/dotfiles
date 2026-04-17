@@ -33,20 +33,10 @@ require("neotest").setup({
 	},
 })
 
-local keymap = vim.keymap.set
-keymap("n", "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>", { desc = "test Run File" })
-keymap("n", "<leader>tn", "<cmd>lua require('neotest').run.run()<CR>", { desc = "test Run Nearest" })
-keymap(
-	"n",
-	"<leader>tdn",
-	"<cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>",
-	{ desc = "test Debug Nearest" }
-)
-keymap("n", "<leader>tl", "<cmd>lua require('neotest').run.run_last()<CR>", { desc = "test Run Last" })
-keymap(
-	"n",
-	"<leader>tdl",
-	"<cmd>lua require('neotest').run.run_last({strategy = 'dap'})<CR>",
-	{ desc = "test Debug Last" }
-)
-keymap("n", "<leader>tt", "<cmd>lua require('neotest').summary.toggle()<CR>", { desc = "test Summary" })
+local map = require("keymaps").map
+map("n", "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>", "Test run file")
+map("n", "<leader>tn", "<cmd>lua require('neotest').run.run()<CR>", "Test run nearest")
+map("n", "<leader>tdn", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>", "Test debug nearest")
+map("n", "<leader>tl", "<cmd>lua require('neotest').run.run_last()<CR>", "Test run last")
+map("n", "<leader>tdl", "<cmd>lua require('neotest').run.run_last({strategy = 'dap'})<CR>", "Test debug last")
+map("n", "<leader>tt", "<cmd>lua require('neotest').summary.toggle()<CR>", "Test summary toggle")

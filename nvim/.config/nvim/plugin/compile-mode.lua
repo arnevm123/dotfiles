@@ -46,19 +46,17 @@ vim.g.compile_mode = {
 	focus_compilation_buffer = true,
 }
 
-local keymap = vim.keymap.set
-local opts = { noremap = true, silent = true }
-local nosilent = { noremap = true }
-keymap("n", "<leader>bu", function() run_compile("make build") end, nosilent)
-keymap("n", "<leader>bt", function() run_compile("make test") end, nosilent)
-keymap("n", "<leader>bl", function() run_compile("make lint") end, nosilent)
-keymap("n", "<leader>bg", function() run_compile() end, nosilent)
-keymap("n", "<leader>br", function() run_compile("LOG_LEVEL=trace make run") end, nosilent)
-keymap("n", "<leader>be", function() run_compile("recompile") end, nosilent)
-keymap("n", "]x", function() require("compile-mode").next_error() end, opts)
-keymap("n", "[x", function() require("compile-mode").prev_error() end, opts)
-keymap("n", "<leader>bd", ":silent! execute 'bdelete' bufname('*compilation*')<CR>", opts)
-keymap("n", "yox", function()
+local map = require("keymaps").map
+map("n", "<leader>bu", function() run_compile("make build") end, "Compile: make build", { silent = false })
+map("n", "<leader>bt", function() run_compile("make test") end, "Compile: make test", { silent = false })
+map("n", "<leader>bl", function() run_compile("make lint") end, "Compile: make lint", { silent = false })
+map("n", "<leader>bg", function() run_compile() end, "Compile: prompt command", { silent = false })
+map("n", "<leader>br", function() run_compile("LOG_LEVEL=trace make run") end, "Compile: make run", { silent = false })
+map("n", "<leader>be", function() run_compile("recompile") end, "Compile: recompile", { silent = false })
+map("n", "]x", function() require("compile-mode").next_error() end, "Next compile error")
+map("n", "[x", function() require("compile-mode").prev_error() end, "Previous compile error")
+map("n", "<leader>bd", ":silent! execute 'bdelete' bufname('*compilation*')<CR>", "Delete compilation buffer")
+map("n", "yox", function()
 	local bufnr = vim.g.compilation_buffer
 	if not bufnr then
 		vim.notify("Compilation buffer not found", vim.log.levels.WARN)
@@ -71,5 +69,5 @@ keymap("n", "yox", function()
 	else
 		vim.api.nvim_win_close(winid, false)
 	end
-end, { noremap = true, silent = true, desc = "Toggle compilation buffer" })
-keymap("n", "<leader>bq", ":silent! execute 'bdelete' bufname('*compilation*')<CR>:QuickfixErrors<CR>", opts)
+end, "Toggle compilation buffer")
+map("n", "<leader>bq", ":silent! execute 'bdelete' bufname('*compilation*')<CR>:QuickfixErrors<CR>", "Compile errors to quickfix")

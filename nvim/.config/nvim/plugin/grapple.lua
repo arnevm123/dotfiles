@@ -68,5 +68,6 @@ require("grapple").setup({
 	},
 })
 
-vim.keymap.set("n", "m", save_mark, { noremap = true, silent = true })
-vim.keymap.set("n", "'", open_mark, { noremap = true, silent = true })
+local map = require("keymaps").map
+map("n", "m", save_mark, "Save grapple mark")
+map("n", "'", open_mark, "Open grapple mark")

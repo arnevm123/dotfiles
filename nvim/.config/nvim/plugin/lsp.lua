@@ -89,9 +89,9 @@ vim.lsp.enable(lsp_servers)
 require("inc_rename").setup({})
 
 -- Keymaps
-local keymap = vim.keymap.set
-keymap({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, { desc = "lsp Code Action" })
-keymap("n", "<leader>lf", "<cmd>lua require('conform').format({ async = true, lsp_fallback = true })<CR>")
-keymap("n", "<leader>lr", ":IncRename <C-r><C-w>", { desc = "lsp rename variable" })
-keymap("n", "<leader>ld", "<cmd>lua require('utils').toggle_case_rename()<CR>", { desc = "lsp toggle case rename" })
-keymap("n", "<leader>ls", "<cmd>lua require('utils').lint_fix()<CR>", { desc = "lsp golangci-lint fix" })
+local map = require("keymaps").map
+map({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, "LSP code action")
+map("n", "<leader>lf", "<cmd>lua require('conform').format({ async = true, lsp_fallback = true })<CR>", "Format buffer")
+map("n", "<leader>lr", ":IncRename <C-r><C-w>", "LSP rename variable", { silent = false })
+map("n", "<leader>ld", "<cmd>lua require('utils').toggle_case_rename()<CR>", "LSP toggle case rename")
+map("n", "<leader>ls", "<cmd>lua require('utils').lint_fix()<CR>", "LSP golangci-lint fix")

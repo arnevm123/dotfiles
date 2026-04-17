@@ -50,20 +50,21 @@ require("treesj").setup({ use_default_keymaps = false })
 require("atone").setup({})
 
 -- text-case
-vim.keymap.set({ "n", "x" }, "ga.", "<cmd>lua require('utils').try_lsp_rename()<CR>")
-vim.keymap.set({ "n", "x" }, "gau", "<cmd>lua require('utils').try_lsp_rename('to_constant_case')<CR>")
-vim.keymap.set({ "n", "x" }, "gas", "<cmd>lua require('utils').try_lsp_rename('to_snake_case')<CR>")
-vim.keymap.set({ "n", "x" }, "gad", "<cmd>lua require('utils').try_lsp_rename('to_dash_case')<CR>")
-vim.keymap.set({ "n", "x" }, "gac", "<cmd>lua require('utils').try_lsp_rename('to_camel_case')<CR>")
-vim.keymap.set({ "n", "x" }, "gap", "<cmd>lua require('utils').try_lsp_rename('to_pascal_case')<CR>")
+local map = require("keymaps").map
+map({ "n", "x" }, "ga.", "<cmd>lua require('utils').try_lsp_rename()<CR>", "Rename (textcase picker)")
+map({ "n", "x" }, "gau", "<cmd>lua require('utils').try_lsp_rename('to_constant_case')<CR>", "Rename to CONSTANT_CASE")
+map({ "n", "x" }, "gas", "<cmd>lua require('utils').try_lsp_rename('to_snake_case')<CR>", "Rename to snake_case")
+map({ "n", "x" }, "gad", "<cmd>lua require('utils').try_lsp_rename('to_dash_case')<CR>", "Rename to dash-case")
+map({ "n", "x" }, "gac", "<cmd>lua require('utils').try_lsp_rename('to_camel_case')<CR>", "Rename to camelCase")
+map({ "n", "x" }, "gap", "<cmd>lua require('utils').try_lsp_rename('to_pascal_case')<CR>", "Rename to PascalCase")
 
 -- grug-far
-vim.keymap.set("n", "<leader>ss", "<cmd>lua require('grug-far').open()<CR>")
-vim.keymap.set("x", "<leader>ss", "<cmd>lua require('grug-far').with_visual_selection()<CR>")
+map("n", "<leader>ss", "<cmd>lua require('grug-far').open()<CR>", "Grug-far search and replace")
+map("x", "<leader>ss", "<cmd>lua require('grug-far').with_visual_selection()<CR>", "Grug-far replace selection")
 
 -- treesj
-vim.keymap.set("n", "<space>ej", "<cmd>lua require('treesj').join()<CR>", { desc = "Join lines" })
-vim.keymap.set("n", "<space>ek", "<cmd>lua require('treesj').split()<CR>", { desc = "Split lines" })
+map("n", "<space>ej", "<cmd>lua require('treesj').join()<CR>", "Join lines")
+map("n", "<space>ek", "<cmd>lua require('treesj').split()<CR>", "Split lines")
 
 -- atone
-vim.keymap.set("n", "<leader>eu", "<cmd>Atone toggle<CR>", { desc = "Atone" })
+map("n", "<leader>eu", "<cmd>Atone toggle<CR>", "Atone toggle")

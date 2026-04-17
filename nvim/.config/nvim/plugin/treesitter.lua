@@ -129,52 +129,12 @@ require("nvim-treesitter-textobjects").setup({
 	},
 })
 
-local keymap = vim.keymap.set
-keymap(
-	{ "x", "o" },
-	"af",
-	function() require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects") end,
-	{ desc = "Select outer function" }
-)
-keymap(
-	{ "x", "o" },
-	"if",
-	function() require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects") end,
-	{ desc = "Select inner function" }
-)
-keymap(
-	"n",
-	"[e",
-	function() require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner") end,
-	{ desc = "Swap next param" }
-)
-keymap(
-	"n",
-	"]e",
-	function() require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.outer") end,
-	{ desc = "Swap prev param" }
-)
-keymap(
-	{ "n", "x", "o" },
-	"]f",
-	function() require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects") end,
-	{ desc = "Next function start" }
-)
-keymap(
-	{ "n", "x", "o" },
-	"[F",
-	function() require("nvim-treesitter-textobjects.move").goto_previous_end("@function.outer", "textobjects") end,
-	{ desc = "Prev function end" }
-)
-keymap(
-	{ "n", "x", "o" },
-	"[f",
-	function() require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects") end,
-	{ desc = "Prev function start" }
-)
-keymap(
-	{ "n", "x", "o" },
-	"]F",
-	function() require("nvim-treesitter-textobjects.move").goto_next_end("@function.outer", "textobjects") end,
-	{ desc = "Next function end" }
-)
+local map = require("keymaps").map
+map({ "x", "o" }, "af", function() require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects") end, "Select outer function")
+map({ "x", "o" }, "if", function() require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects") end, "Select inner function")
+map("n", "[e", function() require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner") end, "Swap next param")
+map("n", "]e", function() require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.outer") end, "Swap prev param")
+map({ "n", "x", "o" }, "]f", function() require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects") end, "Next function start")
+map({ "n", "x", "o" }, "[F", function() require("nvim-treesitter-textobjects.move").goto_previous_end("@function.outer", "textobjects") end, "Prev function end")
+map({ "n", "x", "o" }, "[f", function() require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects") end, "Prev function start")
+map({ "n", "x", "o" }, "]F", function() require("nvim-treesitter-textobjects.move").goto_next_end("@function.outer", "textobjects") end, "Next function end")

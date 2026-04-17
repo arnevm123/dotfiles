@@ -24,14 +24,10 @@ _99.setup({
 	md_files = { "AGENT.md" },
 })
 
-vim.keymap.set("v", "<leader>av", function() require("99").visual({}) end)
-vim.keymap.set("n", "<leader>ax", function() require("99").stop_all_requests() end)
-vim.keymap.set("n", "<leader>as", function() require("99").search({}) end)
-vim.keymap.set("n", "<leader>ao", function() require("99").open() end)
-vim.keymap.set("n", "<leader>ai", function() require("99").open() end)
-vim.keymap.set(
-	{ "n", "v" },
-	"<leader>af",
-	function() require("utils"):ai_fix_lint() end,
-	{ desc = "AI fix lint error" }
-)
+local map = require("keymaps").map
+map("v", "<leader>av", function() require("99").visual({}) end, "AI visual")
+map("n", "<leader>ax", function() require("99").stop_all_requests() end, "AI stop all requests")
+map("n", "<leader>as", function() require("99").search({}) end, "AI search")
+map("n", "<leader>ao", function() require("99").open() end, "AI open")
+map("n", "<leader>ai", function() require("99").open() end, "AI open (alt)")
+map({ "n", "v" }, "<leader>af", function() require("utils"):ai_fix_lint() end, "AI fix lint error")

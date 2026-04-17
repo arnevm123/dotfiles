@@ -18,9 +18,9 @@ require("gopher").setup({
 	iferr = { message = 'fmt.Errorf("%w", err)' },
 })
 
-local keymap = vim.keymap.set
-keymap("n", "<leader>ee", '0f=llvt("hy:GoIfErr<CR>jf%i<C-r>h: <esc>', { desc = "Go if err" })
-keymap("n", "<leader>er", function()
+local map = require("keymaps").map
+map("n", "<leader>ee", '0f=llvt("hy:GoIfErr<CR>jf%i<C-r>h: <esc>', "Go if err")
+map("n", "<leader>er", function()
 	local line = vim.api.nvim_get_current_line()
 	if line:match("^%s*if") then
 		if string.find(line, ";") then
@@ -30,9 +30,9 @@ keymap("n", "<leader>er", function()
 		vim.api.nvim_feedkeys("k", "n", true)
 	end
 	vim.api.nvim_feedkeys("Jcff;\x1bIif \x1b", "n", true)
-end, { desc = "Go if err join" })
-keymap("n", "<leader>ew", "^df f;s<CR>if <esc>", { desc = "Go if err split" })
-keymap("n", "<leader>en", function()
+end, "Go if err join")
+map("n", "<leader>ew", "^df f;s<CR>if <esc>", "Go if err split")
+map("n", "<leader>en", function()
 	local var = vim.fn.expand("<cword>")
 	vim.api.nvim_input("o" .. "_ = " .. var .. "<esc>^")
-end, { desc = "Go empty assign" })
+end, "Go empty assign")

@@ -21,8 +21,8 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-local keymap = vim.keymap.set
-keymap("n", "<leader>qt", "<cmd>DBUIToggle<CR>", { desc = "DadBod Toggle" })
-keymap("n", "<leader>qo", "<cmd>lua require('utils').DbuiToggle()<CR>", { desc = "DadBod Open new tab" })
-keymap({ "v", "x", "n" }, "<leader>qq", "<PLUG>(DBUI_ExecuteQuery)", { desc = "DadBod run query" })
-keymap({ "v", "x", "n" }, "<C-q>", "<PLUG>(DBUI_ExecuteQuery)", { desc = "DadBod run query" })
+local map = require("keymaps").map
+map("n", "<leader>qt", "<cmd>DBUIToggle<CR>", "DadBod toggle")
+map("n", "<leader>qo", "<cmd>lua require('utils').DbuiToggle()<CR>", "DadBod open new tab")
+map({ "v", "x", "n" }, "<leader>qq", "<PLUG>(DBUI_ExecuteQuery)", "DadBod run query")
+map({ "v", "x", "n" }, "<C-q>", "<PLUG>(DBUI_ExecuteQuery)", "DadBod run query")
