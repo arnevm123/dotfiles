@@ -32,3 +32,10 @@ vim.api.nvim_create_user_command("MarkdownPreviewToggle", function()
 	vim.b[buf].markdown_preview_job = job
 	vim.notify("Markdown preview started", vim.log.levels.INFO)
 end, {})
+
+vim.api.nvim_create_user_command("Restart", function()
+	local file = vim.fn.fnameescape(vim.fn.expand("%:p"))
+	-- stylua: ignore
+	local cmd = "edit " .. file
+	vim.cmd("restart " .. cmd)
+end, {})

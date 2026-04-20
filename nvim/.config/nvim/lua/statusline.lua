@@ -1,3 +1,18 @@
+-- Recording indicator: change statusline color during macro recording
+local statusline_bg = 0
+
+vim.api.nvim_create_autocmd("RecordingEnter", {
+	callback = function()
+		local statusline_hl = vim.api.nvim_get_hl(0, { name = "StatusLine" })
+		statusline_bg = statusline_hl.bg
+		vim.api.nvim_set_hl(0, "StatusLine", { bg = "#6327A6" })
+	end,
+})
+
+vim.api.nvim_create_autocmd("RecordingLeave", {
+	callback = function() vim.api.nvim_set_hl(0, "StatusLine", { bg = statusline_bg }) end,
+})
+
 local icons = {
 	readonly = "R",
 	modified = "●",
@@ -6,6 +21,7 @@ local icons = {
 
 -- Single diagnostic call, count by severity
 local function diagnostic()
+	if vim.bo.buftype ~= "" then return "" end
 	local diags = vim.diagnostic.get(0)
 	if #diags == 0 then return "" end
 
@@ -48,9 +64,9 @@ local function unsaved_buffers()
 end
 
 local function file_section()
-	local name = vim.fn.expand("%")
-	local cwd = vim.fn.getcwd()
-	if vim.startswith(name, cwd) then name = name:sub(#cwd + 1) end
+	local name = vim.fn.expand("%:~:.")
+
+	if name == "" then name = "No Name" end
 
 	local attr = ""
 	if vim.bo.modified and vim.bo.readonly then
@@ -62,7 +78,6 @@ local function file_section()
 	end
 	if attr ~= "" then attr = " " .. attr end
 
-	if name == "" then name = "No Name" end
 	return name .. attr
 end
 
@@ -169,6 +184,6 @@ local M = {}
 
 M.set_statusline = function() return left_section() .. "%=" .. right_section() end
 
-vim.o.statusline = "%!v:lua.require('statusline').set_statusline()"
+vim.o.statusline = "%{%v:lua.require('statusline').set_statusline()%}"
 
 return M

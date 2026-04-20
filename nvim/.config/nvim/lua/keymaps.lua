@@ -91,7 +91,7 @@ map("v", "<leader>RG", function() utils:rg({ case_insensitive = true }) end, "Ri
 map("n", "<leader>RF", function() utils:rg({ ask_folder = true, case_insensitive = true }) end, "Ripgrep in folder (case insensitive)", { silent = false })
 map("n", "<leader>RU", function() utils:rg({ search_string = vim.fn.expand("<cword>"), case_insensitive = true }) end, "Ripgrep word (case insensitive)", { silent = false })
 map("n", "<leader>ro", utils.open_last_file, "Open last file", { silent = false })
-map("n", "<leader>rr", utils.restart_with_current_file, "Restart with current file", { silent = false })
+map("n", "<leader>rr", "<cmd>Restart<CR>", "Restart with current file", { silent = false })
 
 -- Stay in indent mode
 map("v", "<", "<gv", "Indent left and reselect")

@@ -29,21 +29,6 @@ vim.cmd([[
 autocmd BufWritePre /\v^[:;]12.{,3}$/ try | echoerr 'Forbidden file name: ' .. expand('<afile>') | endtry
 ]])
 
--- Recording indicator: change statusline color during macro recording
-local statusline_bg = 0
-
-autocmd("RecordingEnter", {
-	callback = function()
-		local statusline_hl = vim.api.nvim_get_hl(0, { name = "StatusLine" })
-		statusline_bg = statusline_hl.bg
-		vim.api.nvim_set_hl(0, "StatusLine", { bg = "#6327A6" })
-	end,
-})
-
-autocmd("RecordingLeave", {
-	callback = function() vim.api.nvim_set_hl(0, "StatusLine", { bg = statusline_bg }) end,
-})
-
 -- Restore cursor position when reopening a file
 autocmd("BufWinEnter", {
 	desc = "Restore cursor position",

@@ -223,13 +223,6 @@ function M:open_last_file()
 	end
 end
 
-function M.restart_with_current_file()
-	local file = vim.fn.fnameescape(vim.fn.expand("%:p"))
-	-- stylua: ignore
-	local cmd = "edit " .. file
-	vim.cmd("restart " .. cmd)
-end
-
 ---@param search_string string | string[]
 ---@param search_folders? string | string[]
 ---@param case_insensitive? boolean
