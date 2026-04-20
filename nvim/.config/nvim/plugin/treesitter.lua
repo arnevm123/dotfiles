@@ -1,17 +1,25 @@
+-- Build step for treesitter
+-- auto run :TSUpdate on first install or when parsers change
+vim.api.nvim_create_autocmd("PackChanged", {
+    callback = function(event)
+        -- only run on nvim-treesitter updates/installs
+        if event.data.spec and event.data.spec.name == "nvim-treesitter" then
+            -- force load plugin if it's not active yet (for vim.pack)
+            if not event.data.active then
+                vim.cmd.packadd("nvim-treesitter")
+            end
+            -- run :TSUpdate (:TSUpdateSync for blocking)
+            vim.cmd("TSUpdate")
+        end
+    end,
+})
+
 -- Treesitter + context + textobjects + matchup (eager, no deferral)
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter" })
 vim.pack.add({ "https://github.com/andymass/vim-matchup" })
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-context" })
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" })
 
--- Build step for treesitter
-vim.api.nvim_create_autocmd("PackChanged", {
-	callback = function(ev)
-		if ev.data.spec.name == "nvim-treesitter" and (ev.data.kind == "install" or ev.data.kind == "update") then
-			if ev.data.active then vim.cmd("TSUpdate") end
-		end
-	end,
-})
 
 -- matchup
 vim.g.matchup_matchparen_offscreen = {}

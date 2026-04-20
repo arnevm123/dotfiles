@@ -34,9 +34,9 @@ require("neotest").setup({
 })
 
 local map = require("keymaps").map
-map("n", "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>", "Test run file")
-map("n", "<leader>tn", "<cmd>lua require('neotest').run.run()<CR>", "Test run nearest")
-map("n", "<leader>tdn", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>", "Test debug nearest")
-map("n", "<leader>tl", "<cmd>lua require('neotest').run.run_last()<CR>", "Test run last")
-map("n", "<leader>tdl", "<cmd>lua require('neotest').run.run_last({strategy = 'dap'})<CR>", "Test debug last")
-map("n", "<leader>tt", "<cmd>lua require('neotest').summary.toggle()<CR>", "Test summary toggle")
+map("n", "<leader>tf", function() require("neotest").run.run(vim.fn.expand("%")) end, "Test run file")
+map("n", "<leader>tn", function() require("neotest").run.run() end, "Test run nearest")
+map("n", "<leader>tdn", function() require("neotest").run.run({ strategy = "dap" }) end, "Test debug nearest")
+map("n", "<leader>tl", function() require("neotest").run.run_last() end, "Test run last")
+map("n", "<leader>tdl", function() require("neotest").run.run_last({ strategy = "dap" }) end, "Test debug last")
+map("n", "<leader>tt", function() require("neotest").summary.toggle() end, "Test summary toggle")

@@ -2,7 +2,7 @@ local autocmd = vim.api.nvim_create_autocmd
 
 -- Highlight on yank
 autocmd("TextYankPost", {
-	callback = function() vim.hl.on_yank({ higroup = "IncSearch", timeout = 75 }) end,
+	callback = function() vim.hl.on_yank({ higroup = "IncSearch", timeout = 125 }) end,
 	desc = "Highlight on yank",
 })
 
@@ -42,4 +42,18 @@ autocmd("RecordingEnter", {
 
 autocmd("RecordingLeave", {
 	callback = function() vim.api.nvim_set_hl(0, "StatusLine", { bg = statusline_bg }) end,
+})
+
+-- Restore cursor position when reopening a file
+autocmd("BufWinEnter", {
+	desc = "Restore cursor position",
+	callback = function()
+		local dominated = { "gitcommit", "gitrebase", "commit", "rebase" }
+		if vim.tbl_contains(dominated, vim.bo.filetype) then return end
+		if vim.bo.buftype ~= "" then return end
+		local mark = vim.api.nvim_buf_get_mark(0, '"')
+		if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(0) then
+			pcall(vim.api.nvim_win_set_cursor, 0, mark)
+		end
+	end,
 })

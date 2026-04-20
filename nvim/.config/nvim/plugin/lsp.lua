@@ -91,7 +91,7 @@ require("inc_rename").setup({})
 -- Keymaps
 local map = require("keymaps").map
 map({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, "LSP code action")
-map("n", "<leader>lf", "<cmd>lua require('conform').format({ async = true, lsp_fallback = true })<CR>", "Format buffer")
+map("n", "<leader>lf", function() require("conform").format({ async = true, lsp_fallback = true }) end, "Format buffer")
 map("n", "<leader>lr", ":IncRename <C-r><C-w>", "LSP rename variable", { silent = false })
-map("n", "<leader>ld", "<cmd>lua require('utils').toggle_case_rename()<CR>", "LSP toggle case rename")
-map("n", "<leader>ls", "<cmd>lua require('utils').lint_fix()<CR>", "LSP golangci-lint fix")
+map("n", "<leader>ld", function() require("utils").toggle_case_rename() end, "LSP toggle case rename")
+map("n", "<leader>ls", function() require("utils").lint_fix() end, "LSP golangci-lint fix")

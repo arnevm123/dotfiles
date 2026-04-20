@@ -51,20 +51,20 @@ require("atone").setup({})
 
 -- text-case
 local map = require("keymaps").map
-map({ "n", "x" }, "ga.", "<cmd>lua require('utils').try_lsp_rename()<CR>", "Rename (textcase picker)")
-map({ "n", "x" }, "gau", "<cmd>lua require('utils').try_lsp_rename('to_constant_case')<CR>", "Rename to CONSTANT_CASE")
-map({ "n", "x" }, "gas", "<cmd>lua require('utils').try_lsp_rename('to_snake_case')<CR>", "Rename to snake_case")
-map({ "n", "x" }, "gad", "<cmd>lua require('utils').try_lsp_rename('to_dash_case')<CR>", "Rename to dash-case")
-map({ "n", "x" }, "gac", "<cmd>lua require('utils').try_lsp_rename('to_camel_case')<CR>", "Rename to camelCase")
-map({ "n", "x" }, "gap", "<cmd>lua require('utils').try_lsp_rename('to_pascal_case')<CR>", "Rename to PascalCase")
+map({ "n", "x" }, "ga.", function() require("utils").try_lsp_rename() end, "Rename (textcase picker)")
+map({ "n", "x" }, "gau", function() require("utils").try_lsp_rename("to_constant_case") end, "Rename to CONSTANT_CASE")
+map({ "n", "x" }, "gas", function() require("utils").try_lsp_rename("to_snake_case") end, "Rename to snake_case")
+map({ "n", "x" }, "gad", function() require("utils").try_lsp_rename("to_dash_case") end, "Rename to dash-case")
+map({ "n", "x" }, "gac", function() require("utils").try_lsp_rename("to_camel_case") end, "Rename to camelCase")
+map({ "n", "x" }, "gap", function() require("utils").try_lsp_rename("to_pascal_case") end, "Rename to PascalCase")
 
 -- grug-far
-map("n", "<leader>ss", "<cmd>lua require('grug-far').open()<CR>", "Grug-far search and replace")
-map("x", "<leader>ss", "<cmd>lua require('grug-far').with_visual_selection()<CR>", "Grug-far replace selection")
+map("n", "<leader>ss", function() require("grug-far").open() end, "Grug-far search and replace")
+map("x", "<leader>ss", function() require("grug-far").with_visual_selection() end, "Grug-far replace selection")
 
 -- treesj
-map("n", "<space>ej", "<cmd>lua require('treesj').join()<CR>", "Join lines")
-map("n", "<space>ek", "<cmd>lua require('treesj').split()<CR>", "Split lines")
+map("n", "<leader>ej", function() require("treesj").join() end, "Join lines")
+map("n", "<leader>ek", function() require("treesj").split() end, "Split lines")
 
 -- atone
 map("n", "<leader>eu", "<cmd>Atone toggle<CR>", "Atone toggle")

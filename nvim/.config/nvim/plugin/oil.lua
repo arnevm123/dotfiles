@@ -69,4 +69,4 @@ require("oil").setup({
 	},
 })
 
-require("keymaps").map("n", "-", "<cmd>Oil<cr>", "Oil file browser")
+require("keymaps").map("n", "-", "<cmd>Oil<CR>", "Oil file browser")

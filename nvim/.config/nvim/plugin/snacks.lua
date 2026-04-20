@@ -35,10 +35,10 @@ require("snacks").setup(opts)
 
 -- Keymaps
 local map = require("keymaps").map
-map("n", "<leader>gb", "<cmd>lua Snacks.git.blame_line()<CR>", "Git blame line")
-map("n", "<leader>gB", "<cmd>lua Snacks.gitbrowse()<CR>", "Git browse")
-map("n", "]r", "<cmd>lua Snacks.words.jump(vim.v.count1)<CR>", "Next reference")
-map("n", "[r", "<cmd>lua Snacks.words.jump(-vim.v.count1)<CR>", "Previous reference")
+map("n", "<leader>gb", function() Snacks.git.blame_line() end, "Git blame line")
+map("n", "<leader>gB", function() Snacks.gitbrowse() end, "Git browse")
+map("n", "]r", function() Snacks.words.jump(vim.v.count1) end, "Next reference")
+map("n", "[r", function() Snacks.words.jump(-vim.v.count1) end, "Previous reference")
 map("n", "yor", function()
 	if Snacks.words.is_enabled() then
 		Snacks.words.disable()
@@ -47,9 +47,9 @@ map("n", "yor", function()
 		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":<Esc>", true, false, true), "n", false)
 	end
 end, "Toggle LSP word highlights")
-map("n", "<leader>ff", "<cmd>lua Snacks.picker.resume()<CR>", "Resume picker")
-map("n", "<leader>fd", "<cmd>lua Snacks.picker.files()<CR>", "Find files")
-map("n", "<leader>fs", "<cmd>lua Snacks.picker.grep()<CR>", "Live grep")
+map("n", "<leader>ff", function() Snacks.picker.resume() end, "Resume picker")
+map("n", "<leader>fd", function() Snacks.picker.files() end, "Find files")
+map("n", "<leader>fs", function() Snacks.picker.grep() end, "Live grep")
 map("n", "<leader>fo", function()
 	Snacks.picker.recent({
 		filter = {
@@ -58,15 +58,15 @@ map("n", "<leader>fo", function()
 		},
 	})
 end, "Recent files")
-map("n", "<leader>f/", "<cmd>lua Snacks.picker.lines()<CR>", "Buffer lines")
-map("n", "<leader>fh", "<cmd>lua Snacks.picker.help()<CR>", "Help tags")
-map("n", "<leader>fk", "<cmd>lua Snacks.picker.keymaps()<CR>", "Keymaps")
-map({ "n", "x" }, "<leader>fu", "<cmd>lua Snacks.picker.grep_word()<CR>", "Grep word or selection")
-map("n", "<leader>ft", "<cmd>lua Snacks.picker()<CR>", "Pickers list")
-map("n", "<leader>fj", "<cmd>lua Snacks.picker.jumps()<CR>", "Jumps")
-map("n", "<leader>bb", "<cmd>lua Snacks.picker.buffers()<CR>", "Buffers")
-map("n", "<leader>fis", '<cmd>lua Snacks.picker.grep({ cwd = vim.fn.expand("%:h") })<CR>', "Live grep in file dir")
-map("n", "<leader>fid", '<cmd>lua Snacks.picker.files({ cwd = vim.fn.expand("%:h") })<CR>', "Find files in file dir")
+map("n", "<leader>f/", function() Snacks.picker.lines() end, "Buffer lines")
+map("n", "<leader>fh", function() Snacks.picker.help() end, "Help tags")
+map("n", "<leader>fk", function() Snacks.picker.keymaps() end, "Keymaps")
+map({ "n", "x" }, "<leader>fu", function() Snacks.picker.grep_word() end, "Grep word or selection")
+map("n", "<leader>ft", function() Snacks.picker() end, "Pickers list")
+map("n", "<leader>fj", function() Snacks.picker.jumps() end, "Jumps")
+map("n", "<leader>bb", function() Snacks.picker.buffers() end, "Buffers")
+map("n", "<leader>fis", function() Snacks.picker.grep({ cwd = vim.fn.expand("%:h") }) end, "Live grep in file dir")
+map("n", "<leader>fid", function() Snacks.picker.files({ cwd = vim.fn.expand("%:h") }) end, "Find files in file dir")
 map("n", "<leader>fp", function()
 	local text = vim.fn.getreg("+")
 	if not text or text == "" then
@@ -79,4 +79,4 @@ map("n", "<leader>fp", function()
 end, "Find copied file")
 
 -- Diagnostics toggle
-Snacks.toggle.diagnostics():map("yoe")
+map("n", "yoe", function() Snacks.toggle.diagnostics():toggle() end, "Toggle diagnostics")

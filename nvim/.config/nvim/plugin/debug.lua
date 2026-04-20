@@ -90,19 +90,36 @@ require("dap-view").setup({
 -- dap-go
 require("dap-go").setup({})
 
+table.insert(require("dap").configurations.go, 1, {
+	type = "go",
+	request = "attach",
+	name = "Attach to .pidfile",
+	mode = "local",
+	processId = function()
+		local pidfile = vim.fn.getcwd() .. "/.pidfile"
+		local ok, content = pcall(vim.fn.readfile, pidfile)
+		local pid = ok and content[1] and tonumber(vim.trim(content[1]))
+		if not pid then
+			vim.notify("No valid PID in " .. pidfile, vim.log.levels.ERROR)
+			return nil
+		end
+		return pid
+	end,
+})
+
 -- Keymaps
 local map = require("keymaps").map
-map("n", "<F5>", "<cmd>lua require('dap').continue()<CR>", "Debug continue")
-map("n", "<F4>", "<cmd>lua require('dap').step_into()<CR>", "Debug step into")
-map("n", "<F3>", "<cmd>lua require('dap').step_over()<CR>", "Debug step over")
-map("n", "<F2>", "<cmd>lua require('dap').step_out()<CR>", "Debug step out")
-map("n", "<F1>", "<cmd>lua require('dap').step_back()<CR>", "Debug step back")
-map("n", "<F6>", "<cmd>lua require('dap').run_last()<CR>", "Debug run last")
-map("n", "<F7>", "<cmd>lua require('dap').terminate()<CR>", "Debug terminate")
-map("n", "<F8>", "<cmd>lua require('dap').disconnect()<CR>", "Debug disconnect")
-map("n", "<leader>dc", "<cmd>lua require('dap').run_to_cursor()<CR>", "Debug run to cursor")
-map("n", "<leader>du", "<cmd>lua require('dap').up()<CR>", "Debug step up callstack")
-map("n", "<leader>dd", "<cmd>lua require('dap').down()<CR>", "Debug step down callstack")
+map("n", "<F5>", function() require("dap").continue() end, "Debug continue")
+map("n", "<F4>", function() require("dap").step_into() end, "Debug step into")
+map("n", "<F3>", function() require("dap").step_over() end, "Debug step over")
+map("n", "<F2>", function() require("dap").step_out() end, "Debug step out")
+map("n", "<F1>", function() require("dap").step_back() end, "Debug step back")
+map("n", "<F6>", function() require("dap").run_last() end, "Debug run last")
+map("n", "<F7>", function() require("dap").terminate() end, "Debug terminate")
+map("n", "<F8>", function() require("dap").disconnect() end, "Debug disconnect")
+map("n", "<leader>dc", function() require("dap").run_to_cursor() end, "Debug run to cursor")
+map("n", "<leader>du", function() require("dap").up() end, "Debug step up callstack")
+map("n", "<leader>dd", function() require("dap").down() end, "Debug step down callstack")
 map("n", "<leader>db", "<cmd>DapToggleBreakpoint<CR>", "Debug toggle breakpoint")
 map("n", "<leader>dv", "<cmd>DapViewToggle<CR>", "Debug view toggle")
 map("n", "<leader>dw", "<cmd>DapViewWatch<CR>", "Debug watch expression")

@@ -6,7 +6,6 @@ vim.pack.add({
 })
 vim.pack.add({ "https://github.com/j-hui/fidget.nvim" })
 vim.pack.add({ "https://github.com/chrisgrieser/nvim-rulebook" })
-vim.pack.add({ "https://github.com/smjonas/inc-rename.nvim" })
 
 -- none-ls
 local null_ls = require("null-ls")
@@ -72,12 +71,9 @@ require("rulebook").setup({ ---@diagnostic disable-line: missing-fields
 	},
 })
 
--- Inc-rename
-require("inc_rename").setup({})
-
 -- Keymaps
 local map = require("keymaps").map
-map("n", "<Leader>le", "<cmd>lua require('rulebook').ignoreRule()<CR>", "Diagnostic: ignore rule")
-map("n", "<Leader>ll", "<cmd>lua require('rulebook').lookupRule()<CR>", "Diagnostic: lookup rule")
-map("n", "<Leader>ly", "<cmd>lua require('rulebook').lookupRule()<CR>", "Diagnostic: lookup rule (alt)")
-map({ "n", "x" }, "<Leader>lo", "<cmd>lua require('rulebook').suppressFormatter()<CR>", "Diagnostic: suppress formatter")
+map("n", "<leader>le", function() require("rulebook").ignoreRule() end, "Diagnostic: ignore rule")
+map("n", "<leader>ll", function() require("rulebook").lookupRule() end, "Diagnostic: lookup rule")
+map("n", "<leader>ly", function() require("rulebook").lookupRule() end, "Diagnostic: lookup rule (alt)")
+map({ "n", "x" }, "<leader>lo", function() require("rulebook").suppressFormatter() end, "Diagnostic: suppress formatter")

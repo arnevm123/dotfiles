@@ -21,13 +21,13 @@ map("n", "k", "v:count == 0 ? 'gk' : 'k'", "Move up (display lines)", { expr = t
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", "Move down (display lines)", { expr = true })
 
 -- LSP
-map("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", "Show diagnostic float")
-map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", "Go to definition")
-map("n", "gD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", "Go to type definition")
-map("n", "gr", "<cmd>lua vim.lsp.buf.references({includeDeclaration = false})<CR>", "Find references", { nowait = true })
-map("n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation")
-map("n", "<leader>K", "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help")
-map("i", "<c-;>", "<cmd>lua vim.lsp.inline_completion.get()<CR>", "Inline completion")
+map("n", "gl", vim.diagnostic.open_float, "Show diagnostic float")
+map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+map("n", "gD", vim.lsp.buf.type_definition, "Go to type definition")
+map("n", "gr", function() vim.lsp.buf.references({ includeDeclaration = false }) end, "Find references", { nowait = true })
+map("n", "gI", vim.lsp.buf.implementation, "Go to implementation")
+map("n", "<leader>K", vim.lsp.buf.signature_help, "Signature help")
+map("i", "<C-;>", vim.lsp.inline_completion.get, "Inline completion")
 map("n", "[w", function() vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR }) end, "Previous error")
 map("n", "]w", function() vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR }) end, "Next error")
 
@@ -81,8 +81,8 @@ map("n", "<leader>zg", function()
 end, "Add word to cspell dictionary", { silent = false })
 
 -- Ripgrep / fd
-map("n", "<leader>rg", utils.rg, "Ripgrep search", { silent = false })
-map("v", "<leader>rg", utils.rg, "Ripgrep search (visual)", { silent = false })
+map("n", "<leader>rg", function() utils:rg() end, "Ripgrep search", { silent = false })
+map("v", "<leader>rg", function() utils:rg() end, "Ripgrep search (visual)", { silent = false })
 map("n", "<leader>rd", utils.fzf_fd, "Find files with fd", { silent = false })
 map("n", "<leader>rf", function() utils:rg({ ask_folder = true }) end, "Ripgrep in folder", { silent = false })
 map("n", "<leader>fq", function() utils:rg({ search_string = vim.fn.expand("<cword>") }) end, "Ripgrep word under cursor", { silent = false })
@@ -102,9 +102,9 @@ map("n", "[c", "<cmd>diffget //2<CR>", "Diffget from left (ours)")
 map("n", "]c", "<cmd>diffget //3<CR>", "Diffget from right (theirs)")
 
 -- Clipboard / register helpers
-map("n", "<Leader>xp", "<cmd>call setreg('+', getreg('@'))<CR>", "Copy unnamed register to clipboard")
-map("n", "<Leader>xc", "<cmd>call setreg('+', expand('%:.') .. ':' .. line('.'))<CR>", "Copy file:line to clipboard")
-map("n", "<Leader>xo", ":e <C-r>+<CR>", "Open location from clipboard", { silent = false })
+map("n", "<leader>xp", "<cmd>call setreg('+', getreg('@'))<CR>", "Copy unnamed register to clipboard")
+map("n", "<leader>xc", "<cmd>call setreg('+', expand('%:.') .. ':' .. line('.'))<CR>", "Copy file:line to clipboard")
+map("n", "<leader>xo", ":e <C-r>+<CR>", "Open location from clipboard", { silent = false })
 
 -- System clipboard yank/paste
 map("n", "<leader>y", '"+y', "Yank to clipboard")

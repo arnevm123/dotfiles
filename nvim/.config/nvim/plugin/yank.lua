@@ -15,8 +15,8 @@ map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)", "Put after (yanky)")
 map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", "Put before (yanky)")
 map({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)", "GPut after (yanky)")
 map({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)", "GPut before (yanky)")
-map("n", "<c-n>", "<Plug>(YankyNextEntry)", "Yanky next entry")
-map("n", "<c-p>", "<Plug>(YankyPreviousEntry)", "Yanky previous entry")
+map("n", "<C-n>", "<Plug>(YankyNextEntry)", "Yanky next entry")
+map("n", "<C-p>", "<Plug>(YankyPreviousEntry)", "Yanky previous entry")
 
 -- yankbank
 require("yankbank").setup({
@@ -24,4 +24,4 @@ require("yankbank").setup({
 	pickers = { snacks = true },
 })
 
-map("n", "<leader>f;", "<cmd>lua Snacks.picker.yankbank()<CR>", "Yank bank")
+map("n", "<leader>f;", function() Snacks.picker.yankbank() end, "Yank bank")
