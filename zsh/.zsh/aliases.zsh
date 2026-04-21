@@ -70,6 +70,8 @@ alias grove-fzf=grove-tmux
 
 alias oc=opencode
 alias occ='opencode -c'
+alias cc=claude
+alias ccc='claude -c'
 
 # global aliases
 alias -g NE='2>/dev/null'

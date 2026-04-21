@@ -19,10 +19,8 @@ require("dap-view").setup({
 				play = {
 					render = function(session)
 						local pausable = session and not session.stopped_thread_id
-						local i = hl(
-							pausable and icon("pause") or icon("play"),
-							pausable and "ControlPause" or "ControlPlay"
-						)
+						local i =
+							hl(pausable and icon("pause") or icon("play"), pausable and "ControlPause" or "ControlPlay")
 						return i .. hint("F5")
 					end,
 					action = function()
@@ -96,7 +94,7 @@ table.insert(require("dap").configurations.go, 1, {
 	name = "Attach to .pidfile",
 	mode = "local",
 	processId = function()
-		local pidfile = vim.fn.getcwd() .. "/.pidfile"
+		local pidfile = vim.fn.getcwd() .. "/dropon.pid"
 		local ok, content = pcall(vim.fn.readfile, pidfile)
 		local pid = ok and content[1] and tonumber(vim.trim(content[1]))
 		if not pid then
@@ -121,5 +119,5 @@ map("n", "<leader>dc", function() require("dap").run_to_cursor() end, "Debug run
 map("n", "<leader>du", function() require("dap").up() end, "Debug step up callstack")
 map("n", "<leader>dd", function() require("dap").down() end, "Debug step down callstack")
 map("n", "<leader>db", "<cmd>DapToggleBreakpoint<CR>", "Debug toggle breakpoint")
-map("n", "<leader>dv", "<cmd>DapViewToggle<CR>", "Debug view toggle")
 map("n", "<leader>dw", "<cmd>DapViewWatch<CR>", "Debug watch expression")
+map("n", "yod", "<cmd>DapViewToggle<CR>", "Debug view toggle")

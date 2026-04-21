@@ -10,6 +10,6 @@ require("zk").setup({
 			cmd = { "zk", "lsp" },
 			filetypes = { "markdown" },
 		},
-		auto_attach = { enabled = true },
+		auto_attach = { enabled = false },
 	},
 })

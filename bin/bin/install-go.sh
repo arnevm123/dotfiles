@@ -15,7 +15,5 @@ fi
 
 echo "updating go $CURRENT_VERSION -> $GO_VERSION"
 
-curl -O https://dl.google.com/go/go"$GO_VERSION".linux-amd64.tar.gz
 rm -rf "$GOROOT" || true
-tar -C "$HOME" -xzf go"$GO_VERSION".linux-amd64.tar.gz
-rm -f ~/bin/go"$GO_VERSION".linux-amd64.tar.gz
+curl -sL "https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz" | tar -C "$HOME" -xzf -

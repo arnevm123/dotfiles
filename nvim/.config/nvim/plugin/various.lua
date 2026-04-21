@@ -1,10 +1,10 @@
 -- Various editing plugins (deferred)
 
 -- Eager loads (no setup needed or needed early)
-vim.pack.add({ "https://github.com/wsdjeg/vim-fetch" })
-vim.pack.add({ "https://github.com/lambdalisue/vim-suda" })
-vim.pack.add({ "https://github.com/tpope/vim-eunuch" })
-vim.pack.add({ "https://github.com/tpope/vim-dispatch" })
+vim.pack.add({ "https://github.com/wsdjeg/vim-fetch" }) -- :e file:80
+vim.pack.add({ "https://github.com/lambdalisue/vim-suda" }) -- save with sudo
+vim.pack.add({ "https://github.com/tpope/vim-eunuch" }) -- :Delete, :Move, :Copy, :Mkdir, etc.
+vim.pack.add({ "https://github.com/tpope/vim-dispatch" }) -- asynchronous build and test dispatcher
 vim.pack.add({ "https://github.com/chrisbra/csv.vim" })
 
 vim.pack.add({ "https://github.com/esmuellert/codediff.nvim" })
@@ -19,9 +19,9 @@ vim.pack.add({ "https://github.com/catgoose/nvim-colorizer.lua" })
 vim.pack.add({ "https://github.com/pearofducks/ansible-vim" })
 vim.pack.add({ "https://github.com/johmsalas/text-case.nvim" })
 vim.pack.add({ "https://github.com/numToStr/Comment.nvim" })
-vim.pack.add({ "https://github.com/MagicDuck/grug-far.nvim" })
+vim.pack.add({ "https://github.com/MagicDuck/grug-far.nvim" }) -- search and replace
 vim.pack.add({ "https://github.com/Wansmer/treesj" })
-vim.pack.add({ "https://github.com/XXiaoA/atone.nvim" })
+vim.pack.add({ "https://github.com/XXiaoA/atone.nvim" }) -- undo
 
 -- devicons
 require("nvim-web-devicons").setup({ color_icons = false })
