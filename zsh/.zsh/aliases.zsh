@@ -8,6 +8,7 @@ alias setbg=_setbg
 # git aliases
 alias gfco='git fetch && gco'
 alias gco='fzf-git-checkout'
+alias gco-='git checkout -'
 # fzf-git-branch and fzf-git-checkout moved to bin/
 alias gcml='gfo && gcm && ggl'
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
@@ -80,3 +81,4 @@ alias -g NUL='>/dev/null 2>&1'
 alias -g J='| jq'
 alias -g C='| wl-copy'
 alias -g G='| rg '
+alias -g HL='| hl -P'

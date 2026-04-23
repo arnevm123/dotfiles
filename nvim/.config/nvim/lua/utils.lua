@@ -493,4 +493,21 @@ function M.try_lsp_rename(case)
 	vim.cmd.TextCaseOpenTelescopeQuickChange()
 end
 
+function M.get_highest_severity(count)
+	count = count or vim.diagnostic.count()
+
+	local severity_order = {
+		vim.diagnostic.severity.ERROR,
+		vim.diagnostic.severity.WARN,
+		vim.diagnostic.severity.INFO,
+		vim.diagnostic.severity.HINT,
+	}
+
+	for _, s in ipairs(severity_order) do
+		if count[s] and count[s] > 0 then return s end
+	end
+
+	return nil
+end
+
 return M

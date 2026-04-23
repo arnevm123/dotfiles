@@ -28,8 +28,8 @@ map("n", "gr", function() vim.lsp.buf.references({ includeDeclaration = false })
 map("n", "gI", vim.lsp.buf.implementation, "Go to implementation")
 map("n", "<leader>K", vim.lsp.buf.signature_help, "Signature help")
 map("i", "<C-;>", vim.lsp.inline_completion.get, "Inline completion")
-map("n", "[w", function() vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR }) end, "Previous error")
-map("n", "]w", function() vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR }) end, "Next error")
+map("n", "]d", function() vim.diagnostic.jump({ count = 1, severity = utils.get_highest_severity() }) end, "Next error")
+map("n", "[d", function() vim.diagnostic.jump({ count = 1, severity = utils.get_highest_severity() }) end, "Next error")
 
 -- Jump to end of tree-sitter node in insert mode
 map("i", "<C-l>", function()
