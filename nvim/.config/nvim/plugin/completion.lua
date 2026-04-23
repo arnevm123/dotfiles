@@ -1,16 +1,7 @@
 vim.pack.add({ "https://github.com/rafamadriz/friendly-snippets" })
 vim.pack.add({
-	"https://github.com/saghen/blink.cmp",
+	{ src = "https://github.com/saghen/blink.cmp", data = { build = "cargo build --release" } },
 	"https://github.com/saghen/blink.compat",
-})
-
--- Build step for blink.cmp
-vim.api.nvim_create_autocmd("PackChanged", {
-	callback = function(ev)
-		if ev.data.spec.name == "blink.cmp" and (ev.data.kind == "install" or ev.data.kind == "update") then
-			vim.system({ "cargo", "build", "--release" }, { cwd = ev.data.path }):wait()
-		end
-	end,
 })
 
 require("blink.cmp").setup({

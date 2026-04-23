@@ -7,17 +7,13 @@ vim.pack.add({
 })
 vim.pack.add({ "https://github.com/nvim-neotest/neotest-python" })
 vim.pack.add({ "https://github.com/nvim-neotest/neotest-plenary" })
-vim.pack.add({ "https://github.com/fredrikaverpil/neotest-golang" })
-vim.pack.add({ "https://github.com/rouge8/neotest-rust" })
-
--- Build step for neotest-golang
-vim.api.nvim_create_autocmd("PackChanged", {
-	callback = function(ev)
-		if ev.data.spec.name == "neotest-golang" and (ev.data.kind == "install" or ev.data.kind == "update") then
-			vim.system({ "go", "install", "gotest.tools/gotestsum@latest" })
-		end
-	end,
+vim.pack.add({
+	{
+		src = "https://github.com/fredrikaverpil/neotest-golang",
+		data = { build = "go install gotest.tools/gotestsum@latest" },
+	},
 })
+vim.pack.add({ "https://github.com/rouge8/neotest-rust" })
 
 ---@diagnostic disable-next-line: missing-fields
 require("neotest").setup({
