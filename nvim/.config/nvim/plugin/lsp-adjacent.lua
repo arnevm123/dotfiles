@@ -1,13 +1,10 @@
--- LSP-adjacent: none-ls, fidget, rulebook (deferred)
+-- LSP-adjacent: none-ls, fidget, rulebook
 
+-- none-ls
 vim.pack.add({
 	"https://github.com/nvim-lua/plenary.nvim",
 	"https://github.com/nvimtools/none-ls.nvim",
 })
-vim.pack.add({ "https://github.com/j-hui/fidget.nvim" })
-vim.pack.add({ "https://github.com/chrisgrieser/nvim-rulebook" })
-
--- none-ls
 local null_ls = require("null-ls")
 null_ls.setup({
 	sources = {
@@ -18,6 +15,7 @@ null_ls.setup({
 })
 
 -- fidget
+vim.pack.add({ "https://github.com/j-hui/fidget.nvim" })
 require("fidget").setup({
 	progress = {
 		suppress_on_insert = true,
@@ -43,6 +41,7 @@ require("fidget").setup({
 })
 
 -- rulebook
+vim.pack.add({ "https://github.com/chrisgrieser/nvim-rulebook" })
 require("rulebook").setup({ ---@diagnostic disable-line: missing-fields
 	forwSearchLines = 10,
 	ignoreComments = {

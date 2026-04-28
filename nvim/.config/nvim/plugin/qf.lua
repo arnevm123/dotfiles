@@ -4,9 +4,7 @@ vim.pack.add({
 	"https://github.com/kevinhwang91/nvim-bqf",
 	"https://github.com/junegunn/fzf",
 })
-
-vim.pack.add({"https://github.com/stevearc/quicker.nvim"})
-
+---@diagnostic disable: missing-fields
 require("bqf").setup({
 	preview = {
 		auto_preview = false,
@@ -21,6 +19,7 @@ require("bqf").setup({
 	},
 })
 
+vim.pack.add({ "https://github.com/stevearc/quicker.nvim" })
 require("quicker").setup({
 	disable_keymaps = true,
 })

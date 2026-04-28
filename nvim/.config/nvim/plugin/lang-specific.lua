@@ -1,10 +1,16 @@
+-- Language-specific: lazydev, gopher, csv, ansible
+
+-- csv
+vim.pack.add({ "https://github.com/chrisbra/csv.vim" })
+
+-- ansible
+vim.pack.add({ "https://github.com/pearofducks/ansible-vim" })
+
+-- lazydev
 vim.pack.add({
 	"https://github.com/folke/lazydev.nvim",
 	"https://github.com/Bilal2453/luvit-meta",
 })
-vim.pack.add({ "https://github.com/olexsmir/gopher.nvim" })
-
--- lazydev
 require("lazydev").setup({
 	library = {
 		{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
@@ -13,6 +19,7 @@ require("lazydev").setup({
 })
 
 -- gopher
+vim.pack.add({ "https://github.com/olexsmir/gopher.nvim" })
 require("gopher").setup({
 	gotests = { template = "testify" },
 	iferr = { message = 'fmt.Errorf("%w", err)' },

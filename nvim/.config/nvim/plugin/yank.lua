@@ -1,8 +1,6 @@
+-- yanky
 vim.pack.add({ "https://github.com/kkharji/sqlite.lua" })
 vim.pack.add({ "https://github.com/gbprod/yanky.nvim" })
-vim.pack.add({ "https://github.com/ptdewey/yankbank-nvim" })
-
--- yanky
 require("yanky").setup({
 	system_clipboard = { sync_with_ring = false },
 	highlight = { timer = 75, on_yank = false },
@@ -19,6 +17,7 @@ map("n", "<C-n>", "<Plug>(YankyNextEntry)", "Yanky next entry")
 map("n", "<C-p>", "<Plug>(YankyPreviousEntry)", "Yanky previous entry")
 
 -- yankbank
+vim.pack.add({ "https://github.com/ptdewey/yankbank-nvim" })
 require("yankbank").setup({
 	persist_type = "sqlite",
 	pickers = { snacks = true },

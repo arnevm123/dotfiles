@@ -1,9 +1,19 @@
+-- Colorschemes + UI appearance
+
 vim.pack.add({
 	"https://github.com/rktjmp/lush.nvim",
 	"https://github.com/mcchrish/zenbones.nvim",
 })
 vim.pack.add({ "https://github.com/vague2k/vague.nvim" })
 vim.pack.add({ "https://github.com/ramojus/mellifluous.nvim" })
+
+-- devicons
+vim.pack.add({ "https://github.com/nvim-tree/nvim-web-devicons" })
+require("nvim-web-devicons").setup({ color_icons = false })
+
+-- colorizer
+vim.pack.add({ "https://github.com/catgoose/nvim-colorizer.lua" })
+require("colorizer").setup()
 
 local colorscheme = "seoulbones"
 if colorscheme == "seoulbones" then

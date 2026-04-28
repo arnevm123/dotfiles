@@ -25,6 +25,7 @@ vim.g.compile_mode = {
 }
 
 vim.pack.add({
+	"https://github.com/tpope/vim-dispatch",
 	"https://github.com/m00qek/baleia.nvim",
 	"https://github.com/nvim-lua/plenary.nvim",
 	"https://github.com/ej-shafran/compile-mode.nvim",

@@ -1,12 +1,5 @@
-vim.pack.add({
-	"https://github.com/nvim-lua/plenary.nvim",
-	"https://github.com/TimUntersberger/neogit",
-})
-vim.pack.add({ "https://github.com/sindrets/diffview.nvim" })
-vim.pack.add({ "https://github.com/tpope/vim-fugitive" })
-vim.pack.add({ "https://github.com/lewis6991/gitsigns.nvim" })
-
 -- Diffview
+vim.pack.add({ "https://github.com/sindrets/diffview.nvim" })
 require("diffview").setup({
 	use_icons = false,
 	view = {
@@ -17,6 +10,10 @@ require("diffview").setup({
 })
 
 -- Neogit
+vim.pack.add({
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/TimUntersberger/neogit",
+})
 require("neogit").setup({
 	ignored_settings = {},
 	disable_signs = false,
@@ -47,6 +44,7 @@ require("neogit").setup({
 })
 
 -- Gitsigns
+vim.pack.add({ "https://github.com/lewis6991/gitsigns.nvim" })
 require("gitsigns").setup({
 	signs = {
 		add = { text = "│" },
@@ -75,6 +73,12 @@ require("gitsigns").setup({
 		col = 1,
 	},
 })
+
+-- Fugitive
+vim.pack.add({ "https://github.com/tpope/vim-fugitive" })
+
+-- codediff
+vim.pack.add({ "https://github.com/esmuellert/codediff.nvim" })
 
 -- Keymaps
 local map = require("keymaps").map

@@ -1,4 +1,6 @@
 -- Treesitter + context + textobjects + matchup (eager, no deferral)
+
+-- Treesitter
 vim.pack.add({
 	{
 		src = "https://github.com/nvim-treesitter/nvim-treesitter",
@@ -10,12 +12,9 @@ vim.pack.add({
 		},
 	},
 })
-vim.pack.add({ "https://github.com/andymass/vim-matchup" })
-vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-context" })
-vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" })
-
 
 -- matchup
+vim.pack.add({ "https://github.com/andymass/vim-matchup" })
 vim.g.matchup_matchparen_offscreen = {}
 vim.g.no_plugin_maps = true
 
@@ -106,7 +105,8 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- Treesitter context (deferred)
+-- Treesitter context
+vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-context" })
 require("treesitter-context").setup({
 	enable = true,
 	max_lines = 5,
@@ -118,7 +118,8 @@ require("treesitter-context").setup({
 	separator = nil,
 })
 
--- Treesitter textobjects (deferred)
+-- Treesitter textobjects
+vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" })
 require("nvim-treesitter-textobjects").setup({
 	select = {
 		lookahead = true,

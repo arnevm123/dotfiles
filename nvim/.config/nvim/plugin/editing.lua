@@ -1,49 +1,29 @@
--- Various editing plugins (deferred)
-
--- Eager loads (no setup needed or needed early)
-vim.pack.add({ "https://github.com/wsdjeg/vim-fetch" }) -- :e file:80
-vim.pack.add({ "https://github.com/lambdalisue/vim-suda" }) -- save with sudo
-vim.pack.add({ "https://github.com/tpope/vim-eunuch" }) -- :Delete, :Move, :Copy, :Mkdir, etc.
-vim.pack.add({ "https://github.com/tpope/vim-dispatch" }) -- asynchronous build and test dispatcher
-vim.pack.add({ "https://github.com/chrisbra/csv.vim" })
-
-vim.pack.add({ "https://github.com/esmuellert/codediff.nvim" })
-
--- Deferred plugins
-vim.pack.add({
-	"https://github.com/nvim-lua/plenary.nvim",
-	"https://github.com/nvim-telescope/telescope.nvim",
-})
-vim.pack.add({ "https://github.com/nvim-tree/nvim-web-devicons" })
-vim.pack.add({ "https://github.com/catgoose/nvim-colorizer.lua" })
-vim.pack.add({ "https://github.com/pearofducks/ansible-vim" })
-vim.pack.add({ "https://github.com/johmsalas/text-case.nvim" })
-vim.pack.add({ "https://github.com/numToStr/Comment.nvim" })
-vim.pack.add({ "https://github.com/Wansmer/treesj" })
-vim.pack.add({ "https://github.com/XXiaoA/atone.nvim" }) -- undo
-
--- devicons
-require("nvim-web-devicons").setup({ color_icons = false })
-
--- colorizer
-require("colorizer").setup()
-
--- text-case
-require("textcase").setup({ substitude_command_name = "S", default_keymappings_enabled = false })
-require("telescope").load_extension("textcase")
-
 -- Comment
+vim.pack.add({ "https://github.com/numToStr/Comment.nvim" })
 require("Comment").setup()
 require("Comment.ft").set("mysql", { "--%s", "/*%s*/" })
 
 -- treesj
+vim.pack.add({ "https://github.com/Wansmer/treesj" })
 require("treesj").setup({ use_default_keymaps = false })
 
+-- text-case
+vim.pack.add({
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/nvim-telescope/telescope.nvim",
+})
+vim.pack.add({ "https://github.com/johmsalas/text-case.nvim" })
+require("textcase").setup({ substitude_command_name = "S", default_keymappings_enabled = false })
+require("telescope").load_extension("textcase")
+
 -- atone
+vim.pack.add({ "https://github.com/XXiaoA/atone.nvim" })
 require("atone").setup({})
 
--- text-case
+-- Keymaps
 local map = require("keymaps").map
+
+-- text-case
 map({ "n", "x" }, "ga.", function() require("utils").try_lsp_rename() end, "Rename (textcase picker)")
 map({ "n", "x" }, "gau", function() require("utils").try_lsp_rename("to_constant_case") end, "Rename to CONSTANT_CASE")
 map({ "n", "x" }, "gas", function() require("utils").try_lsp_rename("to_snake_case") end, "Rename to snake_case")

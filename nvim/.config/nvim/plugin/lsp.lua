@@ -1,11 +1,8 @@
-vim.pack.add({ "https://github.com/neovim/nvim-lspconfig" })
+-- Mason
 vim.pack.add({
 	"https://github.com/williamboman/mason.nvim",
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 })
-vim.pack.add({ "https://github.com/smjonas/inc-rename.nvim" })
-
--- Mason
 require("mason").setup({
 	ui = { border = require("utils").borders() },
 	log_level = vim.log.levels.INFO,
@@ -73,6 +70,9 @@ vim.diagnostic.config({
 -- Inline completion
 vim.lsp.inline_completion.enable(true)
 
+-- LSP config
+vim.pack.add({ "https://github.com/neovim/nvim-lspconfig" })
+
 -- Global LSP config: capabilities + on_attach
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -86,6 +86,7 @@ vim.lsp.config("*", { on_attach = on_attach, capabilities = capabilities })
 vim.lsp.enable(lsp_servers)
 
 -- Inc-rename
+vim.pack.add({ "https://github.com/smjonas/inc-rename.nvim" })
 require("inc_rename").setup({})
 
 -- Keymaps

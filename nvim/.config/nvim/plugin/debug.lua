@@ -1,12 +1,10 @@
 -- Debug: nvim-dap
 
+-- dap-view
 vim.pack.add({
 	"https://github.com/mfussenegger/nvim-dap",
-	"https://github.com/leoluz/nvim-dap-go",
 	"https://github.com/igorlfs/nvim-dap-view",
 })
-
--- dap-view
 local function hl(text, group) return require("dap-view.util.statusline").hl(text, group, true, false) end
 local function icon(name) return require("dap-view.setup").config.icons[name] end
 local function hint(key) return hl(" [" .. key .. "]", "ControlNC") end
@@ -88,6 +86,7 @@ require("dap-view").setup({
 })
 
 -- dap-go
+vim.pack.add({ "https://github.com/leoluz/nvim-dap-go" })
 require("dap-go").setup({})
 
 table.insert(require("dap").configurations.go, 1, {
