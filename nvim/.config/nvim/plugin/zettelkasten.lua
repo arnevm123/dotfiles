@@ -1,24 +1,17 @@
--- Zettelkasten: zk-nvim (lazy: ft)
+-- Zettelkasten: zk-nvim
 
-require("pack").lazy({
-	{
-		src = "https://github.com/zk-org/zk-nvim",
-		data = {
-			lazy = {
-				ft = "markdown",
-			},
+vim.pack.add({
+	"https://github.com/zk-org/zk-nvim",
+})
+
+require("zk").setup({
+	picker = "snacks_picker",
+	lsp = {
+		config = {
+			name = "zk",
+			cmd = { "zk", "lsp" },
+			filetypes = { "markdown" },
 		},
+		auto_attach = { enabled = false },
 	},
-}, function()
-	require("zk").setup({
-		picker = "snacks_picker",
-		lsp = {
-			config = {
-				name = "zk",
-				cmd = { "zk", "lsp" },
-				filetypes = { "markdown" },
-			},
-			auto_attach = { enabled = false },
-		},
-	})
-end)
+})
