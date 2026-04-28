@@ -20,6 +20,6 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 map("n", "<leader>qt", "<cmd>DBUIToggle<CR>", "DadBod toggle")
-map("n", "<leader>qo", function() require("utils").DbuiToggle() end, "DadBod open new tab")
+map("n", "<leader>qo", function() require("utils"):DbuiToggle() end, "DadBod open new tab")
 map({ "v", "x", "n" }, "<leader>qq", "<Plug>(DBUI_ExecuteQuery)", "DadBod run query")
 map({ "v", "x", "n" }, "<C-q>", "<Plug>(DBUI_ExecuteQuery)", "DadBod run query")

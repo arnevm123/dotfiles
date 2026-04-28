@@ -1,8 +1,7 @@
 -- Snacks: loaded eagerly (picker, bigfile, quickfile, git)
 vim.pack.add({ "https://github.com/folke/snacks.nvim" })
 
----@type snacks.Config
-local opts = {
+require("snacks").setup({
 	zen = { enabled = false },
 	words = { enabled = false },
 	scroll = { enabled = false },
@@ -29,9 +28,7 @@ local opts = {
 		line_length = 100000,
 	},
 	quickfile = { enabled = true },
-}
-
-require("snacks").setup(opts)
+})
 
 -- Keymaps
 local map = require("keymaps").map

@@ -23,5 +23,6 @@ path+=$GOROOT/bin
 path+=$GOPATH/bin
 path+=$ODIN_ROOT
 path+=$HOME/.nimble/bin
+path+=$HOME/.asdf/shims
 
 export PATH

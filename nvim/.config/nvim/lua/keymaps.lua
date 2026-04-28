@@ -76,8 +76,7 @@ map("x", "#", '"ry?\\V<C-r>r<CR>', "Search backward for selection", { silent = f
 map("n", "dd", utils.Smart_dd, "Smart dd (blank line to black hole)", { expr = true })
 map("n", "gx", utils.Go_to_url, "Open URL under cursor")
 map("n", "<leader>zg", function()
-	---@diagnostic disable-next-line: param-type-mismatch
-	utils.cspell_add(vim.fn.expand("<cword>"))
+	utils:cspell_add()
 end, "Add word to cspell dictionary", { silent = false })
 
 -- Ripgrep / fd
@@ -132,22 +131,6 @@ map("n", "<leader>GW", "<cmd>call setenv('GOOS', 'windows')<CR>:LspRestart<CR>",
 map("n", "<leader>GL", "<cmd>call setenv('GOOS', 'linux')<CR>:LspRestart<CR>", "Set GOOS=linux", { silent = false })
 
 map("n", "yom", "<cmd>MarkdownPreviewToggle<CR>", "Toggle markdown preview")
-
-map("n", "<leader>GE", function()
-	local clients = vim.lsp.get_clients({ name = "gopls" })
-	for _, client in ipairs(clients) do
-		local settings = client.config.settings or {}
-		settings.gopls = settings.gopls or {}
-		local flags = settings.gopls.buildFlags or {}
-		if vim.tbl_contains(flags, "-tags=e2e") then
-			settings.gopls.buildFlags = {}
-		else
-			settings.gopls.buildFlags = { "-tags=e2e" }
-		end
-		client.config.settings = settings
-		client.notify("workspace/didChangeConfiguration", { settings = settings })
-	end
-end, "Toggle e2e build tag for gopls")
 
 -- Emacs-style insert/command mode movement (tpope/rsi)
 map("i", "<C-B>", "<Left>", "Move left")

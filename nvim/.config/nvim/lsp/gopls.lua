@@ -26,6 +26,7 @@ return {
 			-- buildFlags = { "-tags=linux,windows" },
 			-- buildFlags = { "-tags=linux" },
 			-- buildFlags = { "-tags=windows,!linux" },
+			buildFlags = { "-tags=e2e" },
 			completeUnimported = true,
 			analyses = {
 				fieldalignment = false,

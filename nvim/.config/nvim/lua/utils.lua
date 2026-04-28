@@ -75,7 +75,7 @@ function M:Go_to_url(cmd)
 		end
 	end
 
-	vim.notify("Going to " .. url, "info", { title = "Opening browser..." })
+	vim.notify("Going to " .. url, vim.log.levels.INFO, { title = "Opening browser..." })
 	if sysname == "Darwin" then
 		vim.fn.jobstart({ cmd or "open", url }, { on_exit = function() end })
 	else
@@ -247,8 +247,8 @@ function M:grep_string(search_string, search_folders, case_insensitive)
 				vim.fn.setqflist({
 					{
 						filename = filename,
-						lnum = lnum,
-						col = col,
+						lnum = tonumber(lnum),
+						col = tonumber(col),
 						text = text,
 					},
 				}, "a")
@@ -271,7 +271,7 @@ local rg_opts = {}
 
 rg_opts.__index = rg_opts
 
----@param opts rg_opts
+---@param opts? rg_opts
 function M:rg(opts)
 	opts = opts or {}
 	local search_string = opts.search_string
@@ -309,7 +309,7 @@ function M:search_folder(folder, root)
 	local command = "fd -p -t d " .. search_path .. " " .. root
 	local output = vim.fn.system(command)
 	if not output then return nil end
-	return output:gsub("\n", " "):gsub(" +", " ")
+	return (output:gsub("\n", " "):gsub(" +", " "))
 end
 
 function M.fzf_fd()
