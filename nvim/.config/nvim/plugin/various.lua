@@ -19,7 +19,6 @@ vim.pack.add({ "https://github.com/catgoose/nvim-colorizer.lua" })
 vim.pack.add({ "https://github.com/pearofducks/ansible-vim" })
 vim.pack.add({ "https://github.com/johmsalas/text-case.nvim" })
 vim.pack.add({ "https://github.com/numToStr/Comment.nvim" })
-vim.pack.add({ "https://github.com/MagicDuck/grug-far.nvim" }) -- search and replace
 vim.pack.add({ "https://github.com/Wansmer/treesj" })
 vim.pack.add({ "https://github.com/XXiaoA/atone.nvim" }) -- undo
 
@@ -37,12 +36,6 @@ require("telescope").load_extension("textcase")
 require("Comment").setup()
 require("Comment.ft").set("mysql", { "--%s", "/*%s*/" })
 
--- grug-far
-require("grug-far").setup({
-	startInInsertMode = false,
-	transient = true,
-})
-
 -- treesj
 require("treesj").setup({ use_default_keymaps = false })
 
@@ -57,10 +50,6 @@ map({ "n", "x" }, "gas", function() require("utils").try_lsp_rename("to_snake_ca
 map({ "n", "x" }, "gad", function() require("utils").try_lsp_rename("to_dash_case") end, "Rename to dash-case")
 map({ "n", "x" }, "gac", function() require("utils").try_lsp_rename("to_camel_case") end, "Rename to camelCase")
 map({ "n", "x" }, "gap", function() require("utils").try_lsp_rename("to_pascal_case") end, "Rename to PascalCase")
-
--- grug-far
-map("n", "<leader>ss", function() require("grug-far").open() end, "Grug-far search and replace")
-map("x", "<leader>ss", function() require("grug-far").with_visual_selection() end, "Grug-far replace selection")
 
 -- treesj
 map("n", "<leader>ej", function() require("treesj").join() end, "Join lines")

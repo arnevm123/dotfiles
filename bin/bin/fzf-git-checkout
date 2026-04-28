@@ -2,10 +2,10 @@
 
 if [[ $# -ne 0 ]]; then
 	git checkout "$@"
-	return
+	exit
 fi
 
-git rev-parse HEAD > /dev/null 2>&1 || { echo "Not in a git repository" && return; }
+git rev-parse HEAD > /dev/null 2>&1 || { echo "Not in a git repository" && exit 1; }
 
 branch=$(fzf-git-branch)
 

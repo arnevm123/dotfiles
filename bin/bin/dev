@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+be_session="base"
+be_dir="Projects/base"
+fe_session="cake"
+fe_dir="Projects/cake"
+
+be_cmd="${1:-run}"
+
+ensure_window_2() {
+	local session="$1"
+	if ! tmux list-windows -t "$session" 2>/dev/null | grep -q "^2:"; then
+		tmux new-window -t "$session:2" -c "$(tmux display-message -p -t "$session" '#{session_path}')"
+		sleep 0.5
+	fi
+}
+
+start_session() {
+	local dir="$1"
+	local session="$2"
+	local cmd="$3"
+	local wait_event="$4"
+
+	~/bin/tmux-sessionizer "$dir" &
+	wait $!
+	ensure_window_2 "$session"
+	tmux send-keys -t "$session:2" C-c Enter
+	tmux send-keys -t "$session:2" "tmux wait-for -S $wait_event" Enter
+	tmux wait-for "$wait_event"
+	tmux send-keys -t "$session:2" "cd $(tmux display-message -p -t "$session" '#{session_path}')" Enter
+	tmux send-keys -t "$session:2" "make $cmd" Enter
+	tmux select-window -t "$session:2"
+}
+
+# If not inside tmux, ensure session exists via sessionizer, then attach and run dev
+if [[ -z "$TMUX" ]]; then
+	~/bin/tmux-sessionizer "$be_dir"
+fi
+
+start_session "$be_dir" "$be_session" "$be_cmd" "dev-be"
+start_session "$fe_dir" "$fe_session" "run" "dev-fe"
+
+tmux switch-client -t "$be_session"

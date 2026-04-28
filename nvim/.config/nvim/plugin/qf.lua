@@ -5,6 +5,8 @@ vim.pack.add({
 	"https://github.com/junegunn/fzf",
 })
 
+vim.pack.add({"https://github.com/stevearc/quicker.nvim"})
+
 require("bqf").setup({
 	preview = {
 		auto_preview = false,
@@ -17,4 +19,8 @@ require("bqf").setup({
 	filter = {
 		fzf = { extra_opts = { "--bind", "ctrl-y:toggle-all" } },
 	},
+})
+
+require("quicker").setup({
+	disable_keymaps = true,
 })

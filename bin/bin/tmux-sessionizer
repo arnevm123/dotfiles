@@ -40,6 +40,7 @@ while [[ $# -gt 0 ]]; do
 		done
 		;;
 	*)
+		selected="$1"
 		shift
 		;;
 	esac
@@ -56,8 +57,8 @@ if [[ ${#found_folders[@]} -eq 0 ]]; then
 	mapfile -t found_folders < <(eval "$find_command")
 fi
 
-if [[ $# -eq 1 ]]; then
-	selected=$1
+if [[ -n $selected ]]; then
+	: # selected already set from positional arg
 else
 	# Get list of active tmux sessions
 	active_sessions=$(tmux list-sessions 2>/dev/null | cut -d: -f1 || echo "")
