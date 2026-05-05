@@ -2,7 +2,11 @@
 
 vim.pack.add({ "https://github.com/rafamadriz/friendly-snippets" })
 vim.pack.add({
-	{ src = "https://github.com/saghen/blink.cmp", data = { build = "cargo build --release" } },
+	{
+		src = "https://github.com/saghen/blink.cmp",
+		data = { build = "cargo build --release" },
+		version = vim.version.range("1.x"),
+	},
 	"https://github.com/saghen/blink.compat",
 })
 

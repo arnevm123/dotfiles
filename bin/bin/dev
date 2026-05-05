@@ -7,37 +7,40 @@ fe_dir="Projects/cake"
 
 be_cmd="${1:-run}"
 
-ensure_window_2() {
-	local session="$1"
+ensure_session() {
+	local dir="$1"
+	local session="$2"
+
+	if ! tmux has-session -t "$session" 2>/dev/null; then
+		~/bin/tmux-sessionizer --no-attach "$dir"
+		sleep 1
+	fi
+
 	if ! tmux list-windows -t "$session" 2>/dev/null | grep -q "^2:"; then
 		tmux new-window -t "$session:2" -c "$(tmux display-message -p -t "$session" '#{session_path}')"
 		sleep 0.5
 	fi
 }
 
-start_session() {
-	local dir="$1"
-	local session="$2"
-	local cmd="$3"
-	local wait_event="$4"
+run_in_window() {
+	local session="$1"
+	local cmd="$2"
 
-	~/bin/tmux-sessionizer "$dir" &
-	wait $!
-	ensure_window_2 "$session"
 	tmux send-keys -t "$session:2" C-c Enter
-	tmux send-keys -t "$session:2" "tmux wait-for -S $wait_event" Enter
-	tmux wait-for "$wait_event"
-	tmux send-keys -t "$session:2" "cd $(tmux display-message -p -t "$session" '#{session_path}')" Enter
 	tmux send-keys -t "$session:2" "make $cmd" Enter
 	tmux select-window -t "$session:2"
 }
 
-# If not inside tmux, ensure session exists via sessionizer, then attach and run dev
+# Phase 1: ensure both sessions and their windows exist
+ensure_session "$be_dir" "$be_session"
+ensure_session "$fe_dir" "$fe_session"
+
+# Phase 2: run commands
+run_in_window "$be_session" "$be_cmd"
+run_in_window "$fe_session" "run"
+
 if [[ -z "$TMUX" ]]; then
-	~/bin/tmux-sessionizer "$be_dir"
+	exec tmux attach-session -t "$be_session"
+else
+	tmux switch-client -t "$be_session"
 fi
-
-start_session "$be_dir" "$be_session" "$be_cmd" "dev-be"
-start_session "$fe_dir" "$fe_session" "run" "dev-fe"
-
-tmux switch-client -t "$be_session"

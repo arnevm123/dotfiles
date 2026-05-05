@@ -90,3 +90,20 @@ cl() {
 	local dir
 	dir=$(find $(pwd) -type d | grep "^$(pwd)" | fzf) && cd "$dir"
 }
+
+# Interactive recent branch checkout
+_gre() {
+  local branch
+  branch=$(git reflog | \
+           grep -o "moving from [^ ]*" | \
+           awk '{ print $3 }' | \
+           awk '!x[$0]++' | \
+           grep -v "^$(git rev-parse --abbrev-ref HEAD)$" | \
+           fzf --height 40% --reverse --prompt="Checkout branch > " \
+               --header="RECENT BRANCHES" \
+               --preview 'git log -n 5 --color=always {}')
+
+  if [[ -n "$branch" ]]; then
+    git checkout "$branch"
+  fi
+}

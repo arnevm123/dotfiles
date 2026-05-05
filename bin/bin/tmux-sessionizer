@@ -29,8 +29,13 @@ folders=(
 # Parse command-line arguments
 found_folders=()
 manual_folders=false
+no_attach=false
 while [[ $# -gt 0 ]]; do
 	case $1 in
+	--no-attach)
+		no_attach=true
+		shift
+		;;
 	--folders)
 		manual_folders=true
 		shift
@@ -158,8 +163,10 @@ if ! tmux list-sessions 2>/dev/null | grep -q "^$selected_name:"; then
 	tmux select-window -t "$selected_name:1"
 fi
 
-if [[ -z $TMUX ]]; then
-	tmux attach-session -t "$selected_name"
-else
-	tmux switch-client -t "$selected_name"
+if [[ "$no_attach" = false ]]; then
+	if [[ -z $TMUX ]]; then
+		tmux attach-session -t "$selected_name"
+	else
+		tmux switch-client -t "$selected_name"
+	fi
 fi

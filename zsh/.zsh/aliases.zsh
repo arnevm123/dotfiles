@@ -9,6 +9,7 @@ alias setbg=_setbg
 alias gfco='git fetch && gco'
 alias gco='fzf-git-checkout'
 alias gco-='git checkout -'
+alias gre=_gre
 # fzf-git-branch and fzf-git-checkout moved to bin/
 alias gcml='gfo && gcm && ggl'
 alias gsfzf=' git stash pop `git stash list | fzf | cut \}`'
@@ -27,6 +28,7 @@ alias vimconf='if [[ "$PWD" != "$NVIM_CONF" ]]; then pushd "$NVIM_CONF" && vim .
 alias tmuxconf='if [[ "$PWD" != "$HOME" ]]; then pushd $HOME && vim .tmux.conf && popd || popd; else vim .tmux.conf; fi'
 alias zshsrc="source ~/.zshrc"
 alias cdnv="cd ~/.config/nvim"
+alias cdnvp="cd ~/.local/share/nvim/site/pack/core/opt"
 
 # tmux aliases
 alias tms='tmux-sessionizer'
@@ -69,8 +71,8 @@ alias pwdcp="pwd | tr -d '\n' | wl-copy"
 alias checkout=grove-checkout
 alias grove-fzf=grove-tmux
 
-alias oc=opencode
-alias occ='opencode -c'
+alias oc='opencode --port'
+alias occ='opencode -c --port'
 alias cc=claude
 alias ccc='claude -c'
 

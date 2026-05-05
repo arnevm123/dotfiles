@@ -26,11 +26,11 @@ require("fidget").setup({
 			done_style = "Comment",
 			progress_style = "Comment",
 			progress_ttl = 30,
-			group_style = "@method",
-			icon_style = "@method",
+			group_style = "@function",
+			icon_style = "@function",
 			format_message = function(msg)
 				local message = msg.message
-				if not message then message = msg.done and "✔" or "..." end
+				if not message then message = msg.done and "✔" or "󰲽" end
 				if msg.percentage ~= nil then message = string.format("%.0f%%", msg.percentage) end
 				return message
 			end,
@@ -75,4 +75,13 @@ local map = require("keymaps").map
 map("n", "<leader>le", function() require("rulebook").ignoreRule() end, "Diagnostic: ignore rule")
 map("n", "<leader>ll", function() require("rulebook").lookupRule() end, "Diagnostic: lookup rule")
 map("n", "<leader>ly", function() require("rulebook").lookupRule() end, "Diagnostic: lookup rule (alt)")
-map({ "n", "x" }, "<leader>lo", function() require("rulebook").suppressFormatter() end, "Diagnostic: suppress formatter")
+map(
+	{ "n", "x" },
+	"<leader>lo",
+	function() require("rulebook").suppressFormatter() end,
+	"Diagnostic: suppress formatter"
+)
+
+vim.pack.add({ "https://github.com/error311/wayfinder.nvim" })
+require("wayfinder").setup({})
+vim.keymap.set("n", "gw", "<Plug>(WayfinderOpen)", { desc = "Wayfinder" })

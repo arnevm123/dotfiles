@@ -11,11 +11,21 @@ require("snacks").setup({
 	statuscolumn = { enabled = false },
 	picker = {
 		enabled = true,
+		actions = {
+			opencode_send = function(...) return require("opencode").snacks_picker_send(...) end,
+		},
 		sources = {
 			select = {
 				layout = {
 					preset = "ivy_split",
 					hidden = { "preview" },
+				},
+			},
+		},
+		win = {
+			input = {
+				keys = {
+					["<a-a>"] = { "opencode_send", mode = { "n", "i" } },
 				},
 			},
 		},
