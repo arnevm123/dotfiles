@@ -16,6 +16,8 @@ vim.pack.add({ "https://github.com/catgoose/nvim-colorizer.lua" })
 require("colorizer").setup()
 
 local colorscheme = "seoulbones"
+-- local colorscheme = "vague"
+-- local colorscheme = "mel"
 if colorscheme == "seoulbones" then
 	vim.cmd.colorscheme("seoulbones")
 	require("utils").remove_bg()
@@ -33,7 +35,6 @@ if colorscheme == "seoulbones" then
 elseif colorscheme == "vague" then
 	require("vague").setup({ transparent = false })
 	vim.cmd.colorscheme("vague")
-	vim.api.nvim_set_hl(0, "HarpoonWindow", { bg = "#333333" })
 	vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#333333" })
 	vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection", { bg = "#555555" })
 	local visual_bg = vim.api.nvim_get_hl(0, { name = "Visual" }).bg
