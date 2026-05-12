@@ -14,4 +14,4 @@ fi
 
 echo "updating golangci-lint $CURRENT_VERSION -> $GOLANGCI_VERSION"
 
-curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b "$GOPATH"/bin "v$GOLANGCI_VERSION"
+curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b "$GOPATH"/bin "v$GOLANGCI_VERSION"
