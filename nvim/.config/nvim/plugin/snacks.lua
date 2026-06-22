@@ -54,7 +54,7 @@ map("n", "yor", function()
 		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":<Esc>", true, false, true), "n", false)
 	end
 end, "Toggle LSP word highlights")
-map("n", "<leader>ff", function() Snacks.picker.resume() end, "Resume picker")
+map("n", "<leader>fr", function() Snacks.picker.resume() end, "Resume picker")
 map("n", "<leader>fd", function() Snacks.picker.files() end, "Find files")
 map("n", "<leader>fs", function() Snacks.picker.grep() end, "Live grep")
 map("n", "<leader>fo", function()
@@ -72,8 +72,8 @@ map({ "n", "x" }, "<leader>fu", function() Snacks.picker.grep_word() end, "Grep 
 map("n", "<leader>ft", function() Snacks.picker() end, "Pickers list")
 map("n", "<leader>fj", function() Snacks.picker.jumps() end, "Jumps")
 map("n", "<leader>bb", function() Snacks.picker.buffers() end, "Buffers")
-map("n", "<leader>fis", function() Snacks.picker.grep({ cwd = vim.fn.expand("%:h") }) end, "Live grep in file dir")
-map("n", "<leader>fid", function() Snacks.picker.files({ cwd = vim.fn.expand("%:h") }) end, "Find files in file dir")
+map("n", "<leader>ffs", function() Snacks.picker.grep({ cwd = vim.fn.expand("%:h") }) end, "Live grep in file dir")
+map("n", "<leader>ffd", function() Snacks.picker.files({ cwd = vim.fn.expand("%:h") }) end, "Find files in file dir")
 map("n", "<leader>fp", function()
 	local text = vim.fn.getreg("+")
 	if not text or text == "" then
@@ -82,7 +82,7 @@ map("n", "<leader>fp", function()
 	end
 	text = text:match("([^\n]+)")
 	text = text and vim.trim(text) or ""
-	Snacks.picker.files({ default_text = text, hidden = true })
+	Snacks.picker.files({ pattern = text, hidden = true })
 end, "Find copied file")
 
 -- Diagnostics toggle

@@ -51,7 +51,7 @@ linters:
     - prealloc # slice pre-allocation
     - unconvert # unnecessary type conversions
     # TODO run with --fix
-    - perfsprint # faster alternatives to fmt.Sprintf
+    # - perfsprint # faster alternatives to fmt.Sprintf
     # TODO
     - goconst # repeated literals that should be constants
 
@@ -177,6 +177,10 @@ linters:
           arguments:
             - []
             - ["MQTT"]
+        - name: unnecessary-format
+          disabled: true
+        - name: use-errors-new
+          disabled: true
         - name: exported
           disabled: true
         - name: enforce-switch-style

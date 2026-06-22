@@ -57,6 +57,7 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec foot
 bindsym $mod+Shift+p exec wlogout
+bindsym $mod+Shift+i exec pgrep shmooz && killall shmooz || /home/arne/.cargo/bin/shmooz --output "$(swaymsg -t get_outputs | jq -r 'map(select(.focused == true)) | .[].name')"
 bindsym $mod+Shift+m exec ~/bin/swap
 bindsym $mod+Shift+d exec ~/bin/wl-present mirror eDP-1 &
 bindsym $mod+Shift+c exec ~/bin/lidclose.sh
@@ -256,8 +257,8 @@ bindswitch --reload --locked lid:off output eDP-1 enable
 exec --no-startup-id mpd
 # exec --no-startup-id copyq --start-server
 exec --no-startup-id kanshi
+exec_always swaybg --color 4A5568
 exec --no-startup-id cclipd -s 2 -t "image/png" -t "image/*" -t "text/plain;charset=utf-8" -t "text/*" -t "*"
-exec_always swaybg -i ~/dotfiles/background/default.png -m fill
 
 exec --no-startup-id swaync
 exec --no-startup-id nm-applet --indicator

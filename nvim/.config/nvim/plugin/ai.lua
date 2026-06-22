@@ -28,6 +28,7 @@ _99.setup({
 
 local map = require("keymaps").map
 map("n", "<leader>af", require("utils").ai_fix_lint, "AI fix linting")
+map("v", "<leader>af", require("utils").ai_fix_lint, "AI fix linting")
 map("n", "<leader>ax", function() _99.stop_all_requests() end, "AI stop requests")
 map("v", "<leader>ai", function()
 	_99.visual({})

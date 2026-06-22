@@ -6,9 +6,10 @@ alias extract=_extract
 alias setbg=_setbg
 
 # git aliases
-alias gfco='git fetch && gco'
 alias gco='fzf-git-checkout'
+alias gfco='git fetch && gco'
 alias gco-='git checkout -'
+alias gpa='git fetch && git checkout $(wl-paste)'
 alias gre=_gre
 # fzf-git-branch and fzf-git-checkout moved to bin/
 alias gcml='gfo && gcm && ggl'
@@ -19,7 +20,7 @@ alias gdate='git commit -am "Last Sync: $(date +%Y-%m-%d\ %H:%M) (Manual commit)
 alias ggf=ggfl
 
 # editor aliases
-alias vim=nvim
+alias vim="sidekick neovim"
 alias vi='\vim'
 
 # config aliases

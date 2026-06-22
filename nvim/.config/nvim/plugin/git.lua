@@ -80,6 +80,22 @@ vim.pack.add({ "https://github.com/tpope/vim-fugitive" })
 -- codediff
 vim.pack.add({ "https://github.com/esmuellert/codediff.nvim" })
 
+vim.pack.add({ "https://github.com/harukikuri/todoage.nvim" })
+require("todoage").setup({
+	keywords = { "TODO", "FIXME", "HACK" },
+	format = function(age_days)
+		local years = math.floor(age_days / 365)
+		local remaining = age_days % 365
+		local months = math.floor(remaining / 30)
+		local days = remaining % 30
+		local parts = {}
+		if years > 0 then table.insert(parts, years .. " years") end
+		if months > 0 then table.insert(parts, months .. " months") end
+		if years == 0 then table.insert(parts, days .. " days") end
+		return "        [" .. table.concat(parts, " ") .. "]"
+	end,
+})
+
 -- Keymaps
 local map = require("keymaps").map
 
