@@ -52,14 +52,12 @@ ordered=$(order_by_recency)
 if [ "$1" = "recent" ]; then
 	# Walk the ordered list, connect to the first that works. Quiet per-device.
 	ICON=~/.config/sway/icons/headphones.svg
-	while IFS= read -r name; do
-		[ -z "$name" ] && continue
-		if BT_QUIET=1 ~/bin/headphones-connect "$name"; then
-			$NOTIFY "$name: connected" -t 2000 -i "$ICON"
-			exit 0
-		fi
-	done <<< "$ordered"
-	$NOTIFY "No headphones could be connected" -t 2000
+	name=$(echo "$ordered" | head -1)
+	if [ -n "$name" ] && BT_QUIET=1 ~/bin/headphones-connect "$name"; then
+		$NOTIFY "$name: connected" -t 2000 -i "$ICON"
+		exit 0
+	fi
+	$NOTIFY "${name:-Headphones}: failed to connect" -t 2000
 	exit 1
 fi
 
