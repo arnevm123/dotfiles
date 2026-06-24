@@ -85,3 +85,10 @@ map(
 vim.pack.add({ "https://github.com/error311/wayfinder.nvim" })
 require("wayfinder").setup({})
 vim.keymap.set("n", "gw", "<Plug>(WayfinderOpen)", { desc = "Wayfinder" })
+
+vim.pack.add({ "https://github.com/leolaurindo/tunnelvision.nvim" })
+require("tunnelvision").setup()
+
+map("n", "<leader>lv", "<cmd>TunnelVision toggle<CR>", "TunnelVision: toggle")
+map("n", "<leader>ln", "<cmd>TunnelVision next<CR>", "TunnelVision: next")
+map("n", "<leader>lp", "<cmd>TunnelVision previous<CR>", "TunnelVision: previous")

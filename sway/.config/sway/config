@@ -63,6 +63,7 @@ bindsym $mod+Shift+d exec ~/bin/wl-present mirror eDP-1 &
 bindsym $mod+Shift+c exec ~/bin/lidclose.sh
 bindsym $mod+Shift+b exec ~/bin/bt-connect
 bindsym $mod+b exec ~/bin/bt-audio
+bindsym $mod+g exec ~/bin/bt-audio recent
 # bindsym $mod+Shift+f exec ~/bin/wl-present freeze
 bindsym $mod+Shift+g exec ~/bin/wl-present unfreeze
 

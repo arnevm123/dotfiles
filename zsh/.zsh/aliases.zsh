@@ -20,7 +20,7 @@ alias gdate='git commit -am "Last Sync: $(date +%Y-%m-%d\ %H:%M) (Manual commit)
 alias ggf=ggfl
 
 # editor aliases
-alias vim="sidekick neovim"
+alias vim="nvim"
 alias vi='\vim'
 
 # config aliases
