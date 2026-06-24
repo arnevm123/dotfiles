@@ -1,21 +1,69 @@
 #!/bin/bash
 # Pick a paired Bluetooth audio device via fuzzel and connect to it.
+# Mutes the current default sink first (so hitting the keymap silences audio
+# immediately). The picker is ordered most-recently-connected first.
+#
+# Usage:
+#   bt-audio          pick from a recency-ordered fuzzel menu
+#   bt-audio recent   connect to the first reachable device, most-recent first
 
-devices=""
+NOTIFY="$HOME/bin/notify-send.sh"
+RECENT_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/bt-audio-recent"
+
+# Mute the current default sink first.
+def=$(pactl get-default-sink 2>/dev/null)
+[ -n "$def" ] && pactl set-sink-mute "$def" 1 2>/dev/null
+
+# Collect paired audio device names (one per line).
+audio_devices=""
 while read -r _ mac name; do
 	if bluetoothctl info "$mac" 2>/dev/null | grep -qiE 'Audio Sink|Handsfree|A2DP'; then
-		devices+="$name"$'\n'
+		audio_devices+="$name"$'\n'
 	fi
 done < <(bluetoothctl devices Paired)
 
-devices=$(echo -n "$devices" | sed '/^$/d')
+audio_devices=$(echo -n "$audio_devices" | sed '/^$/d')
 
-if [ -z "$devices" ]; then
-	notify-send "No paired audio devices found" -t 2000
+if [ -z "$audio_devices" ]; then
+	$NOTIFY "No paired audio devices found" -t 2000
 	exit 1
 fi
 
-selected=$(echo "$devices" | fuzzel --dmenu --prompt="Connect: ")
+# Order: recency-history names that are still paired-audio first (in history
+# order), then any remaining paired-audio names.
+order_by_recency() {
+	local seen=""
+	if [ -f "$RECENT_FILE" ]; then
+		while IFS= read -r r; do
+			if echo "$audio_devices" | grep -qxF "$r"; then
+				echo "$r"
+				seen+="$r"$'\n'
+			fi
+		done < "$RECENT_FILE"
+	fi
+	# Remaining devices not already emitted.
+	while IFS= read -r d; do
+		echo "$seen" | grep -qxF "$d" || echo "$d"
+	done <<< "$audio_devices"
+}
+
+ordered=$(order_by_recency)
+
+if [ "$1" = "recent" ]; then
+	# Walk the ordered list, connect to the first that works. Quiet per-device.
+	ICON=~/.config/sway/icons/headphones.svg
+	while IFS= read -r name; do
+		[ -z "$name" ] && continue
+		if BT_QUIET=1 ~/bin/headphones-connect "$name"; then
+			$NOTIFY "$name: connected" -t 2000 -i "$ICON"
+			exit 0
+		fi
+	done <<< "$ordered"
+	$NOTIFY "No headphones could be connected" -t 2000
+	exit 1
+fi
+
+selected=$(echo "$ordered" | fuzzel --dmenu --prompt="Connect: ")
 
 if [ -n "$selected" ]; then
 	~/bin/headphones-connect "$selected"
