@@ -50,11 +50,11 @@ local function run_compile(cmd)
 end
 
 local map = require("keymaps").map
-map("n", "<leader>bu", function() run_compile("make build") end, "Compile: make build", { silent = false })
-map("n", "<leader>bt", function() run_compile("make test") end, "Compile: make test", { silent = false })
-map("n", "<leader>bl", function() run_compile("make lint") end, "Compile: make lint", { silent = false })
+map("n", "<leader>bu", function() run_compile("make b") end, "Compile: make build", { silent = false })
+map("n", "<leader>bt", function() run_compile("make t") end, "Compile: make test", { silent = false })
+map("n", "<leader>bl", function() run_compile("make l") end, "Compile: make lint", { silent = false })
 map("n", "<leader>bg", function() run_compile() end, "Compile: prompt command", { silent = false })
-map("n", "<leader>br", function() run_compile("LOG_LEVEL=trace make run") end, "Compile: make run", { silent = false })
+map("n", "<leader>br", function() run_compile("LOG_LEVEL=trace make r") end, "Compile: make run", { silent = false })
 map("n", "<leader>be", function() run_compile("recompile") end, "Compile: recompile", { silent = false })
 map("n", "]x", function() require("compile-mode").next_error() end, "Next compile error")
 map("n", "[x", function() require("compile-mode").prev_error() end, "Previous compile error")

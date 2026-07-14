@@ -78,9 +78,9 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
-local on_attach = function(client, _) client.server_capabilities.semanticTokensProvider = nil end
+-- local on_attach = function(client, _) client.server_capabilities.semanticTokensProvider = nil end
 
-vim.lsp.config("*", { on_attach = on_attach, capabilities = capabilities })
+vim.lsp.config("*", { capabilities = capabilities })
 
 -- Enable all LSP servers
 vim.lsp.enable(lsp_servers)

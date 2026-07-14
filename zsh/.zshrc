@@ -14,3 +14,6 @@ for config_file in \
     "$HOME/.zsh/opts.zsh"; do
     [[ -f "$config_file" ]] && source "$config_file"
 done
+
+# Added by codebase-memory-mcp install
+export PATH="/home/arne/.local/bin:$PATH"

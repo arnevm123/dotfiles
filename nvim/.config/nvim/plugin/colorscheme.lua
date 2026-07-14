@@ -32,6 +32,8 @@ if colorscheme == "seoulbones" then
 	vim.api.nvim_set_hl(0, "netrwDir", { link = "DiagnosticVirtualTextInfo" })
 	vim.api.nvim_set_hl(0, "ModeMsg", { link = "DiagnosticVirtualTextHint" })
 	vim.api.nvim_set_hl(0, "@string", { link = "Constant" })
+	vim.api.nvim_set_hl(0, "ImportNamespace", { italic = true })
+	vim.api.nvim_set_hl(0, "@lsp.type.namespace", { link = "ImportNamespace" })
 elseif colorscheme == "vague" then
 	require("vague").setup({ transparent = false })
 	vim.cmd.colorscheme("vague")
