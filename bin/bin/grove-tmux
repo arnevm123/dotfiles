@@ -18,9 +18,28 @@ fi
 
 # Handle --pr flag
 if [[ "$1" == "--pr" && -n "$2" ]]; then
-	grove add --pr "$2"
-	touch "$base_path/pr-$2/.tmux-sessionizer"
-	"$HOME"/bin/tmux-sessionizer "$base_path/pr-$2"
+	pr_num="$2"
+	shift 2
+	pr_args=("--pr" "$pr_num" "$@")
+
+	custom_name=""
+	if [[ "$*" != *"--name"* ]]; then
+		read -rp "Worktree name (blank for 'pr-$pr_num'): " custom_name
+		if [[ -n "$custom_name" ]]; then
+			pr_args+=("--name" "$custom_name")
+		fi
+	fi
+
+	grove add "${pr_args[@]}"
+
+	wt_name="pr-$pr_num"
+	if [[ -n "$custom_name" ]]; then
+		wt_name="$custom_name"
+	fi
+
+	touch "$base_path/$wt_name/.tmux-sessionizer"
+	"$HOME"/bin/tmux-sessionizer "$base_path/$wt_name"
+	exit 0
 fi
 
 # Handle --name flag: grove-tmux [branch] --name [custom_name]
@@ -31,11 +50,21 @@ grove_args=("$branch")
 # Pass through remaining arguments (including --name)
 grove_args+=("$@")
 
+# If no --name was given, ask for one (falls back to the branch name if left blank)
+custom_name=""
+if [[ "$*" != *"--name"* ]]; then
+	read -rp "Worktree name (blank for '${branch//\//-}'): " custom_name
+	if [[ -n "$custom_name" ]]; then
+		grove_args+=("--name" "$custom_name")
+	fi
+fi
+
 grove add "${grove_args[@]}"
 
 # Determine the worktree directory name
-wt_name=""
-if [[ "$*" == *"--name"* ]]; then
+if [[ -n "$custom_name" ]]; then
+	wt_name="$custom_name"
+elif [[ "$*" == *"--name"* ]]; then
 	# Extract the name after --name
 	prev_arg=""
 	for arg in "$@"; do

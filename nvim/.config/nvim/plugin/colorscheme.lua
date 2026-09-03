@@ -29,6 +29,13 @@ if colorscheme == "seoulbones" then
 	vim.api.nvim_set_hl(0, "comment", { fg = "#8B8B8B", italic = true })
 	vim.api.nvim_set_hl(0, "IncSearch", { bg = "#6B6B6B" })
 	vim.api.nvim_set_hl(0, "Search", { bg = "#4B4B4B" })
+	-- MCursor (multicursor cells) must not inherit Cursor: seoulbones sets
+	-- Cursor.fg to the Normal bg (#4B4B4B), which is exactly Search's bg
+	-- above, so fake cursors on a search match rendered invisible.
+	-- Search's bg beats MCursor's, so only the fg lands on a match --
+	-- hence a bright fg, and the bg here only shows for a bare Q.
+	local cursor_fg = vim.api.nvim_get_hl(0, { name = "Cursor" }).fg
+	vim.api.nvim_set_hl(0, "MCursor", { fg = cursor_fg, bg = "#E388A3" })
 	vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#4B4B4B" })
 	vim.api.nvim_set_hl(0, "netrwDir", { link = "DiagnosticVirtualTextInfo" })
 	vim.api.nvim_set_hl(0, "ModeMsg", { link = "DiagnosticVirtualTextHint" })

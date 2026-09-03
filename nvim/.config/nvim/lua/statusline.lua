@@ -53,8 +53,14 @@ local function refresh_unsaved()
 	has_unsaved_others = false
 end
 
-vim.api.nvim_create_autocmd({ "BufModifiedSet", "BufEnter", "BufDelete" }, {
-	group = vim.api.nvim_create_augroup("statusline_unsaved", { clear = true }),
+local unsaved_group = vim.api.nvim_create_augroup("statusline_unsaved", { clear = true })
+vim.api.nvim_create_autocmd({ "BufEnter", "BufDelete" }, {
+	group = unsaved_group,
+	callback = refresh_unsaved,
+})
+vim.api.nvim_create_autocmd("OptionSet", {
+	group = unsaved_group,
+	pattern = "modified",
 	callback = refresh_unsaved,
 })
 
