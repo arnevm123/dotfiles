@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Claude Code WorktreeCreate hook.
+# Grove workspace: `grove add` a sibling worktree and mark it for tmux-sessionizer.
+# Anything else: plain git worktree in .claude/worktrees (Claude's default).
+# Prints the worktree path as the last stdout line; all other output goes to stderr.
+set -euo pipefail
+
+input=$(cat)
+name=$(jq -r .name <<<"$input")
+cd "$(jq -r .cwd <<<"$input")"
+
+if grove status >/dev/null 2>&1; then
+	parent=$(dirname "$(git rev-parse --show-toplevel)")
+	grove --plain add "$name" --name "$name" >&2
+	path="$parent/$name"
+	touch "$path/.tmux-sessionizer"
+else
+	path="$(git rev-parse --show-toplevel)/.claude/worktrees/$name"
+	git worktree add -b "worktree-$name" "$path" >&2
+fi
+
+echo "$path"
