@@ -55,7 +55,8 @@ floating_modifier $mod
 # tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec foot
+bindsym $mod+Return exec foot ~/bin/tmux-sessionizer home
+bindsym $mod+Shift+Return exec foot
 bindsym $mod+Shift+p exec wlogout
 bindsym $mod+Shift+i exec pgrep shmooz && killall shmooz || /home/arne/.cargo/bin/shmooz --output "$(swaymsg -t get_outputs | jq -r 'map(select(.focused == true)) | .[].name')"
 bindsym $mod+Shift+m exec ~/bin/swap
@@ -165,7 +166,7 @@ bindsym $mod+Shift+o \
 	exec flatpak run com.spotify.Client; \
 	exec flatpak run com.slack.Slack; \
 	workspace $ws3; \
-	exec foot
+	exec foot ~/bin/tmux-sessionizer home
 
 # default desktops
 assign [class="Slack"] workspace number $ws5

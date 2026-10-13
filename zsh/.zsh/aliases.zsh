@@ -10,6 +10,7 @@ alias gco='fzf-git-checkout'
 alias gfco='git fetch && gco'
 alias gco-='git checkout -'
 alias gpa='git fetch && git checkout $(wl-paste)'
+alias ghp='gh pr checkout $(wl-paste)'
 alias gre=_gre
 # fzf-git-branch and fzf-git-checkout moved to bin/
 alias gcml='gfo && gcm && ggl'

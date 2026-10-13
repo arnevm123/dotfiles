@@ -18,7 +18,7 @@ local tools = {
 	-- LSP servers (mason-installed)
 	{ "ansible-language-server", "ansiblels" },
 	{ "bash-language-server", "bashls" },
-	{ "copilot-language-server", "copilot" },
+	-- { "copilot-language-server", "copilot" },
 	{ "css-lsp", "cssls" },
 	{ "docker-compose-language-service", "docker_compose_language_service" },
 	{ "dockerfile-language-server", "dockerls" },
