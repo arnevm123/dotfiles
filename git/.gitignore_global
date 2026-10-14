@@ -1,0 +1,11 @@
+.tmux-sessionizer
+GNUmakefile
+.claude
+.claude.json
+.lint.txt
+.grove.toml
+localscripts
+CURRENT_TICKET.md
+tmp/
+.plan/
+kulala-requests/
