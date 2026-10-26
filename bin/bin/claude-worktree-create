@@ -9,6 +9,12 @@ input=$(cat)
 name=$(jq -r .name <<<"$input")
 cd "$(jq -r .cwd <<<"$input")"
 
+# A session started in a grove's .bare dir has no work tree, so grove and
+# git rev-parse --show-toplevel both fail there. Run from any of its worktrees.
+if [[ $(git rev-parse --is-bare-repository) == true ]]; then
+	cd "$(git worktree list --porcelain | awk '/^worktree /{p=$2} /^HEAD /{print p; exit}')"
+fi
+
 if grove status >/dev/null 2>&1; then
 	parent=$(dirname "$(git rev-parse --show-toplevel)")
 	grove --plain add "$name" --name "$name" >&2

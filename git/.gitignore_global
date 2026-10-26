@@ -9,3 +9,4 @@ CURRENT_TICKET.md
 tmp/
 .plan/
 kulala-requests/
+.env
