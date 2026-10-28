@@ -61,7 +61,7 @@ bindsym $mod+Shift+p exec wlogout
 bindsym $mod+Shift+i exec pgrep shmooz && killall shmooz || /home/arne/.cargo/bin/shmooz --output "$(swaymsg -t get_outputs | jq -r 'map(select(.focused == true)) | .[].name')"
 bindsym $mod+Shift+m exec ~/bin/swap
 bindsym $mod+Shift+d exec ~/bin/wl-present mirror eDP-1 &
-bindsym $mod+Shift+c exec ~/bin/lidclose.sh
+bindsym $mod+Shift+c exec ~/bin/mutelaptop.sh
 bindsym $mod+Shift+b exec ~/bin/bt-connect
 bindsym $mod+b exec ~/bin/bt-audio
 bindsym $mod+g exec ~/bin/bt-audio recent
